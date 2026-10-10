@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Result · Spot the Scam</title>
+    <link rel="stylesheet" href="css/result.css">
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="logo" href="index.html">
+            <img src="assets/images/logo.svg" alt="" width="48" height="48">
+            <span>Spot the Scam</span>
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html">Home</a>
+            <a href="safety.html">Safety Guide</a>
+            <a href="training.html">Company Training</a>
+        </nav>
+    </header>
+
+    <main id="main">
+        <section id="empty-result" class="panel" hidden>
+            <h1>No result yet</h1>
+            <p>Finish a detective case or the Company Quiz to see a score here.</p>
+            <a class="btn" href="index.html">Back to Home</a>
+        </section>
+
+        <section id="result-panel" hidden>
+            <div class="page-head">
+                <p class="kicker">Your result</p>
+                <h1 id="result-title">Result</h1>
+            </div>
+            <div class="result-card">
+                <div class="score-ring">
+                    <p class="score-big" id="result-score">0 / 0</p>
+                </div>
+                <div class="result-words">
+                    <p class="status-row"><span class="pill" id="result-status">Result</span></p>
+                    <p id="result-pass">Pass mark</p>
+                    <p id="result-message" class="lead"></p>
+                    <ul id="practice-list" class="practice-list"></ul>
+                    <p id="result-note"></p>
+                </div>
+                <div class="button-row">
+                    <a class="btn btn-teal" id="next-btn" href="index.html" hidden>Next</a>
+                    <a class="btn" id="retry-btn" href="index.html">Retry Case</a>
+                    <button type="button" class="btn btn-quiet" id="review-btn">See my answers</button>
+                    <a class="btn btn-quiet" href="index.html">Back to Home</a>
+                </div>
+            </div>
+            <section id="review-box" hidden>
+                <h2>My answers</h2>
+                <div id="review-list"></div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Spot the Scam · Result · Ask a trusted adult if you are unsure.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/result.js"></script>
+</body>
+</html>

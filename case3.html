@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case 3 · Real-World Challenge</title>
+    <link rel="stylesheet" href="css/case3.css">
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="logo" href="index.html">
+            <img src="assets/images/logo.svg" alt="" width="48" height="48">
+            <span>Spot the Scam</span>
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html">Home</a>
+            <a href="safety.html">Safety Guide</a>
+            <a href="training.html">Company Training</a>
+        </nav>
+    </header>
+
+    <main id="main">
+        <div class="page-head">
+            <p class="kicker">Case 3</p>
+            <h1>Real-World Challenge</h1>
+            <p class="how-to">Read the message. Answer three quick steps. <span class="goal">Goal: 12 of 15</span></p>
+        </div>
+
+        <section id="lock-panel" class="panel" hidden>
+            <h2>This case is locked</h2>
+            <p>Finish Case 2 with 12 out of 15 first. Then this case opens.</p>
+            <a class="btn" href="index.html">Back to Home</a>
+        </section>
+
+        <section id="play-panel">
+            <div class="progress-box">
+                <p id="progress-label">Message 1 of 15</p>
+                <p id="score-label">Score: 0</p>
+                <div class="bar" aria-hidden="true"><span id="score-bar"></span></div>
+            </div>
+
+            <div class="play-grid">
+                <div class="evidence">
+                    <p class="evidence-title">The message</p>
+                    <article class="email-card">
+                        <p><span class="email-label">From</span> <span id="email-from"></span></p>
+                        <p id="email-message" class="email-body"></p>
+                    </article>
+                </div>
+
+                <div class="decisions">
+                    <div class="question-block">
+                        <h2><span class="step-tag">Step 1</span> Is this message a scam?</h2>
+                        <div class="choice-row pair">
+                            <button type="button" id="choose-scam" class="choice-btn">
+                                <span class="choice-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18.5h.01"/></svg>
+                                </span>
+                                <span class="choice-label">Scam</span>
+                                <span class="choice-help">Fake. Someone is trying to trick me.</span>
+                                <span class="choice-note"></span>
+                            </button>
+                            <button type="button" id="choose-legit" class="choice-btn">
+                                <span class="choice-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/></svg>
+                                </span>
+                                <span class="choice-label">Legitimate</span>
+                                <span class="choice-help">Real. This message is safe.</span>
+                                <span class="choice-note"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="feedback" class="feedback" aria-live="polite"></div>
+
+                    <section id="clue-box" class="question-block" hidden>
+                        <h2><span class="step-tag">Step 2</span> What is the main clue?</h2>
+                        <div class="choice-row" id="clue-row"></div>
+                    </section>
+                    <div id="clue-feedback" class="feedback" aria-live="polite"></div>
+
+                    <section id="action-box" class="question-block" hidden>
+                        <h2><span class="step-tag">Step 3</span> What is a safe thing to do?</h2>
+                        <div class="choice-row" id="action-row"></div>
+                    </section>
+                    <div id="action-feedback" class="feedback" aria-live="polite"></div>
+
+                    <div class="next-bar">
+                        <button type="button" class="btn" id="next-btn" hidden>Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Spot the Scam · Case 3 · Progress is saved only in this browser.</p>
+    </footer>
+
+    <script src="js/questions.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/case3.js"></script>
+</body>
+</html>

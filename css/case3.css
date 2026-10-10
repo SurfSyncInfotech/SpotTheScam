@@ -1,0 +1,28 @@
+@import url("base.css");
+
+/* Case 3: the message stays on the left, three short steps on the right. */
+main {
+    width: min(1080px, calc(100% - 32px));
+}
+
+#clue-row {
+    grid-template-columns: 1fr 1fr;
+}
+
+#clue-row .choice-btn {
+    min-height: 72px;
+}
+
+#action-row .choice-btn {
+    min-height: 64px;
+}
+
+#action-row .choice-label {
+    font-size: 1.05rem;
+}
+
+@media (max-width: 720px) {
+    #clue-row {
+        grid-template-columns: 1fr;
+    }
+}

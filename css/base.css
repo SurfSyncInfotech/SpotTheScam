@@ -1,0 +1,897 @@
+/* Shared design system for every Spot the Scam page.
+   Each page stylesheet imports this file first, then adds its own rules. */
+
+/* ---------- Design tokens ---------- */
+:root {
+    --ink-900: #0f2235;
+    --ink-700: #1f3a56;
+    --text: #1c2b39;
+    --muted: #5a6977;
+    --bg: #f6f3ee;
+    --surface: #ffffff;
+    --surface-2: #f1ede6;
+    --line: #e2dcd2;
+    --line-strong: #c9c1b4;
+    --teal: #0f766e;
+    --teal-dark: #0b5f59;
+    --teal-soft: #d9f0ec;
+    --amber: #b86e00;
+    --amber-soft: #fff1d6;
+    --success: #1b6e46;
+    --success-soft: #e3f3ea;
+    --warn: #8a4b08;
+    --warn-soft: #fdf0dc;
+    --focus: #0b5f59;
+    --focus-light: #f5b400;
+    --shadow-sm: 0 1px 2px rgba(15, 34, 53, 0.06);
+    --shadow-md: 0 6px 18px rgba(15, 34, 53, 0.08);
+    --radius: 12px;
+    --radius-lg: 16px;
+    --speed: 160ms;
+}
+
+/* ---------- Base ---------- */
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Inter", system-ui, -apple-system, Roboto, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: var(--teal-dark);
+    text-underline-offset: 3px;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    line-height: 1.25;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+}
+
+h1 {
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.25rem);
+    margin-bottom: 8px;
+}
+
+h2 {
+    font-size: 1.35rem;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.kicker {
+    margin: 0 0 6px;
+    color: var(--teal-dark);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.lead {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 65ch;
+}
+
+.hint, .best {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* ---------- Skip link ---------- */
+.skip {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    background-color: var(--surface);
+    color: var(--ink-900);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    z-index: 20;
+}
+
+.skip:focus {
+    top: 12px;
+}
+
+/* ---------- Header and navigation ---------- */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    background-color: var(--ink-900);
+    color: #ffffff;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: #e6edf4;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+nav a[aria-current="page"] {
+    color: #ffffff;
+    box-shadow: inset 0 -3px 0 var(--focus-light);
+    border-radius: 8px 8px 0 0;
+}
+
+.site-header a:focus-visible {
+    outline: 3px solid var(--focus-light);
+    outline-offset: 3px;
+}
+
+/* ---------- Page frame ---------- */
+main {
+    width: min(1080px, calc(100% - 32px));
+    margin: 32px auto 56px;
+}
+
+.page-head {
+    margin-bottom: 20px;
+}
+
+/* Short "how to play" line with a small goal chip (replaces long rule text) */
+.how-to {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.goal {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background-color: var(--teal-soft);
+    color: var(--teal-dark);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.goal::before {
+    content: "\2605";
+    font-size: 0.9em;
+}
+
+.panel {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+}
+
+.site-footer {
+    padding: 20px 24px 32px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--line);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+.btn, .choice-btn {
+    font: inherit;
+    cursor: pointer;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 10px 20px;
+    background-color: var(--teal);
+    color: #ffffff;
+    text-decoration: none;
+    border: 2px solid var(--teal);
+    border-radius: var(--radius);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-teal {
+    background-color: var(--ink-900);
+    border-color: var(--ink-900);
+}
+
+.btn-teal:hover {
+    background-color: var(--ink-700);
+    border-color: var(--ink-700);
+}
+
+.btn-quiet {
+    background-color: var(--surface);
+    color: var(--ink-900);
+    border-color: var(--line-strong);
+}
+
+.btn-quiet:hover {
+    background-color: var(--surface-2);
+    border-color: var(--ink-700);
+}
+
+.btn-lock {
+    background-color: var(--surface-2);
+    color: var(--muted);
+    border-color: var(--line);
+    cursor: not-allowed;
+}
+
+.btn-lock:hover {
+    background-color: var(--surface-2);
+    border-color: var(--line);
+}
+
+.btn-small {
+    min-height: 40px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
+}
+
+.btn-big {
+    min-height: 60px;
+    padding: 14px 28px;
+    font-size: 1.2rem;
+    border-radius: 14px;
+}
+
+.btn-big::after {
+    content: "\2192";
+    font-size: 1.1em;
+}
+
+.btn:disabled {
+    background-color: var(--surface-2);
+    color: var(--muted);
+    border-color: var(--line);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.text-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 600;
+}
+
+/* ---------- Focus ---------- */
+button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+}
+
+/* ---------- Status pills ---------- */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--surface-2);
+    color: var(--ink-700);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pill-good {
+    background-color: var(--success-soft);
+    color: var(--success);
+    border-color: #bfe0cc;
+}
+
+.pill-sun, .pill-learn {
+    background-color: var(--warn-soft);
+    color: var(--warn);
+    border-color: #f0d6ad;
+}
+
+.pill-lock {
+    background-color: transparent;
+    color: var(--muted);
+    border-style: dashed;
+    border-color: var(--line-strong);
+}
+
+/* ---------- Progress bars ---------- */
+.bar {
+    height: 10px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 8px 0 12px;
+}
+
+.bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background-color: var(--teal);
+    border-radius: 999px;
+}
+
+.progress-box {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+
+.progress-box p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.progress-box .bar {
+    grid-column: 1 / -1;
+    margin: 10px 0 0;
+}
+
+.progress-box #score-label {
+    justify-self: start;
+    color: var(--teal-dark);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 2px 10px;
+    background-color: var(--teal-soft);
+    border-radius: 999px;
+}
+
+/* ---------- Play area: evidence on one side, decisions on the other ---------- */
+.play-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 13fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.evidence {
+    position: sticky;
+    top: 16px;
+}
+
+.evidence .email-card {
+    margin-bottom: 0;
+}
+
+.evidence-title {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.decisions .question-block:first-child {
+    margin-top: 0;
+}
+
+/* Step tag inside question headings: "Step 1  Is this a scam?" */
+.step-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 9px;
+    margin-right: 8px;
+    background-color: var(--ink-900);
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+}
+
+.question-block h2 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 0;
+}
+
+/* ---------- Evidence card (email / scenario / question) ---------- */
+.email-card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 22px 24px;
+    margin-bottom: 24px;
+}
+
+.email-card p {
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+}
+
+.email-card p:has(.email-label) {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    align-items: baseline;
+    column-gap: 8px;
+}
+
+.email-label {
+    display: inline-block;
+    min-width: 76px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.email-body {
+    margin: 14px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 1.1rem;
+    line-height: 1.65;
+}
+
+.topic {
+    display: inline-block;
+    margin: 12px 0 0;
+    padding: 4px 12px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.topic:empty {
+    display: none;
+}
+
+/* ---------- Answer choices ---------- */
+.choice-row {
+    display: grid;
+    gap: 12px;
+}
+
+.pair {
+    grid-template-columns: 1fr 1fr;
+}
+
+.choice-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    min-height: 64px;
+    padding: 14px 18px;
+    text-align: left;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--line-strong);
+    border-radius: 14px;
+    box-shadow: 0 2px 0 var(--line-strong);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.choice-btn:hover:not(:disabled) {
+    border-color: var(--teal);
+    background-color: var(--teal-soft);
+    box-shadow: 0 2px 0 var(--teal);
+}
+
+.choice-btn:disabled {
+    box-shadow: none;
+}
+
+/* Small helper line under a choice, e.g. "Real. This message is safe." */
+.choice-help {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--muted);
+    line-height: 1.35;
+}
+
+.is-correct .choice-help, .is-wrong .choice-help {
+    color: inherit;
+    opacity: 0.85;
+}
+
+/* Icon row for the big Scam / Legitimate buttons */
+.choice-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+.choice-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+#choose-scam .choice-icon {
+    background-color: var(--warn-soft);
+    color: var(--warn);
+}
+
+#choose-legit .choice-icon {
+    background-color: var(--success-soft);
+    color: var(--success);
+}
+
+.choice-btn:disabled .choice-icon {
+    opacity: 0.6;
+}
+
+.pair .choice-btn {
+    min-height: 120px;
+    padding: 16px 20px;
+}
+
+.choice-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.choice-btn:disabled {
+    cursor: default;
+}
+
+.choice-btn:disabled:not(.is-correct):not(.is-wrong):not(.is-picked) {
+    color: var(--muted);
+    background-color: var(--surface-2);
+    border-color: var(--line);
+}
+
+.choice-label {
+    font-size: 1.15rem;
+}
+
+.choice-note {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.choice-note:empty {
+    display: none;
+}
+
+.is-correct {
+    border-color: var(--success);
+    background-color: var(--success-soft);
+    color: var(--success);
+}
+
+.is-correct .choice-note::before {
+    content: "\2713\00a0";
+}
+
+.is-wrong {
+    border-color: var(--warn);
+    background-color: var(--warn-soft);
+    color: var(--warn);
+}
+
+.is-wrong .choice-note::before {
+    content: "\2715\00a0";
+}
+
+.is-picked {
+    border-color: var(--ink-900);
+    background-color: var(--teal-soft);
+}
+
+.is-picked::after {
+    content: "Selected";
+    font-size: 0.85rem;
+    color: var(--teal-dark);
+}
+
+/* ---------- Feedback panels ----------
+   The script sets a mood class: "good" (correct), "learn" (not quite), "tip" (hint). */
+.feedback {
+    margin-top: 14px;
+    padding: 14px 18px 14px 20px;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 6px solid var(--teal);
+    border-radius: var(--radius);
+    line-height: 1.55;
+}
+
+.feedback:empty {
+    display: none;
+}
+
+.feedback::before {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.feedback.tip {
+    background-color: var(--surface-2);
+    border-color: var(--line);
+    border-left-color: var(--line-strong);
+    color: var(--muted);
+}
+
+.feedback.tip::before {
+    content: "Hint";
+    color: var(--ink-700);
+}
+
+.feedback.good {
+    background-color: var(--success-soft);
+    border-color: #bfe0cc;
+    border-left-color: var(--success);
+}
+
+.feedback.good::before {
+    content: "\2713  Correct!";
+    color: var(--success);
+}
+
+.feedback.saved {
+    background-color: var(--teal-soft);
+    border-color: #bfe0dc;
+    border-left-color: var(--teal);
+}
+
+.feedback.saved::before {
+    content: "\2713  Answer saved";
+    color: var(--teal-dark);
+}
+
+.feedback.learn {
+    background-color: var(--warn-soft);
+    border-color: #f0d6ad;
+    border-left-color: var(--warn);
+}
+
+.feedback.learn::before {
+    content: "\2715  Not quite";
+    color: var(--warn);
+}
+
+/* Next button sits in its own bar so it is always easy to find */
+.next-bar {
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+    padding: 12px 0 14px;
+    background: linear-gradient(to bottom, rgba(246, 243, 238, 0), var(--bg) 35%);
+}
+
+.next-bar:has(#next-btn[hidden]) {
+    display: none;
+}
+
+#next-btn {
+    width: 100%;
+    min-height: 60px;
+    font-size: 1.2rem;
+    border-radius: 14px;
+}
+
+#next-btn::after {
+    content: "\2192";
+}
+
+.question-block {
+    margin-top: 28px;
+}
+
+.question-block h2 {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+}
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+    .btn, .choice-btn, nav a {
+        transition: background-color var(--speed) ease, border-color var(--speed) ease, color var(--speed) ease, transform var(--speed) ease;
+    }
+
+    .bar span {
+        transition: width 300ms ease;
+    }
+
+    .feedback, #clue-box, #action-box, .next-bar {
+        animation: rise 220ms ease-out;
+    }
+
+    .feedback.good {
+        animation: rise 220ms ease-out, pulse 500ms ease-out;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(27, 110, 70, 0.35);
+        }
+        100% {
+            box-shadow: 0 0 0 12px rgba(27, 110, 70, 0);
+        }
+    }
+
+    @keyframes rise {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .play-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .evidence {
+        position: static;
+    }
+
+    .pair .choice-btn {
+        min-height: 84px;
+    }
+}
+
+@media (max-width: 720px) {
+    body {
+        font-size: 17px;
+    }
+
+    .how-to {
+        font-size: 1rem;
+    }
+
+    .next-bar {
+        margin-left: -12px;
+        margin-right: -12px;
+        padding: 10px 12px 12px;
+    }
+
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+    }
+
+    main {
+        width: calc(100% - 24px);
+        margin-top: 20px;
+    }
+
+    .panel, .email-card {
+        padding: 18px;
+    }
+
+    .pair {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-box {
+        grid-template-columns: 1fr;
+        row-gap: 4px;
+    }
+
+    .button-row .btn {
+        flex: 1 1 auto;
+    }
+}

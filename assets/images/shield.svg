@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Safety shield icon">
+  <rect width="80" height="80" rx="20" fill="#E5F6EC"/>
+  <path d="M40 16 L58 24 V38 C58 50 50 58 40 64 C30 58 22 50 22 38 V24 Z" fill="#FFFFFF" stroke="#1F7A4D" stroke-width="3"/>
+  <path d="M32 40 L38 46 L50 32" fill="none" stroke="#1F7A4D" stroke-width="3" stroke-linecap="round"/>
+</svg>

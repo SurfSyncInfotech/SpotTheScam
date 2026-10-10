@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case 2 · What Would You Do?</title>
+    <link rel="stylesheet" href="css/case2.css">
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="logo" href="index.html">
+            <img src="assets/images/logo.svg" alt="" width="48" height="48">
+            <span>Spot the Scam</span>
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html">Home</a>
+            <a href="safety.html">Safety Guide</a>
+            <a href="training.html">Company Training</a>
+        </nav>
+    </header>
+
+    <main id="main">
+        <div class="page-head">
+            <p class="kicker">Case 2</p>
+            <h1>What Would You Do?</h1>
+            <p class="how-to">Read the situation. Pick the safest thing to do. <span class="goal">Goal: 12 of 15</span></p>
+        </div>
+
+        <section id="lock-panel" class="panel" hidden>
+            <h2>This case is locked</h2>
+            <p>Finish Case 1 with 24 out of 30 first. Then this case opens.</p>
+            <a class="btn" href="index.html">Back to Home</a>
+        </section>
+
+        <section id="play-panel">
+            <div class="progress-box">
+                <p id="progress-label">Situation 1 of 15</p>
+                <p id="score-label">Score: 0</p>
+                <div class="bar" aria-hidden="true"><span id="score-bar"></span></div>
+            </div>
+            <div class="play-grid">
+                <div class="evidence">
+                    <p class="evidence-title">The situation</p>
+                    <article class="email-card">
+                        <h2 id="scene-title">Scenario</h2>
+                        <p id="scene-text"></p>
+                    </article>
+                </div>
+                <div class="decisions">
+                    <div class="question-block">
+                        <h2><span class="step-tag">Pick one</span> What would you do?</h2>
+                        <div class="choice-row" id="choice-row"></div>
+                    </div>
+                    <div id="feedback" class="feedback" aria-live="polite"></div>
+                    <div class="next-bar">
+                        <button type="button" class="btn" id="next-btn" hidden>Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Spot the Scam · Case 2 · Progress is saved only in this browser.</p>
+    </footer>
+
+    <script src="js/questions.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/case2.js"></script>
+</body>
+</html>

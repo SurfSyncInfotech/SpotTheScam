@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Training icon">
+  <rect width="80" height="80" rx="20" fill="#F3EEFF"/>
+  <rect x="18" y="22" width="44" height="30" rx="6" fill="#FFFFFF" stroke="#5B4B8A" stroke-width="3"/>
+  <path d="M36 32 L48 37 L36 42 Z" fill="#5B4B8A"/>
+  <path d="M28 58 H52" stroke="#5B4B8A" stroke-width="3" stroke-linecap="round"/>
+</svg>

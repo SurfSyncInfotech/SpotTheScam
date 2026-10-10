@@ -1,0 +1,207 @@
+@import url("base.css");
+
+/* Result: score first, next step second, review on request. */
+main {
+    width: min(820px, calc(100% - 32px));
+}
+
+.result-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px 28px;
+    align-items: center;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+/* Big round score so the number is the first thing you see */
+.score-ring {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: 8px solid var(--line);
+    background-color: var(--surface-2);
+}
+
+.result-pass .score-ring {
+    border-color: var(--success);
+    background-color: var(--success-soft);
+}
+
+.result-learn .score-ring {
+    border-color: var(--warn);
+    background-color: var(--warn-soft);
+}
+
+.score-big {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--ink-900);
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
+.status-row {
+    margin-bottom: 8px;
+}
+
+.status-row .pill {
+    font-size: 1rem;
+    padding: 5px 14px;
+}
+
+#result-pass {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#result-note {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 12px 0 0;
+}
+
+#result-message {
+    max-width: none;
+    font-size: 1.1rem;
+    color: var(--text);
+    padding: 14px 18px;
+    background-color: var(--surface-2);
+    border-left: 4px solid var(--teal);
+    border-radius: var(--radius);
+    margin-bottom: 0;
+}
+
+.result-pass #result-message {
+    background-color: var(--success-soft);
+    border-left-color: var(--success);
+}
+
+.practice-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: grid;
+    gap: 6px;
+    color: var(--muted);
+}
+
+.practice-list:empty {
+    display: none;
+}
+
+.practice-list li {
+    padding-left: 14px;
+    border-left: 3px solid var(--line-strong);
+}
+
+.result-card .button-row {
+    grid-column: 1 / -1;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.result-card .button-row .btn {
+    min-height: 54px;
+}
+
+/* The primary action is always first in the row */
+#result-panel .button-row #next-btn {
+    order: -2;
+}
+
+.result-learn .button-row #retry-btn {
+    order: -1;
+}
+
+#next-btn {
+    margin-top: 0;
+}
+
+/* Review list */
+#review-box {
+    margin-top: 28px;
+}
+
+#review-box h2 {
+    margin-bottom: 14px;
+}
+
+.review-item {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+}
+
+.review-item h3 {
+    font-size: 1.05rem;
+}
+
+.review-item p {
+    margin-bottom: 6px;
+}
+
+.review-item p:last-child {
+    margin-bottom: 0;
+    color: var(--muted);
+}
+
+.review-good {
+    color: var(--success);
+    font-weight: 700;
+}
+
+.review-good::before {
+    content: "\2713\00a0";
+}
+
+.review-learn {
+    color: var(--warn);
+    font-weight: 700;
+}
+
+.review-learn::before {
+    content: "\2715\00a0";
+}
+
+#empty-result h1 {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 720px) {
+    .result-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        padding: 22px;
+    }
+
+    .result-words {
+        width: 100%;
+        text-align: left;
+    }
+
+    .score-ring {
+        width: 140px;
+        height: 140px;
+    }
+
+    .score-big {
+        font-size: 2rem;
+    }
+
+    .result-card .button-row {
+        width: 100%;
+    }
+}

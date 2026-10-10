@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="Real-world case icon">
+  <rect width="80" height="80" rx="20" fill="#E7F0FA"/>
+  <circle cx="40" cy="40" r="18" fill="#FFFFFF" stroke="#1C4A6E" stroke-width="3"/>
+  <path d="M40 22 C48 30 48 50 40 58 C32 50 32 30 40 22 Z" fill="none" stroke="#1C4A6E" stroke-width="2"/>
+  <path d="M24 40 H56 M28 32 H52 M28 48 H52" fill="none" stroke="#1C4A6E" stroke-width="2"/>
+</svg>

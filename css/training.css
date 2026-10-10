@@ -1,0 +1,104 @@
+@import url("base.css");
+
+/* Company Training: video area, takeaways, then acknowledgement. */
+main {
+    width: min(820px, calc(100% - 32px));
+}
+
+.video-box {
+    position: relative;
+    background-color: var(--ink-900);
+    color: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 36px 28px;
+    margin-bottom: 28px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 50%, transparent 50%);
+}
+
+.video-label {
+    display: inline-block;
+    align-self: flex-start;
+    background-color: var(--focus-light);
+    color: var(--ink-900);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-bottom: 14px;
+}
+
+.video-box h2 {
+    color: #ffffff;
+}
+
+.video-box p:last-child {
+    margin: 0;
+    color: #d6dee7;
+    max-width: 60ch;
+}
+
+.take-list {
+    counter-reset: take;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    display: grid;
+    gap: 10px;
+}
+
+.take-list li {
+    counter-increment: take;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-weight: 600;
+}
+
+.take-list li::before {
+    content: counter(take);
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--teal-soft);
+    color: var(--teal-dark);
+    font-weight: 700;
+}
+
+.check-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px;
+    background-color: var(--surface-2);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 18px;
+}
+
+.check-row input {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin: 2px 0 0;
+    accent-color: var(--teal);
+    cursor: pointer;
+}
+
+.panel .hint {
+    margin: 14px 0 0;
+}
