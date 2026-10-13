@@ -89,7 +89,7 @@ function getRank(xp) {
     if (xp >= 100) {
         return { name: "Junior Detective", next: 250, base: 100 };
     }
-    return { name: "Rookie Detective", next: 100, base: 0 };
+    return { name: "Spot The Scam", next: 100, base: 0 };
 }
 
 function giveBadge(badgeId) {
@@ -138,10 +138,7 @@ function recordCaseScore(caseNumber, score) {
 
     data["case" + caseNumber + "Tried"] = true;
 
-    let passMark = 12;
-    if (caseNumber === 1) {
-        passMark = 24;
-    }
+    const passMark = 15;
 
     if (score >= passMark) {
         data[passName] = true;
@@ -280,9 +277,9 @@ function showDashboard() {
         document.getElementById("rank-next").textContent = "Next rank at " + rank.next + " XP";
     }
 
-    fillCaseCard(1, data, 30, 24);
-    fillCaseCard(2, data, 15, 12);
-    fillCaseCard(3, data, 15, 12);
+    fillCaseCard(1, data, 20, 15);
+    fillCaseCard(2, data, 20, 15);
+    fillCaseCard(3, data, 20, 15);
     fillTrainingCard(data);
     fillSkills(data);
     fillBadges(data);
@@ -299,7 +296,7 @@ function fillNextStep(data) {
     }
 
     const caseNames = ["", "Spot the Scam", "What Would You Do?", "Real-World Challenge"];
-    const caseTotals = [0, 30, 15, 15];
+    const caseTotals = [0, 20, 20, 20];
 
     for (let caseNumber = 1; caseNumber <= 3; caseNumber++) {
         const active = data["activeCase" + caseNumber];
@@ -363,8 +360,12 @@ function fillCaseCard(caseNumber, data, total, passMark) {
     const restart = document.getElementById("case" + caseNumber + "-restart");
 
     if (data["case" + caseNumber + "Tried"] || best > 0) {
-        bestText.textContent = "Best score: " + best + "/" + total;
-        bar.style.width = Math.round((best / total) * 100) + "%";
+        let shownBest = best;
+        if (shownBest > total) {
+            shownBest = total;
+        }
+        bestText.textContent = "Best score: " + shownBest + "/" + total;
+        bar.style.width = Math.round((shownBest / total) * 100) + "%";
     } else {
         bestText.textContent = "Best score: not tried yet";
         bar.style.width = "0%";
@@ -443,9 +444,9 @@ function fillTrainingCard(data) {
 }
 
 function fillSkills(data) {
-    setSkill("skill-email", data.case1Best, 30, data.case1Tried);
-    setSkill("skill-choices", data.case2Best, 15, data.case2Tried);
-    setSkill("skill-world", data.case3Best, 15, data.case3Tried);
+    setSkill("skill-email", data.case1Best, 20, data.case1Tried);
+    setSkill("skill-choices", data.case2Best, 20, data.case2Tried);
+    setSkill("skill-world", data.case3Best, 20, data.case3Tried);
     setSkill("skill-quiz", data.quizBest, 20, data.quizAttempts > 0);
 }
 
@@ -457,8 +458,12 @@ function setSkill(id, score, total, tried) {
         bar.style.width = "0%";
         return;
     }
-    const percent = Math.round((score / total) * 100);
-    label.textContent = score + "/" + total + " (" + percent + "%)";
+    let shownScore = score;
+    if (shownScore > total) {
+        shownScore = total;
+    }
+    const percent = Math.round((shownScore / total) * 100);
+    label.textContent = shownScore + "/" + total + " (" + percent + "%)";
     bar.style.width = percent + "%";
 }
 

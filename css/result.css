@@ -10,11 +10,11 @@ main {
     grid-template-columns: auto 1fr;
     gap: 20px 28px;
     align-items: center;
-    background-color: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    padding: 28px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 8px 0 0;
     margin-bottom: 20px;
 }
 
@@ -23,21 +23,21 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 168px;
-    height: 168px;
+    width: 132px;
+    height: 132px;
     border-radius: 50%;
-    border: 8px solid var(--line);
-    background-color: var(--surface-2);
+    border: 2px solid var(--line-strong);
+    background-color: #ffffff;
 }
 
 .result-pass .score-ring {
     border-color: var(--success);
-    background-color: var(--success-soft);
+    background-color: #ffffff;
 }
 
 .result-learn .score-ring {
     border-color: var(--warn);
-    background-color: var(--warn-soft);
+    background-color: #ffffff;
 }
 
 .score-big {
@@ -72,18 +72,13 @@ main {
 
 #result-message {
     max-width: none;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text);
-    padding: 14px 18px;
-    background-color: var(--surface-2);
-    border-left: 4px solid var(--teal);
-    border-radius: var(--radius);
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
     margin-bottom: 0;
-}
-
-.result-pass #result-message {
-    background-color: var(--success-soft);
-    border-left-color: var(--success);
 }
 
 .practice-list {
@@ -137,11 +132,12 @@ main {
 }
 
 .review-item {
-    background-color: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 12px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    padding: 16px 0;
+    margin-bottom: 0;
 }
 
 .review-item h3 {

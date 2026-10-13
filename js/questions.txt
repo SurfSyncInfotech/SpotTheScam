@@ -1,0 +1,59 @@
+This file explains js/questions.js.
+This file has no functions.
+It only stores the question lists.
+The case pages and the quiz page read these lists. They do not change them.
+
+There are four lists.
+
+case1Questions starts at line 4.
+This is Case 1. There are 20 emails.
+Each email is one object inside the list. The first object is lines 5 to 15.
+Line 6: id is the email number.
+Line 7: category is the lesson topic, such as "Fake Sender", "Fake Urgency", or "Information Requests".
+Line 8: sender is the From address shown on the page.
+Line 9: subject is the subject line.
+Line 10: message is the email body.
+Line 11: options is always ["Scam", "Legitimate"].
+Line 12: correctAnswer is "Scam" or "Legitimate". This is the official answer. 15 correct answers pass Case 1.
+Line 13: clue is the right clue. It is practice only.
+Line 14: explanation is the lesson sentence shown after the clue.
+Every later Case 1 object uses those same fields. The list ends just before line 227.
+
+case2Scenarios starts at line 227.
+This is Case 2. There are 20 situations.
+The first object starts at line 228.
+Line 229: id is the situation number.
+Line 230: title is the short heading.
+Line 231: scenario is the situation paragraph.
+Lines 232 to 236: options is a list of three choices.
+Line 237: correctAnswer is the safe choice. It must match one of the three options exactly. Every situation counts. 15 correct answers pass Case 2.
+Line 238: explanation is the lesson sentence.
+Every later Case 2 object uses those same fields. The list ends just before line 470.
+
+case3Challenges starts at line 470.
+This is Case 3. There are 20 messages.
+Each message has three answers.
+The first object starts at line 471.
+id is the message number.
+sender is the From line.
+message is the message text.
+options is ["Scam", "Legitimate"].
+correctAnswer is "Scam" or "Legitimate". This is the official answer. 15 correct answers pass Case 3.
+clueOptions is the four clue names.
+correctClue is the right clue. It is practice only.
+actionOptions is a list of four actions.
+correctAction is the safe action. It is practice only.
+explanation is the lesson sentence.
+Every later Case 3 object uses those same fields. The list ends just before line 813.
+
+companyQuizQuestions starts at line 813.
+This is the Company Quiz. There are 20 questions.
+The quiz page shuffles their order on each new try.
+The first object starts at line 814.
+id is the question number. findQuizQuestion in quiz.js searches by this id.
+category is the topic shown above the question.
+question is the question sentence.
+options is a list of answer choices.
+correctAnswer is the right choice. It must match one option exactly. 16 correct answers pass the quiz.
+explanation is the lesson sentence shown on the result page.
+Every later quiz object uses those same fields. The list runs to the end of the file.

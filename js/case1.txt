@@ -1,0 +1,676 @@
+This file explains js/case1.js.
+case1.js runs Case 1, Spot the Scam.
+There are 20 emails. The official score is Scam or Legitimate.
+The student passes with 15 correct answers.
+The clue step is practice only. It does not decide the pass.
+
+Lines 3 to 13 are variables used by the functions below.
+Line 3: questions is the list case1Questions from questions.js.
+Line 4: currentQuestion is the position in that list. 0 is the first email.
+Line 5: selectedAnswer is "Scam" or "Legitimate" for the email on screen.
+Line 6: selectedClue is the clue the student picked.
+Line 7: score is the official score.
+Line 8: clueScore is the practice score for clues.
+Line 9: records will hold the review for the result page.
+Line 10: step is "classify", then "clue", then "explain".
+Line 11: finished stops the result from being saved twice.
+Line 13: clueNames lists the four clue labels. The buttons on the page use these names.
+
+
+loadAttempt line number 15
+
+Line 15: function loadAttempt() {
+The function starts. It loads a saved Case 1 try, or starts a new one.
+
+Line 16: const data = loadProgress();
+Read saved progress. loadProgress is in app.js.
+
+Line 17: const params = new URLSearchParams(window.location.search);
+Read the address after the question mark. Example: case1.html?retry=1.
+
+Line 19: if (params.get("retry") === "1" || data.activeCase1 === null || data.activeCase1.index >= questions.length) {
+Start fresh in three cases.
+retry=1 means the student chose Start over or a new try.
+activeCase1 is null when no try is in progress.
+index >= questions.length means a saved position is past the last email, so that old try cannot continue.
+
+Line 20: data.activeCase1 = {
+Replace the saved try with a blank one.
+
+Line 21: index: 0,
+Start at the first email.
+
+Line 22: score: 0,
+Official score starts at 0.
+
+Line 23: clueScore: 0,
+Clue practice starts at 0.
+
+Line 24: records: [],
+No review rows yet.
+
+Line 25: step: "classify",
+The first step is Scam or Legitimate.
+
+Line 26: selectedAnswer: "",
+No answer chosen yet.
+
+Line 27: selectedClue: ""
+No clue chosen yet.
+
+Line 29: saveProgress();
+Write the blank try into browser storage.
+
+Line 32: const active = data.activeCase1;
+Read the try we will use. It is either the new blank try or an older saved try.
+
+Line 33: currentQuestion = active.index;
+Copy the saved email position.
+
+Line 34: score = active.score;
+Copy the saved official score.
+
+Line 35: clueScore = active.clueScore;
+Copy the saved clue score.
+
+Line 36: records = active.records;
+Copy the saved review rows.
+
+Line 37: step = active.step;
+Copy the saved step.
+
+Line 38: selectedAnswer = active.selectedAnswer;
+Copy the saved Scam or Legitimate choice.
+
+Line 39: selectedClue = active.selectedClue;
+Copy the saved clue.
+
+Line 40: }
+The function ends.
+
+
+saveAttempt line number 42
+
+Line 42: function saveAttempt() {
+The function starts. It writes the current Case 1 try into storage.
+
+Line 43: const data = loadProgress();
+Get the progress object.
+
+Line 44: data.activeCase1 = {
+Replace the saved Case 1 try.
+
+Line 45: index: currentQuestion,
+Save which email is on screen.
+
+Line 46: score: score,
+Save the official score.
+
+Line 47: clueScore: clueScore,
+Save the clue practice score.
+
+Line 48: records: records,
+Save the review rows finished so far.
+
+Line 49: step: step,
+Save classify, clue, or explain.
+
+Line 50: selectedAnswer: selectedAnswer,
+Save the Scam or Legitimate choice.
+
+Line 51: selectedClue: selectedClue
+Save the clue choice.
+
+Line 53: saveProgress();
+Write it into localStorage.
+
+Line 54: }
+The function ends.
+
+
+showQuestion line number 56
+
+Line 56: function showQuestion() {
+The function starts. It draws the email and the step the student is on.
+
+Line 57: if (currentQuestion >= questions.length) {
+If the position is past the last email, the case is over.
+
+Line 58: showResult();
+Build the result and leave this page.
+
+Line 59: return;
+Stop. Do not try to draw an email that does not exist.
+
+Line 62: const question = questions[currentQuestion];
+Read the email object for this position.
+
+Line 63: document.getElementById("progress-label").textContent = "Email " + (currentQuestion + 1) + " of " + questions.length;
+Show "Email 1 of 20" style text. Add 1 because the list starts at 0.
+
+Line 64: document.getElementById("score-label").textContent = "Score: " + score;
+Show the official score so far.
+
+Line 65: document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
+Set the bar from how many emails are already behind the student.
+
+Line 67: if (step === "explain") {
+The topic is shown only after both the answer and the clue are done. Showing it earlier would give the answer away.
+
+Line 68: document.getElementById("category-label").textContent = "Lesson topic: " + question.category;
+Show the topic, such as Fake Sender.
+
+Line 70: document.getElementById("category-label").textContent = "";
+On the classify and clue steps, leave the topic blank.
+
+Line 72: document.getElementById("email-from").textContent = question.sender;
+Show the sender address.
+
+Line 73: document.getElementById("email-subject").textContent = question.subject;
+Show the subject line.
+
+Line 74: document.getElementById("email-message").textContent = question.message;
+Show the email body.
+
+Line 76: const scamButton = document.getElementById("choose-scam");
+Find the Scam button.
+
+Line 77: const legitButton = document.getElementById("choose-legit");
+Find the Legitimate button.
+
+Line 78: scamButton.disabled = step !== "classify";
+The Scam button can be clicked only on the classify step. After that it is locked.
+
+Line 79: legitButton.disabled = step !== "classify";
+The Legitimate button follows the same rule.
+
+Line 80: markChoice(scamButton, "Scam", selectedAnswer, question.correctAnswer, step !== "classify");
+Paint the Scam button. The last argument is true after the student has answered, so the correct and wrong marks can show.
+
+Line 81: markChoice(legitButton, "Legitimate", selectedAnswer, question.correctAnswer, step !== "classify");
+Paint the Legitimate button the same way.
+
+Line 83: const clueBox = document.getElementById("clue-box");
+Find the clue section.
+
+Line 84: const nextButton = document.getElementById("next-btn");
+Find the Next button.
+
+Line 87: let answerWords = "a scam";
+Start with the words used when the email is a scam.
+
+Line 88: if (question.correctAnswer === "Legitimate") {
+If the real answer is Legitimate, change those words.
+
+Line 89: answerWords = "legitimate (a real, safe message)";
+Use the longer plain-language phrase.
+
+Line 92: if (step === "classify") {
+This block is only for the first step, before an answer is chosen.
+
+Line 93: setFeedback("feedback", "Look at who sent it, the subject, and what it asks you to do.", "tip");
+Show a hint. setFeedback is in app.js.
+
+Line 94: clueBox.hidden = true;
+Hide the clues until the student picks Scam or Legitimate.
+
+Line 95: setFeedback("clue-feedback", "", "");
+Clear any old clue message. An empty string hides that box.
+
+Line 96: nextButton.hidden = true;
+Hide Next until both steps are done.
+
+Line 97: return;
+Stop. The clue and explain code below is not for this step.
+
+Line 100: if (selectedAnswer === question.correctAnswer) {
+The student has answered. If the choice matches the real answer, show the good message.
+
+Line 101: setFeedback("feedback", "This email is " + answerWords + ".", "good");
+Example: "This email is a scam."
+
+Line 103: setFeedback("feedback", "This email is actually " + answerWords + ". Let's find out why.", "learn");
+If the choice was wrong, say what the email actually is.
+
+Line 106: clueBox.hidden = false;
+Show the clue buttons.
+
+Line 107: const clueButtons = document.querySelectorAll(".clue-btn");
+Find every clue button.
+
+Line 108: for (let i = 0; i < clueButtons.length; i++) {
+Loop through those buttons.
+
+Line 109: const button = clueButtons[i];
+Read one button.
+
+Line 110: button.disabled = step === "explain";
+Lock the clue buttons after a clue has been chosen. On the clue step they stay clickable.
+
+Line 111: markChoice(button, button.getAttribute("data-clue"), selectedClue, question.clue, step === "explain");
+Paint the button. data-clue is the clue name on that button. Marks show only on the explain step.
+
+Line 114: if (step === "clue") {
+This block is for the moment after Scam or Legitimate, before a clue is chosen.
+
+Line 115: setFeedback("clue-feedback", "Which clue helped you decide? Pick one.", "tip");
+Ask for a clue.
+
+Line 116: nextButton.hidden = true;
+Keep Next hidden until the clue is chosen.
+
+Line 117: return;
+Stop before the explain message.
+
+Line 120: if (selectedClue === question.clue) {
+On the explain step, if the clue matches, show the lesson as a correct message.
+
+Line 121: setFeedback("clue-feedback", question.explanation, "good");
+Show the explanation in the good style.
+
+Line 123: setFeedback("clue-feedback", "The main clue is " + question.clue + ". " + question.explanation, "learn");
+If the clue was wrong, name the right clue and then show the explanation.
+
+Line 125: nextButton.hidden = false;
+Show Next. Both steps are done.
+
+Line 126: if (currentQuestion === questions.length - 1) {
+If this is the last email, Next should open the result.
+
+Line 127: nextButton.textContent = "See my result";
+Change the button words.
+
+Line 129: nextButton.textContent = "Next";
+On every earlier email, the button says Next.
+
+Line 131: }
+The function ends.
+
+
+markChoice line number 133
+
+Line 133: function markChoice(button, value, pickedValue, correctValue, reveal) {
+The function starts.
+button is the button to paint.
+value is the answer this button stands for.
+pickedValue is what the student chose.
+correctValue is the right answer.
+reveal is true when it is time to show correct and wrong marks.
+
+Line 134: const note = button.querySelector(".choice-note");
+Find the small note inside the button.
+
+Line 135: const baseClass = button.getAttribute("data-base-class");
+Read the button's normal class name, saved on the button in the HTML.
+
+Line 136: button.className = baseClass;
+Reset the button to that normal class. This clears old correct or wrong styles.
+
+Line 137: note.textContent = "";
+Clear the old note.
+
+Line 139: if (!reveal || pickedValue === "") {
+If we should not reveal marks yet, or the student has not chosen anything, leave the button plain.
+
+Line 140: return;
+Stop.
+
+Line 142: if (value === correctValue) {
+If this button is the right answer, mark it correct.
+
+Line 143: button.className = baseClass + " is-correct";
+Add the correct style.
+
+Line 144: note.textContent = "Correct";
+Write Correct under the button.
+
+Line 145: return;
+Stop. A correct button is not also marked as the student's wrong choice.
+
+Line 147: if (value === pickedValue) {
+If this button is the one the student chose, and it was not the right answer, mark it wrong.
+
+Line 148: button.className = baseClass + " is-wrong";
+Add the wrong style.
+
+Line 149: note.textContent = "Your choice";
+Write "Your choice" under the button.
+
+Line 151: }
+The function ends.
+
+
+checkAnswer line number 153
+
+Line 153: function checkAnswer(answer) {
+The function starts. answer is "Scam" or "Legitimate".
+
+Line 154: if (step !== "classify") {
+Ignore the click if the student is already on the clue or explain step.
+
+Line 155: return;
+Stop.
+
+Line 158: selectedAnswer = answer;
+Remember the choice.
+
+Line 159: const question = questions[currentQuestion];
+Read the email on screen.
+
+Line 160: if (selectedAnswer === question.correctAnswer) {
+If the choice matches the real answer, it counts.
+
+Line 161: score = score + 1;
+Add 1 to the official score. A wrong choice adds nothing.
+
+Line 163: step = "clue";
+Move to the clue step.
+
+Line 164: saveAttempt();
+Save so a refresh stays on this email and this step.
+
+Line 165: showQuestion();
+Redraw the page with the clue buttons visible.
+
+Line 166: bringIntoView("clue-box");
+Scroll the clue box into view. bringIntoView is in app.js.
+
+Line 167: }
+The function ends.
+
+
+checkClue line number 169
+
+Line 169: function checkClue(answer) {
+The function starts. answer is the clue name from the button, such as "Fake Sender".
+
+Line 170: if (step !== "clue") {
+Ignore the click unless the student is on the clue step.
+
+Line 171: return;
+Stop.
+
+Line 174: selectedClue = answer;
+Remember the clue.
+
+Line 175: const question = questions[currentQuestion];
+Read the email on screen.
+
+Line 176: if (selectedClue === question.clue) {
+If the clue matches, it counts as practice.
+
+Line 177: clueScore = clueScore + 1;
+Add 1 to the clue practice score. This score does not decide the pass.
+
+Line 179: step = "explain";
+Move to the explain step.
+
+Line 180: saveAttempt();
+Save the step and the clue.
+
+Line 181: showQuestion();
+Redraw the page with the explanation and the Next button.
+
+Line 182: bringIntoView("clue-feedback");
+Scroll the explanation into view.
+
+Line 183: document.getElementById("next-btn").focus({ preventScroll: true });
+Move keyboard focus to Next without jumping the page again.
+
+Line 184: }
+The function ends.
+
+
+nextQuestion line number 186
+
+Line 186: function nextQuestion() {
+The function starts. It stores this email in the review and moves on.
+
+Line 187: if (step !== "explain") {
+Next only works after the clue has been answered.
+
+Line 188: return;
+Stop.
+
+Line 191: const question = questions[currentQuestion];
+Read the email that was just finished.
+
+Line 192: const classifyCorrect = selectedAnswer === question.correctAnswer;
+True when Scam or Legitimate was right.
+
+Line 193: const clueCorrect = selectedClue === question.clue;
+True when the clue was right.
+
+Line 195: records.push({
+Add one review row.
+
+Line 196: heading: question.subject,
+The review heading is the email subject.
+
+Line 197: prompt: "From: " + question.sender + " — " + question.message,
+The review text is the sender and the message.
+
+Line 198: yourAnswer: selectedAnswer,
+What the student chose.
+
+Line 199: rightAnswer: question.correctAnswer,
+The right Scam or Legitimate answer.
+
+Line 200: correct: classifyCorrect,
+True or false for the official answer.
+
+Line 201: explanation: question.explanation,
+The lesson sentence.
+
+Line 202: extras: [
+The extra practice list starts.
+
+Line 204: label: "Clue",
+This extra is the clue step.
+
+Line 205: yours: selectedClue,
+The clue the student picked.
+
+Line 206: right: question.clue,
+The right clue.
+
+Line 207: correct: clueCorrect
+True or false for the clue.
+
+Line 212: currentQuestion = currentQuestion + 1;
+Move to the next email.
+
+Line 213: selectedAnswer = "";
+Clear the old Scam or Legitimate choice.
+
+Line 214: selectedClue = "";
+Clear the old clue.
+
+Line 215: step = "classify";
+The next email starts at the first step.
+
+Line 216: saveAttempt();
+Save the new position.
+
+Line 218: if (currentQuestion >= questions.length) {
+If that move went past the last email, the case is finished.
+
+Line 219: showResult();
+Open the result flow.
+
+Line 221: showQuestion();
+Otherwise draw the next email.
+
+Line 222: bringIntoView("progress-label", "start");
+Scroll up to the "Email n of 20" line.
+
+Line 223: document.getElementById("choose-scam").focus({ preventScroll: true });
+Put keyboard focus on the Scam button without an extra scroll.
+
+Line 225: }
+The function ends.
+
+
+showResult line number 227
+
+Line 227: function showResult() {
+The function starts. It saves the score and opens the result page.
+
+Line 228: if (finished) {
+If this already ran, do not run it again.
+
+Line 229: return;
+Stop.
+
+Line 231: finished = true;
+Mark the try as finished.
+
+Line 233: recordCaseScore(1, score);
+Save the Case 1 score in app.js. 15 or more passes, gives XP, and can give the Email Expert badge.
+
+Line 234: const data = loadProgress();
+Read progress again after the score is saved.
+
+Line 235: const passed = score >= 15;
+True when this try has 15 or more correct official answers.
+
+Line 236: let message = "Nice effort. Let's learn from these answers. You can try again.";
+The message used when this try does not pass.
+
+Line 237: if (passed) {
+If this try passes, use the unlock message.
+
+Line 238: message = "Great detective work! You passed Case 1. Case 2 is now unlocked.";
+The pass message.
+
+Line 239: } else if (data.case1Passed) {
+If this try failed but an earlier try already passed, keep Case 2 open.
+
+Line 240: message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 2 stays open.";
+That message.
+
+Line 243: data.activeCase1 = null;
+Clear the in-progress try. The home page will no longer say Continue.
+
+Line 244: data.lastResult = {
+Save the object the result page reads.
+
+Line 245: activity: "case1",
+This result is Case 1.
+
+Line 246: title: "Case 1 — Spot the Scam",
+The result heading.
+
+Line 247: score: score,
+Official correct answers.
+
+Line 248: total: 20,
+There are 20 emails.
+
+Line 249: passMark: 15,
+15 correct answers pass.
+
+Line 250: passed: passed,
+True or false for this try.
+
+Line 251: scoreNote: "The official score uses the Scam or Legitimate answers.",
+Tells the student the clue did not decide the pass.
+
+Line 252: practice: [
+The practice-only scores start.
+
+Line 253: { label: "Clue practice", score: clueScore, total: 20 }
+The clue score out of 20.
+
+Line 255: message: message,
+The sentence chosen above.
+
+Line 256: retryHref: "case1.html?retry=1",
+Retry starts Case 1 from email 1.
+
+Line 257: nextHref: data.case1Passed ? "case2.html?retry=1" : "",
+If Case 1 has ever been passed, the next button opens Case 2. If not, there is no next button.
+
+Line 258: nextLabel: "Go to Case 2",
+The words on that button.
+
+Line 259: records: records
+The review of every email.
+
+Line 261: saveProgress();
+Write lastResult and the cleared try into storage.
+
+Line 262: window.location.href = "result.html";
+Open the result page.
+
+Line 263: }
+The function ends.
+
+
+startCase line number 265
+
+Line 265: function startCase() {
+The function starts when the Case 1 page loads.
+
+Line 266: const playPanel = document.getElementById("play-panel");
+Find the play area.
+
+Line 267: if (!playPanel) {
+If this page has no play area, this script should do nothing.
+
+Line 268: return;
+Stop.
+
+Line 271: loadAttempt();
+Load or start the saved try.
+
+Line 273: document.getElementById("choose-scam").addEventListener("click", function () {
+When Scam is clicked, run the next line.
+
+Line 274: checkAnswer("Scam");
+Treat the click as the answer Scam.
+
+Line 276: document.getElementById("choose-legit").addEventListener("click", function () {
+When Legitimate is clicked, run the next line.
+
+Line 277: checkAnswer("Legitimate");
+Treat the click as the answer Legitimate.
+
+Line 280: const clueButtons = document.querySelectorAll(".clue-btn");
+Find every clue button.
+
+Line 281: for (let i = 0; i < clueButtons.length; i++) {
+Loop through them.
+
+Line 282: clueButtons[i].addEventListener("click", function () {
+When this clue button is clicked, run the next line.
+
+Line 283: checkClue(this.getAttribute("data-clue"));
+Send the clue name stored on the button. this is the button that was clicked.
+
+Line 287: document.getElementById("next-btn").addEventListener("click", function () {
+When Next is clicked, run the next line.
+
+Line 288: nextQuestion();
+Save this email and move on.
+
+Line 291: if (currentQuestion >= questions.length) {
+If the saved position is already past the end, finish instead of drawing a question.
+
+Line 292: showResult();
+Open the result flow.
+
+Line 293: return;
+Stop.
+
+Line 295: showQuestion();
+Draw the current email.
+
+Line 296: }
+The function ends.
+
+
+Page start, line number 298
+
+Line 298: document.addEventListener("DOMContentLoaded", startCase);
+When the Case 1 HTML has loaded, run startCase.

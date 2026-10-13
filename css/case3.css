@@ -6,7 +6,7 @@ main {
 }
 
 #clue-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
 }
 
 #clue-row .choice-btn {

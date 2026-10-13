@@ -22,9 +22,9 @@ If Python is not installed, you can double-click `index.html`. Progress is still
 ## What is in the app
 
 - **Home dashboard:** one big "Your next step" button that always points at the next thing to do, plus the three detective cases, the Safety Guide, Company Training, XP, rank, badges, and (folded away) skill stats.
-- **Case 1 — Spot the Scam:** 30 emails (10 Fake Sender, 10 Fake Urgency, 10 Information Requests).
-- **Case 2 — What Would You Do?:** 15 situations.
-- **Case 3 — Real-World Challenge:** 15 messages with a clue and a safe action.
+- **Case 1 — Spot the Scam:** 20 emails (fake senders, fake urgency, and information requests).
+- **Case 2 — What Would You Do?:** 20 situations.
+- **Case 3 — Real-World Challenge:** 20 messages with a clue and a safe action.
 - **Safety Guide:** Stop, Check, and Verify, plus official report links.
 - **Company Training:** a labelled video placeholder, five takeaways, and an acknowledgement step.
 - **Company Quiz:** 20 questions in a shuffled order, with an "All my answers" button (the Summary).
@@ -45,9 +45,9 @@ The official case score uses the main answer only.
 
 | Activity | Main answer | Pass mark |
 | --- | --- | --- |
-| Case 1 | Scam or Legitimate | 24 out of 30 |
-| Case 2 | What would you do? | 12 out of 15 |
-| Case 3 | Scam or Legitimate | 12 out of 15 |
+| Case 1 | Scam or Legitimate | 15 out of 20 |
+| Case 2 | What would you do? | 15 out of 20 |
+| Case 3 | Scam or Legitimate | 15 out of 20 |
 | Company Quiz | The chosen option | 16 out of 20 |
 
 In Case 1 and Case 3, clue answers are extra practice. In Case 3, the safe-action answer is extra practice too. Those practice scores do not decide the pass mark.
@@ -57,8 +57,8 @@ A failed try can be reviewed and retried. There is no limit on retries.
 ## Unlock rules
 
 - Case 1 is open from the start.
-- Case 2 opens after Case 1 is passed (24/30).
-- Case 3 opens after Case 2 is passed (12/15).
+- Case 2 opens after Case 1 is passed (15/20).
+- Case 3 opens after Case 2 is passed (15/20).
 - The Safety Guide is always open.
 - Company Training does not depend on the detective cases.
 - The Company Quiz opens after the student checks the acknowledgement box.
@@ -69,7 +69,7 @@ A later retry that scores below the pass mark does not lock a case again.
 
 ### Arrays
 
-`js/questions.js` stores the questions in arrays. An array is a list. Case 1 uses `case1Questions`, which has 30 objects. Each object holds the sender, message, choices, correct answer, clue, and explanation.
+`js/questions.js` stores the questions in arrays. An array is a list. Case 1 uses `case1Questions`, which has 20 objects. Each object holds the sender, message, choices, correct answer, clue, and explanation.
 
 ### Answer checking
 
@@ -77,7 +77,7 @@ The page shows one question. When a student clicks a button, `checkAnswer()` com
 
 ### Scoring
 
-At the end, the app compares `score` with the pass mark. Case 1 passes when `score >= 24`. Case 2 and Case 3 pass when `score >= 12`. The quiz passes when `score >= 16`.
+At the end, the app compares `score` with the pass mark. Case 1, Case 2, and Case 3 pass when `score >= 15`. The quiz passes when `score >= 16`.
 
 ### Progress saving
 
@@ -98,7 +98,7 @@ Saved items include case completion, best scores, XP, badges, training acknowled
 
 Ranks:
 
-- Rookie Detective: 0 XP
+- Spot The Scam: 0 XP
 - Junior Detective: 100 XP
 - Case Detective: 250 XP
 - Senior Detective: 500 XP

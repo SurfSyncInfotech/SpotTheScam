@@ -1,0 +1,741 @@
+This file explains js/quiz.js.
+quiz.js runs the Company Quiz page.
+The pass mark is 16 correct answers out of 20.
+The questions themselves live in questions.js, in the list companyQuizQuestions.
+
+Lines 3 to 6 are variables used by the functions below.
+Line 3: order is the list of question ids for this try. A new try shuffles that list.
+Line 4: picks stores the answer the student chose for each question id.
+Line 5: currentQuestion is the position in order. 0 means the first question.
+Line 6: finished stops the result from being saved twice.
+
+
+findQuizQuestion line number 8
+
+Line 8: function findQuizQuestion(id) {
+The function starts. id is the question number we want to find.
+
+Line 9: for (let i = 0; i < companyQuizQuestions.length; i++) {
+Start a loop. i begins at 0. The loop continues while i is smaller than the number of quiz questions. After each round, i grows by 1.
+
+Line 10: if (companyQuizQuestions[i].id === id) {
+Look at question number i in the quiz list. If that question's id is the same as the id we were given, this is the question we want.
+
+Line 11: return companyQuizQuestions[i];
+Stop the function and hand back that question object. The rest of the loop does not run.
+
+Line 13: return null;
+If the loop finishes and no id matched, hand back null. That means the question was not found.
+
+Line 14: }
+The function ends.
+
+
+shuffleList line number 17
+
+Line 17: function shuffleList(list) {
+The function starts. list is the list of question ids we want to mix up.
+
+Line 18: const copy = list.slice();
+Make a copy of the list. The original list is left alone.
+
+Line 19: for (let i = copy.length - 1; i > 0; i--) {
+Start at the last item and walk backward until i is 1. This is a simple shuffle.
+
+Line 20: const j = Math.floor(Math.random() * (i + 1));
+Pick a random whole number from 0 up to i, including i. That number is j.
+
+Line 21: const temp = copy[i];
+Remember the item that is currently at position i.
+
+Line 22: copy[i] = copy[j];
+Put the item from position j into position i.
+
+Line 23: copy[j] = temp;
+Put the remembered item into position j. Positions i and j have swapped.
+
+Line 25: return copy;
+Hand back the mixed-up copy.
+
+Line 26: }
+The function ends.
+
+
+loadAttempt line number 28
+
+Line 28: function loadAttempt() {
+The function starts. It loads a saved quiz, or starts a fresh one.
+
+Line 29: const data = loadProgress();
+Read the saved progress object from this browser. loadProgress is in app.js.
+
+Line 30: if (data.trainingAck !== true) {
+If the student has not ticked the training acknowledgement box, the quiz must stay locked.
+
+Line 31: document.getElementById("play-panel").hidden = true;
+Hide the quiz questions.
+
+Line 32: document.getElementById("lock-panel").hidden = false;
+Show the locked message instead.
+
+Line 33: document.getElementById("summary-btn").hidden = true;
+Hide the "All my answers" button, because there is no quiz to review.
+
+Line 34: return false;
+Stop here and tell the page start code that the quiz is not ready.
+
+Line 37: const params = new URLSearchParams(window.location.search);
+Read the part of the web address after the question mark. Example: quiz.html?retry=1.
+
+Line 38: if (params.get("retry") === "1" || data.activeQuiz === null) {
+Start a new quiz if the address says retry=1, or if there is no quiz already in progress.
+
+Line 39: const ids = [];
+Make an empty list that will hold every question id.
+
+Line 40: for (let i = 0; i < companyQuizQuestions.length; i++) {
+Loop through every quiz question.
+
+Line 41: ids.push(companyQuizQuestions[i].id);
+Add that question's id to the ids list.
+
+Line 43: data.activeQuiz = {
+Start a new saved quiz object.
+
+Line 44: order: shuffleList(ids),
+Mix the ids and save that mixed order.
+
+Line 45: index: 0,
+Begin at the first question in that order.
+
+Line 46: picks: {}
+Start with no chosen answers.
+
+Line 48: saveProgress();
+Write the new quiz into browser storage.
+
+Line 51: order = data.activeQuiz.order;
+Copy the saved order into the page variable.
+
+Line 52: picks = data.activeQuiz.picks;
+Copy the saved answers into the page variable.
+
+Line 53: currentQuestion = data.activeQuiz.index;
+Copy the saved question position into the page variable.
+
+Line 54: return true;
+Tell the page start code that the quiz can be shown.
+
+Line 55: }
+The function ends.
+
+
+saveAttempt line number 57
+
+Line 57: function saveAttempt() {
+The function starts. It writes the current quiz into browser storage.
+
+Line 58: const data = loadProgress();
+Get the progress object.
+
+Line 59: data.activeQuiz = {
+Replace the saved quiz with the current one.
+
+Line 60: order: order,
+Save the question order.
+
+Line 61: index: currentQuestion,
+Save which question the student is on.
+
+Line 62: picks: picks
+Save the chosen answers.
+
+Line 64: saveProgress();
+Write the progress object into localStorage.
+
+Line 65: }
+The function ends.
+
+
+countAnswered line number 67
+
+Line 67: function countAnswered() {
+The function starts. It counts how many questions already have an answer.
+
+Line 68: let count = 0;
+Start the count at zero.
+
+Line 69: for (let i = 0; i < order.length; i++) {
+Loop through every id in the current order.
+
+Line 70: if (picks[String(order[i])]) {
+Turn the id into text and look it up in picks. If an answer is stored there, this question is answered.
+
+Line 71: count = count + 1;
+Add 1 to the count.
+
+Line 74: return count;
+Hand back how many questions are answered.
+
+Line 75: }
+The function ends.
+
+
+allAnswered line number 77
+
+Line 77: function allAnswered() {
+The function starts. It checks whether every question has an answer.
+
+Line 78: for (let i = 0; i < order.length; i++) {
+Loop through every id in the current order.
+
+Line 79: const key = String(order[i]);
+Turn the id into text so it can be used as a picks key.
+
+Line 80: if (!picks[key]) {
+If that key has no answer, at least one question is still blank.
+
+Line 81: return false;
+Stop and say the quiz is not fully answered.
+
+Line 84: return true;
+If the loop never found a blank question, every question has an answer.
+
+Line 85: }
+The function ends.
+
+
+showQuestion line number 87
+
+Line 87: function showQuestion() {
+The function starts. It draws the question the student is on right now.
+
+Line 88: const question = findQuizQuestion(order[currentQuestion]);
+Look up the question object for the id at the current position.
+
+Line 89: const key = String(question.id);
+Turn that question id into text. This is the key used in picks.
+
+Line 90: document.getElementById("progress-label").textContent = "Question " + (currentQuestion + 1) + " of " + order.length;
+Show "Question 1 of 20" style text. We add 1 because the list position starts at 0.
+
+Line 91: document.getElementById("score-bar").style.width = Math.round((currentQuestion / order.length) * 100) + "%";
+Set the progress bar width from how far through the quiz the student is.
+
+Line 92: document.getElementById("topic-label").textContent = "Topic: " + question.category;
+Show the question topic, such as Fake Sender.
+
+Line 93: document.getElementById("summary-btn").textContent = "All my answers (" + countAnswered() + " of " + order.length + ")";
+Update the summary button so it shows how many answers are filled in.
+
+Line 94: document.getElementById("question-text").textContent = question.question;
+Put the question sentence on the page.
+
+Line 96: const choiceRow = document.getElementById("choice-row");
+Find the box that holds the answer buttons.
+
+Line 97: choiceRow.innerHTML = "";
+Clear any old answer buttons.
+
+Line 98: for (let i = 0; i < question.options.length; i++) {
+Loop through each answer choice on this question.
+
+Line 99: const option = question.options[i];
+Read one choice, such as "Stop and ask a trusted adult".
+
+Line 100: const button = document.createElement("button");
+Make a new button.
+
+Line 101: button.type = "button";
+This button does not submit a form.
+
+Line 102: button.className = "choice-btn";
+Give the button the normal choice style.
+
+Line 103: if (picks[key] === option) {
+If the student already chose this option for this question, mark it.
+
+Line 104: button.className = "choice-btn is-picked";
+Add the picked style so the chosen answer looks selected.
+
+Line 106: const label = document.createElement("span");
+Make a text span inside the button.
+
+Line 107: label.className = "choice-label";
+Give that span the choice-label class.
+
+Line 108: label.textContent = option;
+Put the choice words into the span.
+
+Line 109: button.appendChild(label);
+Put the span inside the button.
+
+Line 110: button.addEventListener("click", function () {
+When this button is clicked, run the small function on the next line.
+
+Line 111: checkAnswer(option);
+Save this choice as the answer. option is the text of this button.
+
+Line 113: choiceRow.appendChild(button);
+Put the finished button on the page.
+
+Line 116: if (currentQuestion === order.length - 1 && !allAnswered()) {
+If this is the last question and some earlier question is still blank, show a hint.
+
+Line 117: setFeedback("feedback", "Some questions have no answer yet. Press \"All my answers\" to find them.", "tip");
+Write that hint into the feedback box. The mood "tip" is a plain hint style.
+
+Line 118: } else if (picks[key]) {
+Otherwise, if this question already has an answer, show the saved message.
+
+Line 119: setFeedback("feedback", "Press Next to continue, or pick a different answer.", "saved");
+Tell the student the answer is saved. They can change it.
+
+Line 121: setFeedback("feedback", "Pick one answer. There is no timer.", "tip");
+If there is no answer yet, and this is not the unfinished-last-question case, show the normal hint.
+
+Line 124: document.getElementById("prev-btn").hidden = currentQuestion === 0;
+Hide the Previous button on the first question. Show it on every later question.
+
+Line 125: const nextButton = document.getElementById("next-btn");
+Find the Next button.
+
+Line 126: const finishButton = document.getElementById("finish-btn");
+Find the Finish button.
+
+Line 127: if (currentQuestion === order.length - 1) {
+If this is the last question, hide Next. Finish is used instead.
+
+Line 128: nextButton.hidden = true;
+Hide Next.
+
+Line 130: nextButton.hidden = false;
+If this is not the last question, show Next.
+
+Line 132: finishButton.hidden = !allAnswered();
+Show Finish only when every question has an answer. Hide it while any question is blank.
+
+Line 133: }
+The function ends.
+
+
+checkAnswer line number 135
+
+Line 135: function checkAnswer(answer) {
+The function starts. answer is the choice text the student clicked.
+
+Line 136: const key = String(order[currentQuestion]);
+Get the id of the question on screen and turn it into text.
+
+Line 137: picks[key] = answer;
+Store that choice. If they click again, the old choice is replaced.
+
+Line 138: saveAttempt();
+Save the choice in the browser so a refresh keeps it.
+
+Line 139: showQuestion();
+Redraw the question so the picked button and the feedback update.
+
+Line 140: if (!document.getElementById("summary-pop").hidden) {
+If the "All my answers" list is open, it needs to show the new choice too.
+
+Line 141: fillSummary();
+Rebuild that list.
+
+Line 143: }
+The function ends.
+
+
+nextQuestion line number 145
+
+Line 145: function nextQuestion() {
+The function starts. It moves to the next quiz question.
+
+Line 146: const key = String(order[currentQuestion]);
+Get the text key for the question on screen.
+
+Line 147: if (!picks[key]) {
+If this question has no answer yet, do not move on.
+
+Line 148: setFeedback("feedback", "Please pick an answer first.", "tip");
+Show a hint asking for an answer.
+
+Line 149: return;
+Stop the function. The question does not change.
+
+Line 151: if (currentQuestion < order.length - 1) {
+Only move forward if this is not already the last question.
+
+Line 152: currentQuestion = currentQuestion + 1;
+Move the position forward by one.
+
+Line 153: saveAttempt();
+Save the new position.
+
+Line 154: showQuestion();
+Draw the next question.
+
+Line 156: }
+The function ends.
+
+
+previousQuestion line number 158
+
+Line 158: function previousQuestion() {
+The function starts. It moves back one question.
+
+Line 159: if (currentQuestion === 0) {
+If we are already on the first question, there is nowhere to go back.
+
+Line 160: return;
+Stop. Stay on question 1.
+
+Line 162: currentQuestion = currentQuestion - 1;
+Move the position back by one.
+
+Line 163: saveAttempt();
+Save the new position.
+
+Line 164: showQuestion();
+Draw the previous question. The old answer stays selected because picks was not cleared.
+
+Line 165: }
+The function ends.
+
+
+showResult line number 167
+
+Line 167: function showResult() {
+The function starts. It scores the quiz and opens the result page.
+
+Line 168: if (finished) {
+If the result was already built, do nothing.
+
+Line 169: return;
+Stop so the score is not saved twice.
+
+Line 171: if (!allAnswered()) {
+If any question is still blank, the quiz cannot finish.
+
+Line 172: setFeedback("feedback", "Answer every question first. Press \"All my answers\" to find the ones left.", "tip");
+Tell the student to fill the blank questions.
+
+Line 173: return;
+Stop. Do not score yet.
+
+Line 175: finished = true;
+Mark this try as finished so a second click does not score again.
+
+Line 177: let score = 0;
+Start the official score at zero.
+
+Line 178: const records = [];
+Make an empty list. Each answered question will be added for the review page.
+
+Line 179: for (let i = 0; i < order.length; i++) {
+Loop through the quiz in the order the student saw it.
+
+Line 180: const question = findQuizQuestion(order[i]);
+Find the full question for this id.
+
+Line 181: const chosen = picks[String(question.id)];
+Read the answer the student chose.
+
+Line 182: const correct = chosen === question.correctAnswer;
+True when the chosen text matches the right answer. False when it does not.
+
+Line 183: if (correct) {
+Only add a point for a right answer.
+
+Line 184: score = score + 1;
+Add 1 to the score.
+
+Line 186: records.push({
+Add one review record for this question.
+
+Line 187: heading: "Question " + (i + 1),
+The review title, such as "Question 1". The 1 is added because i starts at 0.
+
+Line 188: prompt: question.question,
+The question sentence.
+
+Line 189: yourAnswer: chosen,
+What the student picked.
+
+Line 190: rightAnswer: question.correctAnswer,
+The correct choice.
+
+Line 191: correct: correct,
+True or false for this question.
+
+Line 192: explanation: question.explanation,
+The short lesson for this question.
+
+Line 193: extras: []
+The quiz has no extra practice steps, so this list stays empty.
+
+Line 197: recordQuizScore(score);
+Save the score, XP, and badge in app.js. Passing is 16 or more.
+
+Line 198: const data = loadProgress();
+Read progress again so the result can include the updated best score.
+
+Line 199: const passed = score >= 16;
+True when the student got 16 or more correct.
+
+Line 200: let message = "Nice effort. Let's learn from these answers. You can try the quiz again.";
+The message used when the score is below 16.
+
+Line 201: if (passed) {
+If the score is a pass, replace that message.
+
+Line 202: message = "Great detective work! You passed the Company Quiz and earned the Security Certified badge.";
+The pass message.
+
+Line 205: data.activeQuiz = null;
+Clear the in-progress quiz. The next open starts fresh unless they press Continue before this line. After a finish, Continue is gone.
+
+Line 206: data.lastResult = {
+Save everything the result page needs.
+
+Line 207: activity: "quiz",
+This result came from the quiz, not a case.
+
+Line 208: title: "Company Quiz",
+The heading on the result page.
+
+Line 209: score: score,
+How many were correct.
+
+Line 210: total: 20,
+There are 20 questions.
+
+Line 211: passMark: 16,
+16 correct answers are needed to pass.
+
+Line 212: passed: passed,
+True or false for this try.
+
+Line 213: scoreNote: "Passing score: 16 out of 20. Best score saved: " + data.quizBest + "/20.",
+Extra note under the score. quizBest is the highest saved score.
+
+Line 214: practice: [],
+No practice-only scores on the quiz.
+
+Line 215: message: message,
+The pass or try-again sentence.
+
+Line 216: retryHref: "quiz.html?retry=1",
+The retry button opens a brand new shuffled quiz.
+
+Line 217: nextHref: "",
+No next-page button after the quiz.
+
+Line 218: nextLabel: "",
+No label for a next button.
+
+Line 219: records: records
+The full review list.
+
+Line 221: saveProgress();
+Write lastResult and the cleared quiz into storage.
+
+Line 222: window.location.href = "result.html";
+Open the result page.
+
+Line 223: }
+The function ends.
+
+
+fillSummary line number 225
+
+Line 225: function fillSummary() {
+The function starts. It builds the "All my answers" list.
+
+Line 226: const list = document.getElementById("summary-list");
+Find the list element.
+
+Line 227: list.innerHTML = "";
+Clear the old list.
+
+Line 228: for (let i = 0; i < order.length; i++) {
+Loop through every question in the student's order.
+
+Line 229: const question = findQuizQuestion(order[i]);
+Get the full question.
+
+Line 230: const chosen = picks[String(question.id)];
+Read the saved answer, or nothing if it is still blank.
+
+Line 231: const item = document.createElement("li");
+Make one list row.
+
+Line 232: const title = document.createElement("p");
+Make a paragraph for the question text.
+
+Line 233: title.className = "summary-title";
+Give it the summary title style.
+
+Line 234: title.textContent = (i + 1) + ". " + question.question;
+Show the number and the question, such as "1. What should you do?".
+
+Line 235: const status = document.createElement("p");
+Make a paragraph for the answer status.
+
+Line 236: status.className = "summary-status";
+Give it the status style.
+
+Line 237: if (chosen) {
+If an answer was saved, show it.
+
+Line 238: status.textContent = "Your answer: " + chosen;
+Write the chosen answer.
+
+Line 240: status.textContent = "Not answered yet";
+If nothing was saved, say it is not answered.
+
+Line 242: const jump = document.createElement("button");
+Make a button that jumps back to this question.
+
+Line 243: jump.type = "button";
+This button does not submit a form.
+
+Line 244: jump.className = "btn btn-small";
+Use the small button style.
+
+Line 245: jump.textContent = "Go to this question";
+The words on the button.
+
+Line 246: jump.addEventListener("click", function () {
+When the button is clicked, run the next line.
+
+Line 247: goToQuestion(i);
+Jump to this question's position. i is that position.
+
+Line 249: item.appendChild(title);
+Put the question text in the row.
+
+Line 250: item.appendChild(status);
+Put the answer status in the row.
+
+Line 251: item.appendChild(jump);
+Put the jump button in the row.
+
+Line 252: list.appendChild(item);
+Put the finished row in the list.
+
+Line 254: }
+The function ends.
+
+
+openSummary line number 256
+
+Line 256: function openSummary() {
+The function starts. It opens the "All my answers" popup.
+
+Line 257: fillSummary();
+Build the list first so it is up to date.
+
+Line 258: const pop = document.getElementById("summary-pop");
+Find the popup.
+
+Line 259: pop.hidden = false;
+Show the popup.
+
+Line 261: const card = pop.querySelector(".summary-card");
+Find the card inside the popup.
+
+Line 262: card.scrollTop = 0;
+Scroll that card back to the top so question 1 is visible.
+
+Line 263: card.focus();
+Move keyboard focus onto the card.
+
+Line 264: }
+The function ends.
+
+
+closeSummary line number 266
+
+Line 266: function closeSummary() {
+The function starts. It closes the popup.
+
+Line 267: document.getElementById("summary-pop").hidden = true;
+Hide the popup.
+
+Line 268: document.getElementById("summary-btn").focus();
+Move focus back to the "All my answers" button.
+
+Line 269: }
+The function ends.
+
+
+goToQuestion line number 271
+
+Line 271: function goToQuestion(index) {
+The function starts. index is the position in the shuffled order, such as 0 for the first question.
+
+Line 272: currentQuestion = index;
+Move the quiz to that position.
+
+Line 273: saveAttempt();
+Save the new position so a refresh stays on this question.
+
+Line 274: closeSummary();
+Close the "All my answers" popup.
+
+Line 275: showQuestion();
+Draw the question at that position.
+
+Line 276: }
+The function ends.
+
+
+Page start, line number 278
+
+This is not a named function. It runs when the quiz page has finished loading.
+
+Line 278: document.addEventListener("DOMContentLoaded", function () {
+Wait until the HTML is ready, then run the function inside.
+
+Line 279: const ready = loadAttempt();
+Load or start the quiz. ready is false when training was not acknowledged.
+
+Line 280: if (!ready) {
+If the quiz is locked, stop.
+
+Line 281: return;
+Do not attach buttons or show a question.
+
+Line 284: document.getElementById("next-btn").addEventListener("click", nextQuestion);
+A click on Next runs nextQuestion.
+
+Line 285: document.getElementById("prev-btn").addEventListener("click", previousQuestion);
+A click on Previous runs previousQuestion.
+
+Line 286: document.getElementById("finish-btn").addEventListener("click", showResult);
+A click on Finish runs showResult.
+
+Line 287: document.getElementById("summary-btn").addEventListener("click", openSummary);
+A click on "All my answers" runs openSummary.
+
+Line 288: document.getElementById("close-summary").addEventListener("click", closeSummary);
+A click on the close button runs closeSummary.
+
+Line 290: document.addEventListener("keydown", function (event) {
+Listen for a key press on the page.
+
+Line 291: const pop = document.getElementById("summary-pop");
+Find the popup.
+
+Line 292: if (event.key === "Escape" && pop.hidden === false) {
+If the key is Escape and the popup is open, close it.
+
+Line 293: closeSummary();
+Close the popup.
+
+Line 297: showQuestion();
+Draw the first question, or the saved question if the student is continuing.
+
+Line 298: });
+The page-start listener ends.

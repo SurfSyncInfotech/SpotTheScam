@@ -1,4 +1,4 @@
-// Case 2: 15 situations. Passing score is 12 out of 15.
+// Case 2: 20 situations. Passing score is 15 out of 20.
 
 let questions = case2Scenarios;
 let currentQuestion = 0;
@@ -18,7 +18,7 @@ function loadAttempt() {
         return false;
     }
 
-    if (params.get("retry") === "1" || data.activeCase2 === null) {
+    if (params.get("retry") === "1" || data.activeCase2 === null || data.activeCase2.index >= questions.length) {
         data.activeCase2 = {
             index: 0,
             score: 0,
@@ -173,12 +173,12 @@ function showResult() {
 
     recordCaseScore(2, score);
     const data = loadProgress();
-    const passed = score >= 12;
+    const passed = score >= 15;
     let message = "Nice effort. Let's learn from these answers. You can try again.";
     if (passed) {
         message = "Great detective work! You passed Case 2. Case 3 is now unlocked.";
     } else if (data.case2Passed) {
-        message = "This try is below 12 out of 15. Your earlier pass still counts, so Case 3 stays open.";
+        message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 3 stays open.";
     }
 
     data.activeCase2 = null;
@@ -186,10 +186,10 @@ function showResult() {
         activity: "case2",
         title: "Case 2 — What Would You Do?",
         score: score,
-        total: 15,
-        passMark: 12,
+        total: 20,
+        passMark: 15,
         passed: passed,
-        scoreNote: "Every scenario counts toward 12 out of 15.",
+        scoreNote: "Every scenario counts toward 15 out of 20.",
         practice: [],
         message: message,
         retryHref: "case2.html?retry=1",

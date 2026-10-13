@@ -1,4 +1,4 @@
-// Case 1: 30 emails. The official score is Scam or Legitimate.
+// Case 1: 20 emails. The official score is Scam or Legitimate. Pass with 15.
 
 let questions = case1Questions;
 let currentQuestion = 0;
@@ -16,7 +16,7 @@ function loadAttempt() {
     const data = loadProgress();
     const params = new URLSearchParams(window.location.search);
 
-    if (params.get("retry") === "1" || data.activeCase1 === null) {
+    if (params.get("retry") === "1" || data.activeCase1 === null || data.activeCase1.index >= questions.length) {
         data.activeCase1 = {
             index: 0,
             score: 0,
@@ -232,12 +232,12 @@ function showResult() {
 
     recordCaseScore(1, score);
     const data = loadProgress();
-    const passed = score >= 24;
+    const passed = score >= 15;
     let message = "Nice effort. Let's learn from these answers. You can try again.";
     if (passed) {
         message = "Great detective work! You passed Case 1. Case 2 is now unlocked.";
     } else if (data.case1Passed) {
-        message = "This try is below 24 out of 30. Your earlier pass still counts, so Case 2 stays open.";
+        message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 2 stays open.";
     }
 
     data.activeCase1 = null;
@@ -245,12 +245,12 @@ function showResult() {
         activity: "case1",
         title: "Case 1 — Spot the Scam",
         score: score,
-        total: 30,
-        passMark: 24,
+        total: 20,
+        passMark: 15,
         passed: passed,
         scoreNote: "The official score uses the Scam or Legitimate answers.",
         practice: [
-            { label: "Clue practice", score: clueScore, total: 30 }
+            { label: "Clue practice", score: clueScore, total: 20 }
         ],
         message: message,
         retryHref: "case1.html?retry=1",

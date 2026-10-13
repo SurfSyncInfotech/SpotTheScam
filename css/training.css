@@ -7,39 +7,39 @@ main {
 
 .video-box {
     position: relative;
-    background-color: var(--ink-900);
-    color: #ffffff;
-    border-radius: var(--radius-lg);
-    padding: 36px 28px;
+    background-color: #ffffff;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
     margin-bottom: 28px;
-    min-height: 260px;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 50%, transparent 50%);
 }
 
 .video-label {
     display: inline-block;
     align-self: flex-start;
-    background-color: var(--focus-light);
-    color: var(--ink-900);
-    font-weight: 700;
+    background-color: transparent;
+    color: var(--muted);
+    font-weight: 600;
     font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: 6px;
-    padding: 4px 10px;
+    letter-spacing: 0;
+    text-transform: none;
+    border-radius: 0;
+    padding: 0;
     margin-bottom: 14px;
 }
 
 .video-box h2 {
-    color: #ffffff;
+    color: var(--ink-900);
 }
 
 .video-box p:last-child {
     margin: 0;
-    color: #d6dee7;
+    color: var(--muted);
     max-width: 60ch;
 }
 
@@ -57,18 +57,19 @@ main {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px 18px;
-    background-color: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    padding: 14px 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
     font-weight: 600;
 }
 
 .take-list li::before {
     content: counter(take);
     flex-shrink: 0;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -76,15 +77,16 @@ main {
     background-color: var(--teal-soft);
     color: var(--teal-dark);
     font-weight: 700;
+    font-size: 0.9rem;
 }
 
 .check-row {
     display: flex;
     gap: 14px;
     align-items: flex-start;
-    padding: 16px;
-    background-color: var(--surface-2);
-    border-radius: var(--radius);
+    padding: 4px 0 16px;
+    background-color: transparent;
+    border-radius: 0;
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 18px;

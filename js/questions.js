@@ -69,39 +69,6 @@ const case1Questions = [
         explanation: "The organization name is misspelled. That is a clue that the sender is not the real service."
     },
     {
-        id: 7,
-        category: "Fake Sender",
-        sender: "winner-desk@random-gifts-example.invalid",
-        subject: "A reward was chosen for you",
-        message: "You did not enter a contest, but we selected you for a cash gift. Reply with your phone number.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Sender",
-        explanation: "A reward from an unfamiliar sender is a warning sign. You do not have to reply."
-    },
-    {
-        id: 8,
-        category: "Fake Sender",
-        sender: "principal@school-login-secure-example.invalid",
-        subject: "Principal security check",
-        message: "This is the principal. Send a photo of your student ID so I can unlock your account.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Sender",
-        explanation: "The address looks tricky, but it is not a trusted school address. Do not send your ID photo."
-    },
-    {
-        id: 9,
-        category: "Fake Sender",
-        sender: "library-pass@citylibrary-help-example.invalid",
-        subject: "City Library account locked",
-        message: "We are the City Library. Click here and enter your password or your card will stop working.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Sender",
-        explanation: "This message pretends to be a trusted library. A real library will not ask for your password by email."
-    },
-    {
         id: 10,
         category: "Fake Sender",
         sender: "library@riverside-school.example",
@@ -168,39 +135,6 @@ const case1Questions = [
         explanation: "A fake warning that demands immediate action is unsafe. Do not install surprise files."
     },
     {
-        id: 16,
-        category: "Fake Urgency",
-        sender: "rewards@class-prize-example.invalid",
-        subject: "Your school reward disappears today",
-        message: "The class reward disappears today. Enter your school password now or you will lose it.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Urgency",
-        explanation: "A school reward that supposedly disappears is a pressure clue. Ask your teacher at school."
-    },
-    {
-        id: 17,
-        category: "Fake Urgency",
-        sender: "returns@parcel-rush-example.invalid",
-        subject: "Parcel returns in one hour",
-        message: "Your parcel returns to the sender in one hour unless you pay a fee and confirm your address.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Urgency",
-        explanation: "A delivery threat with a short timer is a warning sign. Do not pay or share your address."
-    },
-    {
-        id: 18,
-        category: "Fake Urgency",
-        sender: "helper@secret-support-example.invalid",
-        subject: "Do not check with anyone",
-        message: "Fix your account right now. Do not tell a parent or teacher, or the prize will be cancelled.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Fake Urgency",
-        explanation: "A safe message never tells you to hide it from a trusted adult. That pressure is a scam clue."
-    },
-    {
         id: 19,
         category: "Fake Urgency",
         sender: "teacher@riverside-school.example",
@@ -265,50 +199,6 @@ const case1Questions = [
         correctAnswer: "Scam",
         clue: "Information Requests",
         explanation: "Children should never share bank details. Stop and tell a parent or trusted adult."
-    },
-    {
-        id: 25,
-        category: "Information Requests",
-        sender: "winner@quiz-fun-example.invalid",
-        subject: "We need your phone number",
-        message: "You scored high on a quiz. Send your phone number so a stranger can call you about a prize.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Information Requests",
-        explanation: "An unexpected request for your phone number is private information. Do not reply."
-    },
-    {
-        id: 26,
-        category: "Information Requests",
-        sender: "agent@support-now-example.invalid",
-        subject: "Support agent needs your password",
-        message: "I am a support agent. Tell me your password and I will repair the account for you.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Information Requests",
-        explanation: "A real support person will not ask you to say your password. Keep it to yourself."
-    },
-    {
-        id: 27,
-        category: "Information Requests",
-        sender: "friends@chat-circle-example.invalid",
-        subject: "Send a private photo",
-        message: "Send a private photograph of you in your room so we can unlock a secret sticker pack.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Information Requests",
-        explanation: "Do not send a private photo to win a sticker. Tell a trusted adult about this message."
-    },
-    {
-        id: 28,
-        category: "Information Requests",
-        sender: "login@riverside-school-check-example.invalid",
-        subject: "New school login tonight",
-        message: "The school made a new login page. Type your school username and password here before bedtime.",
-        options: ["Scam", "Legitimate"],
-        correctAnswer: "Scam",
-        clue: "Information Requests",
-        explanation: "A surprise login request can steal a password. Ask your teacher before you type it."
     },
     {
         id: 29,
@@ -514,6 +404,66 @@ const case2Scenarios = [
         ],
         correctAnswer: "Stop and ask a trusted adult",
         explanation: "If you are unsure, stop. Asking a trusted adult is a smart detective move."
+    },
+    {
+        id: 16,
+        title: "A pop-up says your coins will vanish",
+        scenario: "A game pop-up says, 'Your coins disappear in one minute unless you tap this link now.'",
+        options: [
+            "Tap the link before the minute ends",
+            "Close the pop-up and tell a trusted adult",
+            "Type your password so the coins stay"
+        ],
+        correctAnswer: "Close the pop-up and tell a trusted adult",
+        explanation: "A short timer is pressure. Close the pop-up and tell a trusted adult."
+    },
+    {
+        id: 17,
+        title: "Someone wants a photo of your student ID",
+        scenario: "A person in a group chat says, 'Send a photo of your student ID so I can add you to the team.'",
+        options: [
+            "Send the photo",
+            "Do not send it and tell a trusted adult",
+            "Send a photo of your home instead"
+        ],
+        correctAnswer: "Do not send it and tell a trusted adult",
+        explanation: "A student ID is private. Do not send a photo of it to someone online."
+    },
+    {
+        id: 18,
+        title: "A code from a text message",
+        scenario: "An email says, 'Type the code from the text on your family's phone so we can check it is you.'",
+        options: [
+            "Type the code in the email",
+            "Keep the code private and tell a trusted adult",
+            "Reply with the code to be helpful"
+        ],
+        correctAnswer: "Keep the code private and tell a trusted adult",
+        explanation: "A verification code is a secret. A real helper does not need you to type it into a message."
+    },
+    {
+        id: 19,
+        title: "A classmate hands you a note at school",
+        scenario: "A classmate hands you a paper note in class: 'Soccer practice is after lunch on the field.' It has no link.",
+        options: [
+            "Throw it away because every note is a scam",
+            "Read the note. It does not ask for secrets",
+            "Write your password on the note and pass it back"
+        ],
+        correctAnswer: "Read the note. It does not ask for secrets",
+        explanation: "A paper note with a practice time and no private request can be read safely."
+    },
+    {
+        id: 20,
+        title: "A download called 'free homework help'",
+        scenario: "A website says, 'Download this file for free homework help,' but your teacher never mentioned it.",
+        options: [
+            "Download the file",
+            "Do not download it and ask your teacher",
+            "Send the file to the whole class"
+        ],
+        correctAnswer: "Do not download it and ask your teacher",
+        explanation: "An unexpected download can be unsafe. Ask your teacher before you open it."
     }
 ];
 
@@ -772,6 +722,91 @@ const case3Challenges = [
         ],
         correctAction: "Read the message. No private information is needed",
         explanation: "The school nurse shared a simple reminder and did not ask for secrets."
+    },
+    {
+        id: 16,
+        sender: "winner-desk@random-gifts-example.invalid",
+        message: "You did not enter a contest, but we picked you for a cash gift. Reply with your phone number.",
+        options: ["Scam", "Legitimate"],
+        correctAnswer: "Scam",
+        clueOptions: ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"],
+        correctClue: "Fake Sender",
+        actionOptions: [
+            "Reply with your phone number",
+            "Do not reply and tell a trusted adult",
+            "Send your home address too",
+            "Click the gift link"
+        ],
+        correctAction: "Do not reply and tell a trusted adult",
+        explanation: "A prize from an unknown sender is a warning sign. You do not have to reply."
+    },
+    {
+        id: 17,
+        sender: "alerts@coin-rush-example.invalid",
+        message: "Your game coins vanish in one minute. Tap this link now or they are gone.",
+        options: ["Scam", "Legitimate"],
+        correctAnswer: "Scam",
+        clueOptions: ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"],
+        correctClue: "Fake Urgency",
+        actionOptions: [
+            "Tap the link before the minute ends",
+            "Close the message and do not tap",
+            "Type your password to save the coins",
+            "Pay a small fee in the link"
+        ],
+        correctAction: "Close the message and do not tap",
+        explanation: "The one-minute threat is pressure. Close the message instead of tapping."
+    },
+    {
+        id: 18,
+        sender: "team@player-club-example.invalid",
+        message: "Send a photo of your student ID so I can add you to the team chat.",
+        options: ["Scam", "Legitimate"],
+        correctAnswer: "Scam",
+        clueOptions: ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"],
+        correctClue: "Information Requests",
+        actionOptions: [
+            "Send the photo",
+            "Do not send a photo of your ID",
+            "Send a photo of your house instead",
+            "Post the ID in the group chat"
+        ],
+        correctAction: "Do not send a photo of your ID",
+        explanation: "A student ID is private. Do not send a photo of it to someone online."
+    },
+    {
+        id: 19,
+        sender: "codes@account-check-example.invalid",
+        message: "Type the code from the text on your family's phone so we can prove it is you.",
+        options: ["Scam", "Legitimate"],
+        correctAnswer: "Scam",
+        clueOptions: ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"],
+        correctClue: "Information Requests",
+        actionOptions: [
+            "Type the code in the message",
+            "Keep the code private and tell a trusted adult",
+            "Forward the code to a friend",
+            "Reply with the code to be helpful"
+        ],
+        correctAction: "Keep the code private and tell a trusted adult",
+        explanation: "A verification code is a secret. Keep it private and tell a trusted adult."
+    },
+    {
+        id: 20,
+        sender: "coach@riverside-school.example",
+        message: "Soccer practice is after lunch on the field. Bring water. No reply is needed.",
+        options: ["Scam", "Legitimate"],
+        correctAnswer: "Legitimate",
+        clueOptions: ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"],
+        correctClue: "No warning sign",
+        actionOptions: [
+            "Send your password to the coach",
+            "Click a surprise prize link",
+            "Read the message. No private information is needed",
+            "Share a photo of your home"
+        ],
+        correctAction: "Read the message. No private information is needed",
+        explanation: "This is a normal practice reminder from the school coach. It does not ask for secrets."
     }
 ];
 

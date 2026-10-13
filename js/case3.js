@@ -1,4 +1,4 @@
-// Case 3: 15 challenges. The official score is Scam or Legitimate.
+// Case 3: 20 challenges. The official score is Scam or Legitimate. Pass with 15.
 
 let questions = case3Challenges;
 let currentQuestion = 0;
@@ -22,7 +22,7 @@ function loadAttempt() {
         return false;
     }
 
-    if (params.get("retry") === "1" || data.activeCase3 === null) {
+    if (params.get("retry") === "1" || data.activeCase3 === null || data.activeCase3.index >= questions.length) {
         data.activeCase3 = emptyAttempt();
         saveProgress();
     }
@@ -296,12 +296,12 @@ function showResult() {
 
     recordCaseScore(3, score);
     const data = loadProgress();
-    const passed = score >= 12;
+    const passed = score >= 15;
     let message = "Nice effort. Let's learn from these answers. You can try again.";
     if (passed) {
         message = "Great detective work! You passed the Real-World Challenge.";
     } else if (data.case3Passed) {
-        message = "This try is below 12 out of 15. Your earlier pass still counts.";
+        message = "This try is below 15 out of 20. Your earlier pass still counts.";
     }
 
     data.activeCase3 = null;
@@ -309,13 +309,13 @@ function showResult() {
         activity: "case3",
         title: "Case 3 — Real-World Challenge",
         score: score,
-        total: 15,
-        passMark: 12,
+        total: 20,
+        passMark: 15,
         passed: passed,
         scoreNote: "The official score uses the Scam or Legitimate answers.",
         practice: [
-            { label: "Clue practice", score: clueScore, total: 15 },
-            { label: "Safe action practice", score: actionScore, total: 15 }
+            { label: "Clue practice", score: clueScore, total: 20 },
+            { label: "Safe action practice", score: actionScore, total: 20 }
         ],
         message: message,
         retryHref: "case3.html?retry=1",
