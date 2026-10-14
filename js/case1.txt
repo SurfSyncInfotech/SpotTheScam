@@ -1,5 +1,5 @@
 This file explains js/case1.js.
-case1.js runs Case 1, Spot the Scam.
+case1.js runs Case 1, Email Check.
 There are 20 emails. The official score is Scam or Legitimate.
 The student passes with 15 correct answers.
 The clue step is practice only. It does not decide the pass.
@@ -15,7 +15,6 @@ Line 9: records will hold the review for the result page.
 Line 10: step is "classify", then "clue", then "explain".
 Line 11: finished stops the result from being saved twice.
 Line 13: clueNames lists the four clue labels. The buttons on the page use these names.
-
 
 loadAttempt line number 15
 
@@ -88,7 +87,6 @@ Copy the saved clue.
 Line 40: }
 The function ends.
 
-
 saveAttempt line number 42
 
 Line 42: function saveAttempt() {
@@ -126,7 +124,6 @@ Write it into localStorage.
 
 Line 54: }
 The function ends.
-
 
 showQuestion line number 56
 
@@ -286,7 +283,6 @@ On every earlier email, the button says Next.
 Line 131: }
 The function ends.
 
-
 markChoice line number 133
 
 Line 133: function markChoice(button, value, pickedValue, correctValue, reveal) {
@@ -339,7 +335,6 @@ Write "Your choice" under the button.
 Line 151: }
 The function ends.
 
-
 checkAnswer line number 153
 
 Line 153: function checkAnswer(answer) {
@@ -377,7 +372,6 @@ Scroll the clue box into view. bringIntoView is in app.js.
 
 Line 167: }
 The function ends.
-
 
 checkClue line number 169
 
@@ -419,7 +413,6 @@ Move keyboard focus to Next without jumping the page again.
 
 Line 184: }
 The function ends.
-
 
 nextQuestion line number 186
 
@@ -510,7 +503,6 @@ Put keyboard focus on the Scam button without an extra scroll.
 Line 225: }
 The function ends.
 
-
 showResult line number 227
 
 Line 227: function showResult() {
@@ -558,7 +550,7 @@ Save the object the result page reads.
 Line 245: activity: "case1",
 This result is Case 1.
 
-Line 246: title: "Case 1 — Spot the Scam",
+Line 246: title: "Case 1 — Email Check",
 The result heading.
 
 Line 247: score: score,
@@ -605,7 +597,6 @@ Open the result page.
 
 Line 263: }
 The function ends.
-
 
 startCase line number 265
 
@@ -668,7 +659,6 @@ Draw the current email.
 
 Line 296: }
 The function ends.
-
 
 Page start, line number 298
 

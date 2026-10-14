@@ -463,7 +463,7 @@ A click runs the next line.
 Line 194: onPick(option);
 Call the function that was passed in, with this choice.
 
-Line 196: button.disabled = true;
+Line 197: button.disabled = true;
 If the step is closed, the button cannot be clicked.
 
 Line 199: row.appendChild(button);

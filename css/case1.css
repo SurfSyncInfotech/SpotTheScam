@@ -1,20 +1,11 @@
-@import url("base.css");
+@import url("base.css?v=7");
 
-/* Case 1: the email stays on the left, the two steps sit on the right. */
-main {
-    width: min(1080px, calc(100% - 32px));
-}
+/* Case 1: the email stays above the two steps. */
 
 .clue-btn {
-    min-height: 72px;
+    min-height: 118px;
 }
 
 #clue-box .choice-row {
-    grid-template-columns: 1fr;
-}
-
-@media (max-width: 720px) {
-    #clue-box .choice-row {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: 1fr 1fr;
 }

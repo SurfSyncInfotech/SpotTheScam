@@ -46,7 +46,8 @@ function showResultPage() {
     const retry = document.getElementById("retry-btn");
     retry.href = result.retryHref;
     if (result.activity === "quiz") {
-        retry.textContent = "Try the quiz again";
+        retry.textContent = "Back to Home";
+        retry.href = "index.html";
     } else if (result.passed) {
         retry.textContent = "Play this case again";
     } else {

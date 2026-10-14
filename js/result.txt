@@ -1,7 +1,6 @@
 This file explains js/result.js.
-result.js runs the result page after a case or the quiz.
+result.js runs the result page after a case.
 It has two functions.
-
 
 showResultPage line number 3
 
@@ -12,7 +11,7 @@ Line 4: const data = loadProgress();
 Read saved progress. loadProgress is in app.js.
 
 Line 5: const result = data.lastResult;
-Read the result object saved by case1.js, case2.js, case3.js, or quiz.js.
+Read the result object saved by case1.js, case2.js, or case3.js.
 
 Line 6: const empty = document.getElementById("empty-result");
 Find the message shown when there is no result yet.
@@ -39,7 +38,7 @@ Line 16: panel.hidden = false;
 Show the result card.
 
 Line 18: document.getElementById("result-title").textContent = result.title;
-Show the title, such as "Case 1 — Spot the Scam" or "Company Quiz".
+Show the title, such as "Case 1 — Email Check" or "saved result".
 
 Line 19: document.getElementById("result-message").textContent = result.message;
 Show the pass or try-again sentence.
@@ -84,7 +83,7 @@ Line 36: practiceList.innerHTML = "";
 Clear any old practice rows.
 
 Line 37: if (result.practice && result.practice.length > 0) {
-Only build rows when a practice list exists and it is not empty. The quiz has an empty practice list.
+Only build rows when a practice list exists and it is not empty.
 
 Line 38: for (let i = 0; i < result.practice.length; i++) {
 Loop through each practice score.
@@ -108,181 +107,182 @@ Line 47: retry.href = result.retryHref;
 Point the link at the retry address saved with the result, such as case1.html?retry=1.
 
 Line 48: if (result.activity === "quiz") {
-If this result is the company quiz, use the quiz retry words.
+If this saved result is from the old quiz, do not open the quiz again.
 
-Line 49: retry.textContent = "Try the quiz again";
-The button says to try the quiz again.
+Line 49: retry.textContent = "Back to Home";
+The button says Back to Home.
 
-Line 50: } else if (result.passed) {
+Line 50: retry.href = "index.html";
+Point that button at the home page.
+
+Line 51: } else if (result.passed) {
 If this is a case and the student passed, offer a replay.
 
-Line 51: retry.textContent = "Play this case again";
+Line 52: retry.textContent = "Play this case again";
 The button says to play the case again.
 
-Line 53: retry.textContent = "Try again";
+Line 54: retry.textContent = "Try again";
 If this is a case and the student did not pass, the button says try again.
 
-Line 56: const next = document.getElementById("next-btn");
+Line 57: const next = document.getElementById("next-btn");
 Find the next-step link.
 
-Line 57: if (result.nextHref) {
-If a next address was saved, show the button. Case 1 goes to Case 2 after a pass. The quiz has no next address.
+Line 58: if (result.nextHref) {
+If a next address was saved, show the button. Case 1 goes to Case 2 after a pass.
 
-Line 58: next.hidden = false;
+Line 59: next.hidden = false;
 Show the button.
 
-Line 59: next.href = result.nextHref;
+Line 60: next.href = result.nextHref;
 Point it at the next page.
 
-Line 60: next.textContent = result.nextLabel;
+Line 61: next.textContent = result.nextLabel;
 Use the saved label, such as "Go to Case 2".
 
-Line 62: next.hidden = true;
+Line 63: next.hidden = true;
 If there is no next address, hide the button.
 
-Line 65: const reviewList = document.getElementById("review-list");
+Line 66: const reviewList = document.getElementById("review-list");
 Find the list that will hold every answer review.
 
-Line 66: reviewList.innerHTML = "";
+Line 67: reviewList.innerHTML = "";
 Clear old review cards.
 
-Line 67: for (let i = 0; i < result.records.length; i++) {
+Line 68: for (let i = 0; i < result.records.length; i++) {
 Loop through every saved answer record.
 
-Line 68: reviewList.appendChild(buildReviewItem(result.records[i], i + 1));
+Line 69: reviewList.appendChild(buildReviewItem(result.records[i], i + 1));
 Build one review card and put it in the list. The number is i + 1 so the first card is 1, not 0.
 
-Line 71: document.getElementById("review-btn").addEventListener("click", function () {
+Line 72: document.getElementById("review-btn").addEventListener("click", function () {
 When "See my answers" is clicked, run the function below.
 
-Line 72: const box = document.getElementById("review-box");
+Line 73: const box = document.getElementById("review-box");
 Find the review section.
 
-Line 73: const button = document.getElementById("review-btn");
+Line 74: const button = document.getElementById("review-btn");
 Find the button again so its words can change.
 
-Line 74: if (box.hidden) {
+Line 75: if (box.hidden) {
 If the review is hidden, open it.
 
-Line 75: box.hidden = false;
+Line 76: box.hidden = false;
 Show the answers.
 
-Line 76: button.textContent = "Hide my answers";
+Line 77: button.textContent = "Hide my answers";
 Change the button words.
 
-Line 77: bringIntoView("review-box", "start");
+Line 78: bringIntoView("review-box", "start");
 Scroll the review into view. bringIntoView is in app.js.
 
-Line 79: box.hidden = true;
+Line 80: box.hidden = true;
 If the review was already open, hide it.
 
-Line 80: button.textContent = "See my answers";
+Line 81: button.textContent = "See my answers";
 Change the button words back.
 
-Line 83: }
+Line 84: }
 The function ends.
 
+buildReviewItem line number 86
 
-buildReviewItem line number 85
-
-Line 85: function buildReviewItem(record, number) {
+Line 86: function buildReviewItem(record, number) {
 The function starts. record is one saved answer. number is 1, 2, 3, and so on.
 
-Line 86: const item = document.createElement("article");
+Line 87: const item = document.createElement("article");
 Make a card element.
 
-Line 87: item.className = "review-item";
+Line 88: item.className = "review-item";
 Give the card the review style.
 
-Line 89: const heading = document.createElement("h3");
+Line 90: const heading = document.createElement("h3");
 Make a heading.
 
-Line 90: heading.textContent = number + ". " + record.heading;
+Line 91: heading.textContent = number + ". " + record.heading;
 Write the number and the heading, such as "1. You won a free game prize!".
 
-Line 91: item.appendChild(heading);
+Line 92: item.appendChild(heading);
 Put the heading in the card.
 
-Line 93: const prompt = document.createElement("p");
+Line 94: const prompt = document.createElement("p");
 Make a paragraph for the question text.
 
-Line 94: prompt.textContent = record.prompt;
-Put the email, situation, or quiz question into that paragraph.
+Line 95: prompt.textContent = record.prompt;
+Put the question text into that paragraph.
 
-Line 95: item.appendChild(prompt);
+Line 96: item.appendChild(prompt);
 Put it in the card.
 
-Line 97: const yours = document.createElement("p");
+Line 98: const yours = document.createElement("p");
 Make a paragraph for the student's answer.
 
-Line 98: yours.textContent = "Your answer: " + record.yourAnswer;
+Line 99: yours.textContent = "Your answer: " + record.yourAnswer;
 Write what the student chose.
 
-Line 99: item.appendChild(yours);
+Line 100: item.appendChild(yours);
 Put it in the card.
 
-Line 101: const right = document.createElement("p");
+Line 102: const right = document.createElement("p");
 Make a paragraph for correct or not quite.
 
-Line 102: if (record.correct) {
+Line 103: if (record.correct) {
 If the main answer was right, say so.
 
-Line 103: right.textContent = "Correct!";
+Line 104: right.textContent = "Correct!";
 Write Correct.
 
-Line 104: right.className = "review-good";
+Line 105: right.className = "review-good";
 Use the correct style.
 
-Line 106: right.textContent = "Not quite. The right answer is " + record.rightAnswer + ".";
+Line 107: right.textContent = "Not quite. The right answer is " + record.rightAnswer + ".";
 If the main answer was wrong, show the right answer.
 
-Line 107: right.className = "review-learn";
+Line 108: right.className = "review-learn";
 Use the learning style.
 
-Line 109: item.appendChild(right);
+Line 110: item.appendChild(right);
 Put that line in the card.
 
-Line 111: if (record.extras) {
-If this record has extra practice answers, show them. Case 1 has a clue. Case 3 has a clue and a safe action. The quiz extras list is empty, so the loop does not add rows.
+Line 112: if (record.extras) {
+If this record has extra practice answers, show them. Case 1 has a clue. Case 3 has a clue and a safe action.
 
-Line 112: for (let i = 0; i < record.extras.length; i++) {
+Line 113: for (let i = 0; i < record.extras.length; i++) {
 Loop through each extra.
 
-Line 113: const extra = record.extras[i];
+Line 114: const extra = record.extras[i];
 Read one extra. It has a label, yours, right, and correct.
 
-Line 114: const line = document.createElement("p");
+Line 115: const line = document.createElement("p");
 Make a paragraph for this extra.
 
-Line 115: if (extra.correct) {
+Line 116: if (extra.correct) {
 If the extra answer was right, show a short correct line.
 
-Line 116: line.textContent = extra.label + ": " + extra.yours + " (correct)";
+Line 117: line.textContent = extra.label + ": " + extra.yours + " (correct)";
 Example: "Clue: Fake Sender (correct)".
 
-Line 118: line.textContent = extra.label + ": you chose " + extra.yours + ". The right one is " + extra.right + ".";
+Line 119: line.textContent = extra.label + ": you chose " + extra.yours + ". The right one is " + extra.right + ".";
 If the extra was wrong, show both the choice and the right one.
 
-Line 120: item.appendChild(line);
+Line 121: item.appendChild(line);
 Put the extra line in the card.
 
-Line 124: const why = document.createElement("p");
+Line 125: const why = document.createElement("p");
 Make a paragraph for the explanation.
 
-Line 125: why.textContent = record.explanation;
+Line 126: why.textContent = record.explanation;
 Write the lesson sentence saved with the question.
 
-Line 126: item.appendChild(why);
+Line 127: item.appendChild(why);
 Put it in the card.
 
-Line 127: return item;
+Line 128: return item;
 Hand the finished card back to showResultPage.
 
-Line 128: }
+Line 129: }
 The function ends.
 
+Page start, line number 131
 
-Page start, line number 130
-
-Line 130: document.addEventListener("DOMContentLoaded", showResultPage);
+Line 131: document.addEventListener("DOMContentLoaded", showResultPage);
 When the result HTML has loaded, run showResultPage.

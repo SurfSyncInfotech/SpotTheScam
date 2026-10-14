@@ -1,9 +1,6 @@
-@import url("base.css");
+@import url("base.css?v=7");
 
 /* Result: score first, next step second, review on request. */
-main {
-    width: min(820px, calc(100% - 32px));
-}
 
 .result-card {
     display: grid;

@@ -20,17 +20,9 @@ function defaultProgress() {
         case3Tried: false,
         xp: 0,
         badges: [],
-        safetyVisited: false,
-        trainingAck: false,
-        quizBest: 0,
-        quizPassed: false,
-        quizLast: 0,
-        quizAttempts: 0,
-        quizBonus: false,
         activeCase1: null,
         activeCase2: null,
         activeCase3: null,
-        activeQuiz: null,
         lastResult: null
     };
 }
@@ -78,18 +70,18 @@ function resetProgress() {
 
 function getRank(xp) {
     if (xp >= 800) {
-        return { name: "Master Detective", next: 0, base: 800 };
+        return { name: "Principal", next: 0, base: 800 };
     }
     if (xp >= 500) {
-        return { name: "Senior Detective", next: 800, base: 500 };
+        return { name: "Lead", next: 800, base: 500 };
     }
     if (xp >= 250) {
-        return { name: "Case Detective", next: 500, base: 250 };
+        return { name: "Specialist", next: 500, base: 250 };
     }
     if (xp >= 100) {
-        return { name: "Junior Detective", next: 250, base: 100 };
+        return { name: "Analyst", next: 250, base: 100 };
     }
-    return { name: "Spot The Scam", next: 100, base: 0 };
+    return { name: "Beginner", next: 100, base: 0 };
 }
 
 function giveBadge(badgeId) {
@@ -160,31 +152,7 @@ function recordCaseScore(caseNumber, score) {
     saveProgress();
 }
 
-function recordQuizScore(score) {
-    const data = loadProgress();
-    const oldBest = data.quizBest;
-    addScoreXp(oldBest, score);
-
-    if (score > data.quizBest) {
-        data.quizBest = score;
-    }
-
-    data.quizLast = score;
-    data.quizAttempts = data.quizAttempts + 1;
-
-    if (score >= 16) {
-        data.quizPassed = true;
-        if (data.quizBonus === false) {
-            data.xp = data.xp + 80;
-            data.quizBonus = true;
-        }
-        giveBadge("security-certified");
-    }
-
-    saveProgress();
-}
-
-/* ---------- Small screen helpers shared by the case and quiz pages ---------- */
+/* ---------- Small screen helpers shared by the case pages ---------- */
 
 // Writes a feedback message and gives the box a mood: "good", "learn", or "tip".
 function setFeedback(boxId, text, mood) {
@@ -208,7 +176,7 @@ function bringIntoView(elementId, where) {
     }
     // The sticky Next bar can cover the bottom of the screen, so leave room for it.
     let bottomEdge = window.innerHeight;
-    const stickyBar = document.querySelector(".next-bar, .quiz-nav");
+    const stickyBar = document.querySelector(".next-bar");
     if (stickyBar && stickyBar.offsetHeight > 0 && !stickyBar.contains(element)) {
         bottomEdge = bottomEdge - stickyBar.offsetHeight;
     }
@@ -248,9 +216,7 @@ function addChoiceHelp(button, option) {
 const badgeCatalog = [
     { id: "email-expert", name: "Email Expert", detail: "Pass Case 1" },
     { id: "safe-choices", name: "Safe Choices", detail: "Pass Case 2" },
-    { id: "real-world-ready", name: "Real-World Ready", detail: "Pass Case 3" },
-    { id: "safety-reader", name: "Safety Reader", detail: "Open the Safety Guide" },
-    { id: "security-certified", name: "Security Certified", detail: "Pass the Company Quiz" }
+    { id: "real-world-ready", name: "Real-World Ready", detail: "Pass Case 3" }
 ];
 
 function showDashboard() {
@@ -280,7 +246,6 @@ function showDashboard() {
     fillCaseCard(1, data, 20, 15);
     fillCaseCard(2, data, 20, 15);
     fillCaseCard(3, data, 20, 15);
-    fillTrainingCard(data);
     fillSkills(data);
     fillBadges(data);
     fillOverall(data);
@@ -295,7 +260,7 @@ function fillNextStep(data) {
         return;
     }
 
-    const caseNames = ["", "Spot the Scam", "What Would You Do?", "Real-World Challenge"];
+    const caseNames = ["", "Email Check", "What Would You Do?", "Real-World Challenge"];
     const caseTotals = [0, 20, 20, 20];
 
     for (let caseNumber = 1; caseNumber <= 3; caseNumber++) {
@@ -306,45 +271,25 @@ function fillNextStep(data) {
         if (active) {
             button.textContent = "Continue Case " + caseNumber;
             button.href = "case" + caseNumber + ".html";
-            note.textContent = caseNames[caseNumber] + " · You are on question " + (active.index + 1) + " of " + caseTotals[caseNumber] + ".";
+            note.textContent = "You stopped on question " + (active.index + 1) + " of " + caseTotals[caseNumber] + " in " + caseNames[caseNumber] + ".";
             return;
         }
         if (!passed) {
             if (tried) {
                 button.textContent = "Try Case " + caseNumber + " again";
-                note.textContent = caseNames[caseNumber] + " · You can do it. Read each one slowly.";
+                note.textContent = caseNames[caseNumber] + " is not passed yet. 15 correct answers out of " + caseTotals[caseNumber] + " is enough.";
             } else {
                 button.textContent = "Start Case " + caseNumber;
-                note.textContent = caseNames[caseNumber] + " · " + caseTotals[caseNumber] + " questions. No timer.";
+                note.textContent = caseNames[caseNumber] + " is open. It has " + caseTotals[caseNumber] + " questions.";
             }
             button.href = "case" + caseNumber + ".html?retry=1";
             return;
         }
     }
 
-    if (!data.quizPassed) {
-        if (data.activeQuiz) {
-            button.textContent = "Continue the Company Quiz";
-            button.href = "quiz.html";
-            note.textContent = "Your quiz answers are saved. Finish all 20 questions.";
-        } else {
-            button.textContent = "Open Company Training";
-            button.href = "training.html";
-            note.textContent = "All three cases passed! Read the training, then take the quiz.";
-        }
-        return;
-    }
-
-    if (!data.safetyVisited) {
-        button.textContent = "Open the Safety Guide";
-        button.href = "safety.html";
-        note.textContent = "One badge left: read the Safety Guide.";
-        return;
-    }
-
     button.textContent = "Play Case 1 again";
     button.href = "case1.html?retry=1";
-    note.textContent = "You finished everything. Replay any case to earn more XP.";
+    note.textContent = "Everything is finished. Replay a case if you want more practice.";
 }
 
 function fillCaseCard(caseNumber, data, total, passMark) {
@@ -418,36 +363,10 @@ function fillCaseCard(caseNumber, data, total, passMark) {
     }
 }
 
-function fillTrainingCard(data) {
-    const status = document.getElementById("training-status");
-    const bestText = document.getElementById("training-best");
-    const button = document.getElementById("training-btn");
-
-    if (data.quizPassed) {
-        status.textContent = "Certified";
-        status.className = "pill pill-good";
-    } else if (data.quizAttempts > 0) {
-        status.textContent = "Try again";
-        status.className = "pill pill-sun";
-    } else {
-        status.textContent = "Ready";
-        status.className = "pill";
-    }
-
-    if (data.quizAttempts > 0) {
-        bestText.textContent = "Best quiz score: " + data.quizBest + "/20";
-    } else {
-        bestText.textContent = "Best quiz score: not tried yet";
-    }
-
-    button.textContent = "Open Training";
-}
-
 function fillSkills(data) {
     setSkill("skill-email", data.case1Best, 20, data.case1Tried);
     setSkill("skill-choices", data.case2Best, 20, data.case2Tried);
     setSkill("skill-world", data.case3Best, 20, data.case3Tried);
-    setSkill("skill-quiz", data.quizBest, 20, data.quizAttempts > 0);
 }
 
 function setSkill(id, score, total, tried) {
@@ -514,11 +433,8 @@ function fillOverall(data) {
     if (data.case3Passed) {
         done = done + 1;
     }
-    if (data.quizPassed) {
-        done = done + 1;
-    }
-    document.getElementById("overall-label").textContent = done + " of 4 paths passed";
-    document.getElementById("overall-bar").style.width = (done * 25) + "%";
+    document.getElementById("overall-label").textContent = done + " of 3 passed";
+    document.getElementById("overall-bar").style.width = Math.round(done * 100 / 3) + "%";
 }
 
 function startResetButton() {
@@ -528,7 +444,7 @@ function startResetButton() {
     }
 
     button.addEventListener("click", function () {
-        const yes = confirm("This clears scores, badges, and quiz results saved in this browser. Continue?");
+        const yes = confirm("This clears scores and badges saved in this browser. Continue?");
         if (yes) {
             resetProgress();
             showDashboard();

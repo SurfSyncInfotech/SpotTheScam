@@ -12,75 +12,82 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Spot the Scam">
     <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css?v=11">
 </head>
 
-<body>
+<body class="is-home">
     <a class="skip" href="#main">Skip to content</a>
 
-    <!-- Site header -->
+    <input class="cat-input" type="radio" name="home-cat" id="cat-home" checked>
+    <input class="cat-input" type="radio" name="home-cat" id="cat-1">
+    <input class="cat-input" type="radio" name="home-cat" id="cat-2">
+    <input class="cat-input" type="radio" name="home-cat" id="cat-3">
+    <input class="cat-input" type="radio" name="home-cat" id="cat-train">
+    <input class="cat-input" type="radio" name="home-cat" id="cat-badges">
+    <input class="menu-toggle" type="checkbox" id="menu-toggle">
+
     <header class="site-header">
         <a class="logo" href="index.html">
             <img src="assets/images/logo.svg" alt="" width="48" height="48">
             <span>Spot the Scam</span>
         </a>
+        <label class="menu-btn" for="menu-toggle">
+            <span class="menu-bars" aria-hidden="true"></span>
+            <span class="sr">Menu</span>
+        </label>
+        <div class="cat-list">
+            <label for="cat-1">Case 1</label>
+            <label for="cat-2">Case 2</label>
+            <label for="cat-3">Case 3</label>
+            <label for="cat-train">Training</label>
+            <label for="cat-badges">Badges</label>
+        </div>
         <div class="header-tools">
-        <nav aria-label="Main">
-            <a href="index.html" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Home</a>
-            <a href="safety.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4.2 2.9 7.4 7 8.5 4.1-1.1 7-4.3 7-8.5V6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Safety Guide</a>
-            <a href="training.html"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6H9l2 2h8.5A1.5 1.5 0 0 1 21 9.5v8A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Company Training</a>
-        </nav>
             <div class="install-wrap">
                 <button type="button" class="btn btn-quiet" id="install-btn" hidden>Install app</button>
                 <p class="install-note" id="install-note" hidden></p>
             </div>
         </div>
     </header>
+    <label class="menu-backdrop" for="menu-toggle"></label>
 
     <main id="main">
-        <!-- Welcome, next step, and rank -->
+            <div class="cat-stage">
+        <section class="pane pane-home">
         <section class="hero">
             <div class="welcome">
-                <div class="hello">
-                    <div>
-                        <p class="kicker">Your next step</p>
-                        <h1>Welcome, Detective! <span class="wave" aria-hidden="true">&#128075;</span></h1>
-                    </div>
-                    <img class="hero-art" src="assets/images/logo.svg" alt="">
-                </div>
-                <div class="next-row">
-                    <span class="play-mark" aria-hidden="true">&#9654;</span>
-                    <div>
-                        <p id="next-step-text">Spot the Scam · 20 questions. No timer.</p>
-                        <p class="hint">Take your time. Ask a trusted adult if you are unsure.</p>
-                    </div>
-                    <a class="btn btn-big" id="next-step-btn" href="case1.html?retry=1">Start Case 1</a>
-                </div>
+                <h1>Spot the Scam</h1>
+                <p class="lead">Judge a message, choose a safe response, and keep a score.</p>
+                <ul class="fact-picks">
+                    <li>20 questions</li>
+                    <li class="is-on">15 to pass</li>
+                    <li>No timer</li>
+                </ul>
+                <p id="next-step-text">Email Check is open. It has 20 questions.</p>
+                <p class="hint">Progress stays in this browser. You can leave and continue later.</p>
+                <aside class="rank-card">
+                    <p class="kicker">Progress</p>
+                    <h2 id="rank-name">Beginner</h2>
+                    <p class="xp-line"><span id="xp-count">0</span> XP</p>
+                    <div class="bar" aria-hidden="true"><span id="rank-bar"></span></div>
+                    <p id="rank-next">Next rank at 100 XP</p>
+                    <p id="overall-label">0 of 3 passed</p>
+                    <div class="bar overall-bar" aria-hidden="true"><span id="overall-bar"></span></div>
+                    <button type="button" class="btn btn-quiet" id="reset-btn">Reset progress</button>
+                </aside>
+                <a class="btn btn-big" id="next-step-btn" href="case1.html?retry=1">Start Case 1</a>
             </div>
-            <aside class="rank-card">
-                <p class="kicker">&#128081; Rank</p>
-                <h2 id="rank-name">Spot The Scam</h2>
-                <p class="xp-line"><span id="xp-count">0</span> XP</p>
-                <div class="bar" aria-hidden="true"><span id="rank-bar"></span></div>
-                <p id="rank-next">Next rank at 100 XP</p>
-                <p id="overall-label">0 of 4 paths passed</p>
-                <div class="bar overall-bar" aria-hidden="true"><span id="overall-bar"></span></div>
-            </aside>
+        </section>
         </section>
 
-        <!-- Detective cases -->
-        <section>
-            <h2>Your progress</h2>
-            <p class="section-note">Play them in order. Passing a case opens the next one.</p>
-            <div class="progress-row">
-                <div class="case-grid" id="case-grid">
+        <div class="case-grid" id="case-grid">
                     <article class="case-card tone-1">
                         <div class="case-top">
                             <img src="assets/images/case-mail.svg" alt="" width="72" height="72">
                             <span class="pill" id="case1-status">Ready</span>
                         </div>
                         <p class="kicker">Case 1</p>
-                        <h3>Spot the Scam</h3>
+                        <h3>Email Check</h3>
                         <p>20 emails. Is each one a scam or real?</p>
                         <p class="best" id="case1-best">Best score: not tried yet</p>
                         <div class="bar" aria-hidden="true"><span id="case1-bar"></span></div>
@@ -118,7 +125,7 @@
                         <a class="btn btn-lock" id="case3-btn" href="#" aria-disabled="true">Locked</a>
                         <a class="text-link" id="case3-restart" href="case3.html?retry=1" hidden>Start over</a>
                     </article>
-                </div>
+        </div>
                 <article class="case-card tone-4">
                     <div class="case-top">
                         <img src="assets/images/training.svg" alt="" width="72" height="72">
@@ -126,24 +133,11 @@
                     </div>
                     <p class="kicker">Extra path</p>
                     <h3>Company Training</h3>
-                    <p>Read the notes, then take the quiz.</p>
-                    <p class="best" id="training-best">Best quiz score: not tried yet</p>
+                    <p>Watch the training video.</p>
                     <a class="btn" id="training-btn" href="training.html">Open Training</a>
                 </article>
-            </div>
-        </section>
 
-        <section class="two-grid">
-            <article class="info-card">
-                <img src="assets/images/shield.svg" alt="" width="72" height="72">
-                <p class="kicker">Always open</p>
-                <h2>Safety Guide</h2>
-                <p>Three easy rules: Stop, Check, and Verify.</p>
-                <a class="btn btn-teal" href="safety.html">Open Safety Guide</a>
-            </article>
-        </section>
-
-        <!-- Badges -->
+        <section class="pane pane-badges">
         <section class="panel">
             <h2>My badges</h2>
             <p id="no-badges">Pass a case to earn your first badge.</p>
@@ -173,31 +167,27 @@
                     <p id="skill-world-label">Not tried yet</p>
                     <div class="bar" aria-hidden="true"><span id="skill-world-bar"></span></div>
                 </div>
-                <div>
-                    <h3>Company quiz</h3>
-                    <p id="skill-quiz-label">Not tried yet</p>
-                    <div class="bar" aria-hidden="true"><span id="skill-quiz-bar"></span></div>
-                </div>
             </div>
         </details>
-
-        <!-- Shared device -->
-        <section class="panel note-panel">
-            <div>
-                <h2>Sharing this computer?</h2>
-                <p>Scores are saved only in this browser, not under a name. Before the next student starts, press Reset
-                    so the scores start fresh.</p>
-            </div>
-            <button type="button" class="btn btn-quiet" id="reset-btn">Reset Progress</button>
         </section>
+            </div>
     </main>
 
-    <footer class="site-footer">
-        <p>Spot the Scam · Class 5 online safety · Progress is saved only in this browser.</p>
-    </footer>
-
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=9"></script>
     <script src="js/install.js"></script>
+    <script>
+        document.querySelectorAll(".cat-list label").forEach(function (label) {
+            label.addEventListener("click", function () {
+                document.getElementById("menu-toggle").checked = false;
+            });
+        });
+        if (new URLSearchParams(window.location.search).get("pane") === "badges") {
+            var badges = document.getElementById("cat-badges");
+            if (badges) {
+                badges.checked = true;
+            }
+        }
+    </script>
 </body>
 
 </html>

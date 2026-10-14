@@ -243,7 +243,7 @@ function showResult() {
     data.activeCase1 = null;
     data.lastResult = {
         activity: "case1",
-        title: "Case 1 — Spot the Scam",
+        title: "Case 1 — Email Check",
         score: score,
         total: 20,
         passMark: 15,

@@ -1,105 +1,94 @@
-@import url("base.css");
+@import url("base.css?v=7");
 
 /* ---------- Dashboard: welcome and rank ---------- */
 .hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 250px;
-    gap: 18px 28px;
-    align-items: start;
-    margin-bottom: 36px;
+    display: block;
+    max-width: 440px;
+    margin: 8px auto 0;
+    text-align: center;
 }
 
 .welcome {
     min-width: 0;
-    padding-top: 4px;
-}
-
-.welcome .kicker {
-    color: var(--muted);
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0;
-}
-
-.hello {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
 }
 
 .welcome h1 {
-    margin: 0;
-    color: var(--ink-900);
-    font-size: 2.3rem;
-    font-weight: 700;
+    margin: 0 0 8px;
+    font-size: 2rem;
+    font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1.15;
 }
 
-.wave {
-    display: none;
+.welcome .lead {
+    margin: 0 auto;
+    max-width: 28em;
+    color: var(--ink-700);
+    font-size: 1.02rem;
+    line-height: 1.45;
 }
 
-.next-row {
+.fact-picks {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
-    gap: 6px 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    list-style: none;
+    margin: 22px 0 18px;
+    padding: 0;
+}
+
+.fact-picks li {
+    display: flex;
     align-items: center;
-    background-color: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    box-shadow: var(--shadow-sm);
-    padding: 16px 16px 16px;
-    margin-top: 18px;
-    text-align: left;
-}
-
-.next-row > div {
-    min-width: 0;
-}
-
-.play-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background-color: var(--teal);
-    color: #ffffff;
+    justify-content: center;
+    min-height: 78px;
+    padding: 8px;
+    border-radius: 18px;
+    background: #f6d7c4;
+    color: #3a2a22;
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.25;
     text-align: center;
-    line-height: 36px;
-    font-size: 13px;
 }
 
-.next-row #next-step-text {
-    margin: 0;
-    font-weight: 700;
+.fact-picks .is-on {
+    background: var(--teal);
+    color: #ffffff;
+}
+
+#next-step-text {
+    margin: 0 0 6px;
+    font-weight: 600;
     color: var(--ink-900);
-    font-size: 1.05rem;
+    font-size: 1.02rem;
+    line-height: 1.4;
 }
 
-.next-row .hint {
-    margin: 2px 0 0;
+.welcome .hint {
+    margin: 0 auto 8px;
+    max-width: 32em;
     color: var(--muted);
     font-size: 0.95rem;
 }
 
-.next-row .btn-big {
-    grid-column: 1 / -1;
+.pane-home .btn-big {
     width: 100%;
-    margin: 8px 0 0;
-    min-height: 48px;
-    padding: 12px 18px;
+    margin-top: 22px;
+    min-height: 52px;
+    border-radius: 16px;
+    background: var(--teal);
+    border-color: var(--teal);
     font-size: 1rem;
-    border-radius: 10px;
-    white-space: normal;
 }
 
-.hero-art {
-    display: none;
+.pane-home .btn-big:hover {
+    background: var(--teal-dark);
+    border-color: var(--teal-dark);
 }
 
 #overall-label {
-    display: inline-block;
+    display: block;
     margin-top: 12px;
     padding: 0;
     background-color: transparent;
@@ -116,12 +105,15 @@
 
 .rank-card {
     width: auto;
-    background-color: #ffffff;
+    max-width: 320px;
+    margin: 18px auto 0;
+    text-align: left;
+    background-color: #fffaf6;
     color: var(--text);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 16px 16px 14px;
-    box-shadow: var(--shadow-sm);
+    border: 1px solid #f0e0d2;
+    border-radius: 18px;
+    padding: 14px 16px 12px;
+    box-shadow: none;
 }
 
 .rank-card .kicker {
@@ -468,6 +460,13 @@ main > .panel {
     flex-shrink: 0;
 }
 
+#reset-btn {
+    margin-top: 22px;
+    min-height: 40px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
+}
+
 /* Collapsible stats */
 .details-panel {
     padding: 0;
@@ -516,15 +515,170 @@ main > .panel {
     padding: 0 0 8px;
 }
 
+/* ---------- Side list: one section at a time ---------- */
+.is-home nav,
+.is-home #menu-toggle:checked ~ .site-header nav {
+    display: none;
+}
+
+.cat-input,
+.menu-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+}
+
+.menu-btn,
+.menu-backdrop {
+    display: none;
+}
+
+.sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cat-list label {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--ink-700);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.cat-list label:hover {
+    background-color: var(--surface-2);
+}
+
+.cat-list label[for="cat-train"] {
+    position: relative;
+    margin-top: 16px;
+}
+
+.cat-list label[for="cat-train"]::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: -9px;
+    height: 1px;
+    background-color: var(--side-line);
+}
+
+#cat-home:checked ~ .site-header label[for="cat-home"],
+#cat-1:checked ~ .site-header label[for="cat-1"],
+#cat-2:checked ~ .site-header label[for="cat-2"],
+#cat-3:checked ~ .site-header label[for="cat-3"],
+#cat-train:checked ~ .site-header label[for="cat-train"],
+#cat-badges:checked ~ .site-header label[for="cat-badges"] {
+    background-color: var(--side-pill);
+    color: var(--ink-900);
+    font-weight: 600;
+}
+
+#cat-home:focus-visible ~ .site-header label[for="cat-home"],
+#cat-1:focus-visible ~ .site-header label[for="cat-1"],
+#cat-2:focus-visible ~ .site-header label[for="cat-2"],
+#cat-3:focus-visible ~ .site-header label[for="cat-3"],
+#cat-train:focus-visible ~ .site-header label[for="cat-train"],
+#cat-badges:focus-visible ~ .site-header label[for="cat-badges"] {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.pane,
+.cat-stage .case-card {
+    display: none;
+}
+
+#cat-home:checked ~ #main .pane-home,
+#cat-badges:checked ~ #main .pane-badges {
+    display: block;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cat-1:checked ~ #main .tone-1,
+#cat-2:checked ~ #main .tone-2,
+#cat-3:checked ~ #main .tone-3,
+#cat-train:checked ~ #main .tone-4 {
+    display: block;
+}
+
+.cat-stage .case-card {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: none;
+    padding: 18px 18px 16px;
+}
+
+.cat-stage .case-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.cat-stage .case-card img {
+    width: 48px;
+    height: 48px;
+}
+
+.cat-stage .case-card .kicker {
+    margin: 0 0 4px;
+}
+
+.cat-stage .case-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 2px 0 8px;
+}
+
+.cat-stage .case-card .bar {
+    max-width: 220px;
+}
+
+.cat-stage .case-card .btn {
+    min-width: 180px;
+    margin-top: 16px;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
     .hero {
-        grid-template-columns: 1fr;
+        display: block;
+        max-width: 440px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .rank-card {
         width: 100%;
-        max-width: 420px;
+        max-width: 320px;
+        margin: 18px auto 0;
     }
 
     .skill-grid {
@@ -533,8 +687,122 @@ main > .panel {
 }
 
 @media (max-width: 720px) {
+    .is-home {
+        padding-bottom: 16px;
+    }
+
+    .is-home .site-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 2px;
+    }
+
+    .menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        order: 2;
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        margin: 0 0 0 4px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .is-home .logo {
+        flex: 1 1 auto;
+        min-width: 0;
+        order: 0;
+    }
+
+    .is-home .install-wrap {
+        order: 1;
+        margin-left: auto;
+        grid-column: auto;
+    }
+
+    .menu-bars,
+    .menu-bars::before,
+    .menu-bars::after {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background-color: var(--ink-900);
+        border-radius: 2px;
+    }
+
+    .menu-bars {
+        position: relative;
+    }
+
+    .menu-bars::before,
+    .menu-bars::after {
+        content: "";
+        position: absolute;
+        left: 0;
+    }
+
+    .menu-bars::before {
+        top: -6px;
+    }
+
+    .menu-bars::after {
+        top: 6px;
+    }
+
+    #menu-toggle:focus-visible ~ .site-header .menu-btn {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+    }
+
+    #menu-toggle:checked ~ .site-header .menu-bars {
+        background-color: transparent;
+    }
+
+    #menu-toggle:checked ~ .site-header .menu-bars::before {
+        top: 0;
+        transform: rotate(45deg);
+    }
+
+    #menu-toggle:checked ~ .site-header .menu-bars::after {
+        top: 0;
+        transform: rotate(-45deg);
+    }
+
+    .is-home .cat-list {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        margin: 0;
+        padding: 4px 12px 14px;
+        background-color: var(--side);
+        border-bottom: 1px solid var(--side-line);
+    }
+
+    #menu-toggle:checked ~ .site-header .cat-list {
+        display: flex;
+    }
+
+    #menu-toggle:checked ~ .menu-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 15;
+        background-color: rgba(30, 20, 40, 0.28);
+    }
+
     .welcome h1 {
         font-size: 1.75rem;
+    }
+
+    .pane-home .btn-big {
+        width: 100%;
     }
 
     .hero-art {

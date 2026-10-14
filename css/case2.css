@@ -1,9 +1,6 @@
-@import url("base.css");
+@import url("base.css?v=7");
 
-/* Case 2: the situation on one side, the possible actions on the other. */
-main {
-    width: min(1080px, calc(100% - 32px));
-}
+/* Case 2: the situation, then the possible actions. */
 
 #scene-title {
     font-size: 1.3rem;
@@ -18,7 +15,7 @@ main {
 }
 
 #choice-row .choice-btn {
-    min-height: 68px;
+    min-height: 118px;
 }
 
 #choice-row .choice-label {

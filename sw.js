@@ -1,4 +1,4 @@
-var CACHE = "spot-the-scam-v1";
+var CACHE = "spot-the-scam-v9";
 
 var FILES = [
   "./",
@@ -6,9 +6,7 @@ var FILES = [
   "./case1.html",
   "./case2.html",
   "./case3.html",
-  "./safety.html",
   "./training.html",
-  "./quiz.html",
   "./result.html",
   "./manifest.json",
   "./css/base.css",
@@ -16,18 +14,13 @@ var FILES = [
   "./css/case1.css",
   "./css/case2.css",
   "./css/case3.css",
-  "./css/safety.css",
   "./css/training.css",
-  "./css/quiz.css",
   "./css/result.css",
-  "./js/app.js",
+  "./js/app.js?v=9",
   "./js/questions.js",
   "./js/case1.js",
   "./js/case2.js",
   "./js/case3.js",
-  "./js/safety.js",
-  "./js/training.js",
-  "./js/quiz.js",
   "./js/result.js",
   "./js/install.js",
   "./assets/images/logo.svg",
@@ -37,8 +30,7 @@ var FILES = [
   "./assets/images/case-mail.svg",
   "./assets/images/case-choice.svg",
   "./assets/images/case-world.svg",
-  "./assets/images/training.svg",
-  "./assets/images/shield.svg"
+  "./assets/images/training.svg"
 ];
 
 self.addEventListener("install", function (event) {

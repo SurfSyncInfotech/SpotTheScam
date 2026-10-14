@@ -1,9 +1,9 @@
 This file explains js/questions.js.
 This file has no functions.
 It only stores the question lists.
-The case pages and the quiz page read these lists. They do not change them.
+The case pages read these lists. They do not change them.
 
-There are four lists.
+There are three lists.
 
 case1Questions starts at line 4.
 This is Case 1. There are 20 emails.
@@ -44,16 +44,4 @@ correctClue is the right clue. It is practice only.
 actionOptions is a list of four actions.
 correctAction is the safe action. It is practice only.
 explanation is the lesson sentence.
-Every later Case 3 object uses those same fields. The list ends just before line 813.
-
-companyQuizQuestions starts at line 813.
-This is the Company Quiz. There are 20 questions.
-The quiz page shuffles their order on each new try.
-The first object starts at line 814.
-id is the question number. findQuizQuestion in quiz.js searches by this id.
-category is the topic shown above the question.
-question is the question sentence.
-options is a list of answer choices.
-correctAnswer is the right choice. It must match one option exactly. 16 correct answers pass the quiz.
-explanation is the lesson sentence shown on the result page.
-Every later quiz object uses those same fields. The list runs to the end of the file.
+Every later Case 3 object uses those same fields. The list ends at line 811.
