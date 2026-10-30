@@ -1,0 +1,503 @@
+This file explains js/case2.js.
+case2.js runs Case 2, What Would You Do?
+There are 20 situations. Every answer counts.
+The student passes with 15 correct answers.
+Case 2 stays locked until Case 1 has been passed.
+
+Lines 3 to 9 are variables used by the functions below.
+Line 3: questions is the list case2Scenarios from questions.js.
+Line 4: currentQuestion is the position in that list. 0 is the first situation.
+Line 5: selectedAnswer is the choice text for the situation on screen.
+Line 6: score is the number of safe choices so far.
+Line 7: records will hold the review for the result page.
+Line 8: step is "choose", then "explain".
+Line 9: finished stops the result from being saved twice.
+
+
+loadAttempt line number 11
+
+Line 11: function loadAttempt() {
+The function starts. It loads a saved Case 2 try, or starts a new one, or shows the lock.
+
+Line 12: const data = loadProgress();
+Read saved progress. loadProgress is in app.js.
+
+Line 13: const params = new URLSearchParams(window.location.search);
+Read the address after the question mark. Example: case2.html?retry=1.
+
+Line 15: if (!caseIsOpen(2)) {
+caseIsOpen is in app.js. Case 2 is open only when Case 1 has been passed.
+
+Line 16: document.getElementById("play-panel").hidden = true;
+Hide the situations.
+
+Line 17: document.getElementById("lock-panel").hidden = false;
+Show the locked message.
+
+Line 18: return false;
+Tell the page start code not to attach the Next button or show a question.
+
+Line 21: if (params.get("retry") === "1" || data.activeCase2 === null || data.activeCase2.index >= questions.length) {
+Start fresh if the address says retry=1, if no try is saved, or if the saved position is past the last situation.
+
+Line 22: data.activeCase2 = {
+Replace the saved try with a blank one.
+
+Line 23: index: 0,
+Start at the first situation.
+
+Line 24: score: 0,
+Score starts at 0.
+
+Line 25: records: [],
+No review rows yet.
+
+Line 26: step: "choose",
+The first step is picking a choice.
+
+Line 27: selectedAnswer: ""
+No choice yet.
+
+Line 29: saveProgress();
+Write the blank try into browser storage.
+
+Line 32: const active = data.activeCase2;
+Read the try we will use.
+
+Line 33: currentQuestion = active.index;
+Copy the saved position.
+
+Line 34: score = active.score;
+Copy the saved score.
+
+Line 35: records = active.records;
+Copy the saved review rows.
+
+Line 36: step = active.step;
+Copy choose or explain.
+
+Line 37: selectedAnswer = active.selectedAnswer;
+Copy the saved choice.
+
+Line 38: return true;
+Tell the page start code that Case 2 can be played.
+
+Line 39: }
+The function ends.
+
+
+saveAttempt line number 41
+
+Line 41: function saveAttempt() {
+The function starts. It writes the current Case 2 try into storage.
+
+Line 42: const data = loadProgress();
+Get the progress object.
+
+Line 43: data.activeCase2 = {
+Replace the saved Case 2 try.
+
+Line 44: index: currentQuestion,
+Save which situation is on screen.
+
+Line 45: score: score,
+Save the score.
+
+Line 46: records: records,
+Save the finished review rows.
+
+Line 47: step: step,
+Save choose or explain.
+
+Line 48: selectedAnswer: selectedAnswer
+Save the choice.
+
+Line 50: saveProgress();
+Write it into localStorage.
+
+Line 51: }
+The function ends.
+
+
+showQuestion line number 53
+
+Line 53: function showQuestion() {
+The function starts. It draws the situation on screen.
+
+Line 54: if (currentQuestion >= questions.length) {
+If the position is past the last situation, the case is over.
+
+Line 55: showResult();
+Build the result.
+
+Line 56: return;
+Stop.
+
+Line 59: const question = questions[currentQuestion];
+Read the situation object.
+
+Line 60: document.getElementById("progress-label").textContent = "Situation " + (currentQuestion + 1) + " of " + questions.length;
+Show "Situation 1 of 20" style text.
+
+Line 61: document.getElementById("score-label").textContent = "Score: " + score;
+Show the score so far.
+
+Line 62: document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
+Set the bar from how far through the 20 situations the student is.
+
+Line 63: document.getElementById("scene-title").textContent = question.title;
+Show the short title.
+
+Line 64: document.getElementById("scene-text").textContent = question.scenario;
+Show the situation paragraph.
+
+Line 66: const choiceRow = document.getElementById("choice-row");
+Find the box that holds the choice buttons.
+
+Line 67: choiceRow.innerHTML = "";
+Clear old buttons.
+
+Line 69: for (let i = 0; i < question.options.length; i++) {
+Loop through the three choices.
+
+Line 70: const option = question.options[i];
+Read one choice sentence.
+
+Line 71: const button = document.createElement("button");
+Make a button.
+
+Line 72: button.type = "button";
+This button does not submit a form.
+
+Line 73: button.className = "choice-btn";
+Use the choice button style.
+
+Line 74: const label = document.createElement("span");
+Make a span for the choice words.
+
+Line 75: label.className = "choice-label";
+Give it the label class.
+
+Line 76: label.textContent = option;
+Put the choice sentence in the span.
+
+Line 77: button.appendChild(label);
+Put the span in the button.
+
+Line 78: const note = document.createElement("span");
+Make a span for "Correct" or "Your choice".
+
+Line 79: note.className = "choice-note";
+Give it the note class.
+
+Line 80: button.appendChild(note);
+Put the note in the button. It starts empty.
+
+Line 82: if (step === "explain") {
+After an answer, the buttons are locked and marked.
+
+Line 83: button.disabled = true;
+The student cannot click a new answer.
+
+Line 84: if (option === question.correctAnswer) {
+If this choice is the safe one, mark it correct.
+
+Line 85: button.className = button.className + " is-correct";
+Add the correct style.
+
+Line 86: note.textContent = "Correct";
+Write Correct.
+
+Line 87: } else if (option === selectedAnswer) {
+If this is the choice the student made, and it was not the safe one, mark it.
+
+Line 88: button.className = button.className + " is-wrong";
+Add the wrong style.
+
+Line 89: note.textContent = "Your choice";
+Write "Your choice".
+
+Line 92: button.addEventListener("click", function () {
+On the choose step, a click runs the next line.
+
+Line 93: checkAnswer(option);
+Send this button's choice text.
+
+Line 97: choiceRow.appendChild(button);
+Put the button on the page.
+
+Line 100: const nextButton = document.getElementById("next-btn");
+Find Next.
+
+Line 102: if (step === "choose") {
+Before an answer, show only a hint.
+
+Line 103: setFeedback("feedback", "Think: Stop. Check. Ask a trusted adult.", "tip");
+The hint. setFeedback is in app.js.
+
+Line 104: nextButton.hidden = true;
+Hide Next until an answer is chosen.
+
+Line 105: return;
+Stop.
+
+Line 108: if (selectedAnswer === question.correctAnswer) {
+If the choice was the safe one, show the lesson as correct.
+
+Line 109: setFeedback("feedback", question.explanation, "good");
+Show the explanation.
+
+Line 111: setFeedback("feedback", "The safe choice is: " + question.correctAnswer + ". " + question.explanation, "learn");
+If the choice was unsafe, name the safe choice and then the explanation.
+
+Line 114: nextButton.hidden = false;
+Show Next.
+
+Line 115: if (currentQuestion === questions.length - 1) {
+On the last situation, Next opens the result.
+
+Line 116: nextButton.textContent = "See my result";
+Change the words.
+
+Line 118: nextButton.textContent = "Next";
+On earlier situations, the button says Next.
+
+Line 120: }
+The function ends.
+
+
+checkAnswer line number 122
+
+Line 122: function checkAnswer(answer) {
+The function starts. answer is the choice sentence that was clicked.
+
+Line 123: if (step !== "choose") {
+Ignore clicks after an answer is already saved.
+
+Line 124: return;
+Stop.
+
+Line 127: selectedAnswer = answer;
+Remember the choice.
+
+Line 128: const question = questions[currentQuestion];
+Read the situation on screen.
+
+Line 129: if (selectedAnswer === question.correctAnswer) {
+If the choice is the safe one, it counts.
+
+Line 130: score = score + 1;
+Add 1 to the score.
+
+Line 132: step = "explain";
+Move to the explanation step.
+
+Line 133: saveAttempt();
+Save the answer so a refresh keeps it.
+
+Line 134: showQuestion();
+Redraw the buttons as correct or wrong and show Next.
+
+Line 135: bringIntoView("feedback");
+Scroll the feedback into view.
+
+Line 136: document.getElementById("next-btn").focus({ preventScroll: true });
+Move keyboard focus to Next without another scroll.
+
+Line 137: }
+The function ends.
+
+
+nextQuestion line number 139
+
+Line 139: function nextQuestion() {
+The function starts. It stores this situation and moves on.
+
+Line 140: if (step !== "explain") {
+Next only works after an answer.
+
+Line 141: return;
+Stop.
+
+Line 144: const question = questions[currentQuestion];
+Read the situation just finished.
+
+Line 145: records.push({
+Add one review row.
+
+Line 146: heading: question.title,
+The review heading is the situation title.
+
+Line 147: prompt: question.scenario,
+The review text is the situation.
+
+Line 148: yourAnswer: selectedAnswer,
+What the student chose.
+
+Line 149: rightAnswer: question.correctAnswer,
+The safe choice.
+
+Line 150: correct: selectedAnswer === question.correctAnswer,
+True when they match.
+
+Line 151: explanation: question.explanation,
+The lesson sentence.
+
+Line 152: extras: []
+Case 2 has no extra practice step, so this list is empty.
+
+Line 155: currentQuestion = currentQuestion + 1;
+Move to the next situation.
+
+Line 156: selectedAnswer = "";
+Clear the old choice.
+
+Line 157: step = "choose";
+The next situation starts at the choice step.
+
+Line 158: saveAttempt();
+Save the new position.
+
+Line 160: if (currentQuestion >= questions.length) {
+If that move went past the last situation, finish.
+
+Line 161: showResult();
+Open the result flow.
+
+Line 163: showQuestion();
+Otherwise draw the next situation.
+
+Line 164: bringIntoView("progress-label", "start");
+Scroll up to "Situation n of 20".
+
+Line 166: }
+The function ends.
+
+
+showResult line number 168
+
+Line 168: function showResult() {
+The function starts. It saves the score and opens the result page.
+
+Line 169: if (finished) {
+Do not save twice.
+
+Line 170: return;
+Stop.
+
+Line 172: finished = true;
+Mark the try as finished.
+
+Line 174: recordCaseScore(2, score);
+Save the Case 2 score in app.js. 15 or more passes and can give the Safe Choices badge.
+
+Line 175: const data = loadProgress();
+Read progress after the score is saved.
+
+Line 176: const passed = score >= 15;
+True when this try has 15 or more correct answers.
+
+Line 177: let message = "Nice effort. Let's learn from these answers. You can try again.";
+The message when this try does not pass.
+
+Line 178: if (passed) {
+If this try passes, use the unlock message.
+
+Line 179: message = "Great detective work! You passed Case 2. Case 3 is now unlocked.";
+The pass message.
+
+Line 180: } else if (data.case2Passed) {
+If an earlier try already passed, Case 3 stays open.
+
+Line 181: message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 3 stays open.";
+That message.
+
+Line 184: data.activeCase2 = null;
+Clear the in-progress try.
+
+Line 185: data.lastResult = {
+Save the object the result page reads.
+
+Line 186: activity: "case2",
+This result is Case 2.
+
+Line 187: title: "Case 2 — What Would You Do?",
+The result heading.
+
+Line 188: score: score,
+Correct answers.
+
+Line 189: total: 20,
+There are 20 situations.
+
+Line 190: passMark: 15,
+15 correct answers pass.
+
+Line 191: passed: passed,
+True or false for this try.
+
+Line 192: scoreNote: "Every scenario counts toward 15 out of 20.",
+Every choice counts. There is no practice-only step.
+
+Line 193: practice: [],
+No practice list.
+
+Line 194: message: message,
+The sentence chosen above.
+
+Line 195: retryHref: "case2.html?retry=1",
+Retry starts Case 2 from situation 1.
+
+Line 196: nextHref: data.case2Passed ? "case3.html?retry=1" : "",
+If Case 2 has ever been passed, the next button opens Case 3.
+
+Line 197: nextLabel: "Go to Case 3",
+The words on that button.
+
+Line 198: records: records
+The review of every situation.
+
+Line 200: saveProgress();
+Write lastResult into storage.
+
+Line 201: window.location.href = "result.html";
+Open the result page.
+
+Line 202: }
+The function ends.
+
+
+Page start, line number 204
+
+Line 204: document.addEventListener("DOMContentLoaded", function () {
+When the Case 2 HTML has loaded, run the function below.
+
+Line 205: const ready = loadAttempt();
+Load the try, or show the lock. ready is false when Case 1 is not passed.
+
+Line 206: if (!ready) {
+If the case is locked, stop.
+
+Line 207: return;
+Do not attach Next or draw a question.
+
+Line 210: document.getElementById("next-btn").addEventListener("click", function () {
+When Next is clicked, run the next line.
+
+Line 211: nextQuestion();
+Save this situation and move on.
+
+Line 214: if (currentQuestion >= questions.length) {
+If the saved position is already past the end, finish.
+
+Line 215: showResult();
+Open the result flow.
+
+Line 216: return;
+Stop.
+
+Line 218: showQuestion();
+Draw the current situation. The choice buttons are created inside showQuestion.
+
+Line 219: });
+The page-start listener ends.

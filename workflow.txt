@@ -1,0 +1,261 @@
+SPOT THE SCAM
+Beginner Workflow Guide
+=======================
+
+This project is a browser-only cybersecurity educational training platform and Progressive Web App (PWA). It does not require a backend server or database.
+All user progress, scores, XP, earned badges, and in-progress case states are safely saved in the browser using localStorage, while session results pass seamlessly across pages.
+
+The application is built around realistic email scrutiny and threat reflex training:
+- Students investigate simulated digital threats across three progressive cases.
+- Case 1 trains visual email scrutiny (detecting fake senders, urgency traps, and suspicious lines).
+- Case 2 tests decision reflexes (choosing the safest response among 4 randomized practical choices).
+- Case 3 simulates real-world threat triage (a 3-step investigation: Verdict -> Clue -> Safe Action).
+- Students earn Experience Points (XP), advance through 5 detective ranks, and unlock recognized badges.
+- A detailed debrief page provides radial score analysis and a complete question-by-question review.
+- Built-in PWA service worker allows the entire app to run completely offline.
+
+
+1) Main screens and what they do
+=================================
+
+1.1 index.html -> Dashboard / Home screen
+- Purpose: central mission hub and career progress tracker.
+- Responsibilities:
+  * Display current Detective Rank (Beginner, Analyst, Specialist, Lead, Principal).
+  * Show total XP and animated progress bar toward the next rank.
+  * Next Recommended Action banner pointing directly to the next unfinished or in-progress case.
+  * Quick-launch navigation pills for Cases 1, 2, and 3.
+  * 4 Mission Cards: Case 1, Case 2, Case 3, and Company Training.
+  * Badges panel displaying earned credentials and locked badges yet to unlock.
+  * Collapsible Performance Analytics breakdown showing percentage mastery in Email Scrutiny, Decision Reflexes, and Threat Remediation.
+  * Reset browser progress button to restart fresh on shared school or lab computers.
+- JS files: js/app.js, js/install.js
+
+1.2 case1.html -> Case 1: Spot the Scam (Email Scrutiny & Line Inspection)
+- Purpose: train users to spot visual anomalies in email communications.
+- Responsibilities:
+  * Render an authentic desktop email client sandbox ("Inspectable Sandbox").
+  * Step 1: User evaluates the email and decides if it is "Scam" or "Legitimate".
+  * Step 2: If identified as a scam, user must click the exact suspicious line (Sender, Subject, or body sentence) directly inside the email preview.
+  * Provide immediate color-coded feedback and educational explanations.
+  * Track running score (20 questions total, 15 to pass).
+- JS files: js/questions.js, js/app.js, js/case1.js, js/install.js
+
+1.3 case2.html -> Case 2: What Would You Do Next? (Decision Reflexes)
+- Purpose: practical decision dilemmas testing real-world incident response.
+- Responsibilities:
+  * Present 20 workplace and personal dilemmas (e.g., unexpected 2FA texts, prize notifications, urgent invoice demands).
+  * Shuffle and display 4 randomized multiple-choice options to prevent memorization by position.
+  * Provide instant visual feedback with explanation notes explaining why the choice was safe or risky.
+- JS files: js/questions.js, js/app.js, js/case2.js, js/install.js
+
+1.4 case3.html -> Case 3: Real-World Simulation (Multi-Step Threat Triage)
+- Purpose: advanced investigation simulating professional SOC triage reflexes.
+- Responsibilities:
+  * Execute a structured 3-phase investigation for each message:
+    1. Step 1: Threat Verdict (Is this message authentic or malicious?)
+    2. Step 2: Clue Analysis (What is the primary indicator: Fake Sender, Urgency, Suspicious Link, etc.?)
+    3. Step 3: Safe Next Action (What is the safest immediate follow-up response?)
+  * Smoothly scroll into view as each progressive step unlocks.
+  * Award full points only when all steps are completed correctly.
+- JS files: js/questions.js, js/app.js, js/case3.js, js/install.js
+
+1.5 training.html -> Educational Security Briefing
+- Purpose: foundational cybersecurity briefing and guidance notes.
+- Responsibilities:
+  * Display the training video briefing player container.
+  * Present the Three Non-Negotiable Rules: Stop, Check, and Verify.
+  * Reinforce core security reflexes before or between case investigations.
+- JS files: js/app.js, js/install.js
+
+1.6 result.html -> Investigation Debrief
+- Purpose: detailed post-case debriefing, grading, and answer breakdown.
+- Responsibilities:
+  * Render a radial score ring displaying final score (e.g., "18 / 20") and percentage.
+  * Award XP earned from the session and notify if a new badge was unlocked.
+  * Offer contextual navigation buttons: "Proceed to Next Mission", "Play Case Again", and "Review All Answers".
+  * Interactive answer review panel revealing every scenario, the user's selected choice, the correct answer, and full security rationale.
+- JS files: js/app.js, js/result.js, js/install.js
+
+
+2) How the app starts and loads
+================================
+
+When any page in the project loads:
+1. The HTML structure is parsed.
+2. Shared stylesheet `css/base.css` loads design variables, typography, and layout foundations.
+3. Page-specific stylesheet loads (e.g., `css/index.css`, `css/case1.css`, `css/result.css`).
+4. Scripts load in deterministic order:
+   - Data source first: `js/questions.js` (on case pages)
+   - Core game engine: `js/app.js`
+   - Page controller: `js/case1.js` / `js/case2.js` / `js/case3.js` / `js/result.js`
+   - PWA installer: `js/install.js`
+5. On DOMContentLoaded:
+   - `loadProgress()` reads `localStorage.getItem("spotTheScam")`.
+   - If no record exists, `defaultProgress()` initializes a clean state.
+   - `repairProgress(data)` validates and backfills any missing schema properties.
+   - The page renders dynamic content using the restored state.
+
+
+3) Data storage model
+=====================
+
+All data persists in the user's browser under the key:
+- Key name: `spotTheScam`
+- Storage medium: `localStorage`
+
+The storage schema consists of:
+```javascript
+{
+    case1Best: 0,          // Highest score achieved in Case 1 (0 to 20)
+    case1Passed: false,    // True when user scores >= 15 in Case 1
+    case1Bonus: false,     // True once first-time 60 XP pass bonus is granted
+    case1Tried: false,     // True once Case 1 is attempted at least once
+
+    case2Best: 0,          // Highest score achieved in Case 2 (0 to 20)
+    case2Passed: false,    // True when user scores >= 15 in Case 2
+    case2Bonus: false,     // True once first-time 60 XP pass bonus is granted
+    case2Tried: false,     // True once Case 2 is attempted at least once
+
+    case3Best: 0,          // Highest score achieved in Case 3 (0 to 20)
+    case3Passed: false,    // True when user scores >= 15 in Case 3
+    case3Bonus: false,     // True once first-time 60 XP pass bonus is granted
+    case3Tried: false,     // True once Case 3 is attempted at least once
+
+    xp: 0,                 // Cumulative Experience Points
+    badges: [],            // Array of earned badge ID strings
+    activeCase1: null,     // In-progress state bookmark for Case 1
+    activeCase2: null,     // In-progress state bookmark for Case 2
+    activeCase3: null,     // In-progress state bookmark for Case 3
+    lastResult: null       // Debrief payload rendered by result.html
+}
+```
+
+Resume-in-Progress Feature:
+- When a user answers a question, `activeCaseX` stores `{ index: currentIndex, score: currentScore, answers: [...] }`.
+- If the student leaves or closes the tab, returning to the Dashboard displays "Continue Case X (Question Y of 20)".
+- Passing `?retry=1` in the URL clears the saved active case bookmark and starts fresh from question 1.
+
+
+4) Experience Points (XP) & Rank Hierarchy
+==========================================
+
+XP is earned through gameplay:
+- 10 XP for every newly improved score point (`addScoreXp(oldBest, newScore)`).
+- 60 XP one-time bonus upon passing any case ($\ge 15/20$).
+
+Ranks are calculated dynamically via `getRank(xp)`:
+1. Beginner: 0 – 99 XP (Starting rank)
+2. Analyst: 100 – 249 XP (Next rank at 250 XP)
+3. Specialist: 250 – 499 XP (Next rank at 500 XP)
+4. Lead: 500 – 799 XP (Next rank at 800 XP)
+5. Principal: 800+ XP (Master level)
+
+
+5) Badges & Credentials Catalog
+================================
+
+Badges are awarded automatically via `giveBadge(badgeId)` when qualification milestones are met:
+- "email-expert" (Email Expert): Pass Case 1 with 15/20 or higher.
+- "safe-choices" (Safe Choices): Pass Case 2 with 15/20 or higher.
+- "real-world-ready" (Real-World Ready): Pass Case 3 with 15/20 or higher.
+
+
+6) Case-by-Case Investigation Workflow
+======================================
+
+6.1 Case 1: Spot the Scam Workflow
+Controller: `js/case1.js`
+Data array: `emailQuestions` (in `js/questions.js`)
+
+Flow:
+1. `startCase()` checks for existing `activeCase1` bookmark or builds a fresh question set.
+2. `showQuestion()` renders simulated sender, recipient, subject, and body text with clickable sentence `<span>` elements.
+3. User selects "Phishing Scam" or "Legitimate Email".
+4. If "Legitimate":
+   - Scoring evaluates correctness.
+   - Feedback explains legitimate authentication factors.
+   - Proceeds to Next button.
+5. If "Phishing Scam":
+   - Step 2 unfolds ("Which line looks suspicious?").
+   - User clicks on either the Sender line, Subject line, or body sentences.
+   - If clicked line matches `question.suspiciousLine`, green highlight activates and score increments.
+   - If incorrect, yellow alert highlights the actual giveaway sentence.
+6. User clicks "Continue to Next Email".
+7. After question 20, `finishCase()` records final score, computes XP/badges, saves `lastResult`, and navigates to `result.html`.
+
+
+6.2 Case 2: What Would You Do Next? Workflow
+Controller: `js/case2.js`
+Data array: `choiceQuestions` (in `js/questions.js`)
+
+Flow:
+1. Scenario card presents a realistic dilemma (SMS, social media, work email, payment app).
+2. Options array is cloned and randomized using `shuffleArray()` to prevent rote positional guessing.
+3. User clicks an action button:
+   - Correct button turns green with checkmark icon.
+   - Incorrect buttons turn red with explanation of why that action creates risk.
+   - Detailed rationale appears in the feedback container.
+4. Next button activates to proceed to the next dilemma.
+5. Completing question 20 triggers `finishCase()` and routes to `result.html`.
+
+
+6.3 Case 3: Real-World Simulation Workflow
+Controller: `js/case3.js`
+Data array: `simQuestions` (in `js/questions.js`)
+
+Flow:
+1. Multi-step investigative scenario is loaded with realistic email context.
+2. Step 1 (Threat Classification): User selects Scam or Real. Immediate feedback is given.
+3. Step 2 (Clue Identification): User picks the primary giveaway clue from 4 options.
+4. Step 3 (Safe Follow-up Action): User selects the safest follow-up response from 4 options.
+5. Automated scrolling helper `bringIntoView()` smoothly guides attention to each newly unlocked step.
+6. If all 3 steps match, full point is awarded; otherwise, corrective guidance explains the safest path.
+7. Completing question 20 triggers `finishCase()` and routes to `result.html`.
+
+
+7) Post-Mission Debrief & Review Workflow
+=========================================
+
+Controller: `js/result.js`
+Screen: `result.html`
+
+Flow:
+1. Reads `data.lastResult` from browser storage.
+2. Renders dynamic score radial ring (`X / 20`), percentage score, and evaluation badge.
+3. If score $\ge 15$, celebrates with "Pass" status, unlocks next case, and awards badges.
+4. User can click "Review All Answers":
+   - Iterates through `lastResult.answers`.
+   - Displays question number, prompt summary, user's response, correct answer, and full cybersecurity rationale.
+
+
+8) Offline Capabilities & PWA Architecture
+==========================================
+
+Service Worker: `sw.js`
+PWA Installer: `js/install.js`
+Web App Manifest: `manifest.json`
+
+Capabilities:
+- Cache-First offline fallback: caches all HTML, CSS, JavaScript, and SVG assets in cache bucket `spot-the-scam-v9`.
+- When offline or in poor connectivity environments (classrooms, field training), all cases, tests, and score tracking function with 100% fidelity.
+- PWA install button in header enables one-click installation to desktop and Android home screens.
+
+
+9) Recommended Reading Order for Developers
+============================================
+
+To understand or contribute to the codebase step by step:
+1. `index.html` -> Main visual UI layout
+2. `js/app.js` (and companion `js/app.txt`) -> Storage and state core engine
+3. `js/questions.js` (and companion `js/questions.txt`) -> Question data schemas
+4. `js/case1.js` (and companion `js/case1.txt`) -> Interactive email scrutiny mechanics
+5. `js/case2.js` (and companion `js/case2.txt`) -> Dilemma decision flow
+6. `js/case3.js` (and companion `js/case3.txt`) -> Multi-step triage workflow
+7. `js/result.js` (and companion `js/result.txt`) -> Grading and review accordion
+8. `js/install.js` (and companion `js/install.txt`) -> PWA installation handling
+9. `manifest.json` (and companion `manifest.txt`) -> PWA metadata and standalone app configuration
+10. `sw.js` (and companion `sw.txt`) -> Service worker offline caching logic
+
+
+End of beginner workflow guide.

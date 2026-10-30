@@ -16,7 +16,7 @@ var FILES = [
   "./css/case3.css",
   "./css/training.css",
   "./css/result.css",
-  "./js/app.js?v=9",
+  "./js/app.js",
   "./js/questions.js",
   "./js/case1.js",
   "./js/case2.js",

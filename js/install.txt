@@ -1,0 +1,62 @@
+This file explains js/install.js.
+install.js manages Progressive Web App (PWA) installation and Service Worker registration.
+It runs as an Immediately Invoked Function Expression (IIFE) to avoid polluting the global scope.
+
+Line 1: (function () {
+Begins the private function scope.
+
+Line 2: var button = document.getElementById("install-btn");
+Finds the "Install PWA" / "Install app" button in the header.
+
+Line 3: var note = document.getElementById("install-note");
+Finds any instructional note element for manual installation steps.
+
+Line 4: var waitingPrompt = null;
+Holds the browser's beforeinstallprompt event object so we can trigger the prompt when the user clicks Install.
+
+function alreadyInstalled()
+Line 6-9:
+Checks if the web application is already installed and running standalone:
+- iOS standalone mode: window.navigator.standalone === true
+- Standard modern browser display-mode: window.matchMedia("(display-mode: standalone)").matches
+If installed, returns true.
+
+function isAppleMobile()
+Line 11-13:
+Detects if the user device is an iPhone, iPad, or iPod using a regular expression check on navigator.userAgent.
+Used to give custom Apple Safari installation instructions.
+
+Service Worker Registration
+Line 15-19:
+if ("serviceWorker" in navigator) {
+When the window finishes loading, registers "sw.js" in the background to enable offline caching and PWA functionality.
+
+Line 21: if (!button || alreadyInstalled()) return;
+If there is no install button in the DOM or the app is already running as an installed PWA, stop further setup.
+
+Line 23: button.hidden = false;
+Shows the install button so users know the app can be installed.
+
+beforeinstallprompt Event
+Line 25-29:
+window.addEventListener("beforeinstallprompt", function (event) {
+Fired by Chromium-based browsers (Chrome, Edge, Android) when the PWA meets installability criteria.
+event.preventDefault() stops the automatic small mini-infobar so our custom header button can control the install flow.
+waitingPrompt stores the event for later use.
+
+Install Button Click Handler
+Line 31-51:
+button.addEventListener("click", function () {
+When the user clicks the Install button:
+1. If waitingPrompt is available:
+   - waitingPrompt.prompt() displays the browser's native install dialog.
+   - userChoice handles whether the user accepted or dismissed. If accepted, hides the button and note.
+2. If waitingPrompt is not available (e.g., iOS Safari or unsupported browsers):
+   - Shows the helpful fallback message in the note element:
+   - For iOS: "On iPhone or iPad, tap Share, then tap Add to Home Screen."
+   - For others: "Open the browser menu and choose Install app, or Add to Home Screen."
+
+appinstalled Event
+Line 53-57:
+window.addEventListener("appinstalled", function () {
+Fires after installation successfully finishes. Clears waitingPrompt and hides the install button and note.

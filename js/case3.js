@@ -1,6 +1,5 @@
-// Case 3: 20 challenges. The official score is Scam or Legitimate. Pass with 15.
 
-let questions = case3Challenges;
+let questions = [];
 let currentQuestion = 0;
 let selectedAnswer = "";
 let selectedClue = "";
@@ -11,18 +10,51 @@ let actionScore = 0;
 let records = [];
 let step = "classify";
 let finished = false;
+let bypassLock = false;
+
+function getCurrentCycleQuestions() {
+    const data = loadProgress();
+    const cycle = (data.case3Cycle || 0) % 5;
+    const startIndex = cycle * 20;
+    return case3Challenges.slice(startIndex, startIndex + 20);
+}
 
 function loadAttempt() {
     const data = loadProgress();
     const params = new URLSearchParams(window.location.search);
+    questions = getCurrentCycleQuestions();
 
-    if (!caseIsOpen(3)) {
+    if (!caseIsOpen(3) && !bypassLock) {
         document.getElementById("play-panel").hidden = true;
         document.getElementById("lock-panel").hidden = false;
+
+        const proceedBtn = document.getElementById("proceed-anyway-btn");
+        if (proceedBtn) {
+            proceedBtn.onclick = function () {
+                bypassLock = true;
+                document.getElementById("lock-panel").hidden = true;
+                document.getElementById("play-panel").hidden = false;
+                initSession();
+            };
+        }
         return false;
     }
 
+    initSession();
+    return true;
+}
+
+function initSession() {
+    const data = loadProgress();
+    const params = new URLSearchParams(window.location.search);
+
     if (params.get("retry") === "1" || data.activeCase3 === null || data.activeCase3.index >= questions.length) {
+        if (params.get("retry") === "1" && data.activeCase3 !== null) {
+            data.case3Cycle = ((data.case3Cycle || 0) + 1) % 5;
+            saveProgress();
+            questions = getCurrentCycleQuestions();
+        }
+
         data.activeCase3 = emptyAttempt();
         saveProgress();
     }
@@ -37,7 +69,12 @@ function loadAttempt() {
     selectedAnswer = active.selectedAnswer;
     selectedClue = active.selectedClue;
     selectedAction = active.selectedAction;
-    return true;
+
+    if (currentQuestion >= questions.length) {
+        showResult();
+        return;
+    }
+    showQuestion();
 }
 
 function emptyAttempt() {
@@ -77,7 +114,11 @@ function showQuestion() {
     }
 
     const question = questions[currentQuestion];
-    document.getElementById("progress-label").textContent = "Message " + (currentQuestion + 1) + " of " + questions.length;
+    const data = loadProgress();
+    const cycleNum = ((data.case3Cycle || 0) % 5) + 1;
+
+    document.getElementById("progress-label").textContent =
+        "Message " + (currentQuestion + 1) + " of " + questions.length + " (Set " + cycleNum + " of 5)";
     document.getElementById("score-label").textContent = "Score: " + score;
     document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
     document.getElementById("email-from").textContent = question.sender;
@@ -90,113 +131,143 @@ function showQuestion() {
     paintPicked(scamButton, "Scam", selectedAnswer, question.correctAnswer, step !== "classify");
     paintPicked(legitButton, "Legitimate", selectedAnswer, question.correctAnswer, step !== "classify");
 
-    // Plain words for the answer: "a scam" or "a real, safe message".
-    let answerWords = "a scam";
+    const clueBox = document.getElementById("clue-box");
+    const actionBox = document.getElementById("action-box");
+    const nextButton = document.getElementById("next-btn");
+
+    let answerWords = "a scam (suspicious)";
     if (question.correctAnswer === "Legitimate") {
-        answerWords = "legitimate (a real, safe message)";
+        answerWords = "legitimate (safe)";
     }
 
     if (step === "classify") {
-        setFeedback("feedback", "Who sent it? What does it want you to do?", "tip");
-    } else if (selectedAnswer === question.correctAnswer) {
-        setFeedback("feedback", "This message is " + answerWords + ".", "good");
+        setFeedback("feedback", "Step 1: Decide if this message is a scam or legitimate.", "tip");
+        clueBox.hidden = true;
+        actionBox.hidden = true;
+        setFeedback("clue-feedback", "", "");
+        setFeedback("action-feedback", "", "");
+        nextButton.hidden = true;
+        return;
+    }
+
+    if (selectedAnswer === question.correctAnswer) {
+        setFeedback("feedback", "That's right! This message is " + answerWords + ".", "good");
     } else {
         setFeedback("feedback", "This message is actually " + answerWords + ".", "learn");
     }
 
-    const clueBox = document.getElementById("clue-box");
-    clueBox.hidden = step === "classify";
-    if (step !== "classify") {
-        drawChoiceRow("clue-row", question.clueOptions, selectedClue, question.correctClue, step === "clue", function (answer) {
-            checkClue(answer);
-        });
-    }
+    clueBox.hidden = false;
+    paintList(
+        "clue-row",
+        question.clueOptions,
+        selectedClue,
+        question.correctClue,
+        step !== "clue",
+        function (picked) {
+            checkClue(picked);
+        }
+    );
 
     if (step === "clue") {
-        setFeedback("clue-feedback", "Which clue helped you decide? Pick one.", "tip");
-    } else if (step === "action" || step === "explain") {
-        if (selectedClue === question.correctClue) {
-            setFeedback("clue-feedback", "The main clue is " + question.correctClue + ".", "good");
-        } else {
-            setFeedback("clue-feedback", "The main clue is " + question.correctClue + ".", "learn");
-        }
-    } else {
-        setFeedback("clue-feedback", "", "");
-    }
-
-    const actionBox = document.getElementById("action-box");
-    actionBox.hidden = step !== "action" && step !== "explain";
-    if (step === "action" || step === "explain") {
-        drawChoiceRow("action-row", question.actionOptions, selectedAction, question.correctAction, step === "action", function (answer) {
-            checkAction(answer);
-        });
-    }
-
-    const nextButton = document.getElementById("next-btn");
-    if (step === "action") {
-        setFeedback("action-feedback", "What would keep you safe here? Pick one.", "tip");
-        nextButton.hidden = true;
-    } else if (step === "explain") {
-        if (selectedAction === question.correctAction) {
-            setFeedback("action-feedback", question.explanation, "good");
-        } else {
-            setFeedback("action-feedback", "A safe thing to do: " + question.correctAction + ". " + question.explanation, "learn");
-        }
-        nextButton.hidden = false;
-        if (currentQuestion === questions.length - 1) {
-            nextButton.textContent = "See my result";
-        } else {
-            nextButton.textContent = "Next";
-        }
-    } else {
+        setFeedback("clue-feedback", "Step 2: What is the main clue?", "tip");
+        actionBox.hidden = true;
         setFeedback("action-feedback", "", "");
         nextButton.hidden = true;
+        return;
+    }
+
+    if (selectedClue === question.correctClue) {
+        setFeedback("clue-feedback", "Correct clue!", "good");
+    } else {
+        setFeedback("clue-feedback", "The key sign is: " + question.correctClue + ".", "learn");
+    }
+
+    actionBox.hidden = false;
+    paintList(
+        "action-row",
+        question.actionOptions,
+        selectedAction,
+        question.correctAction,
+        step === "explain",
+        function (picked) {
+            checkAction(picked);
+        }
+    );
+
+    if (step === "action") {
+        setFeedback("action-feedback", "Step 3: What is the safest action to take next?", "tip");
+        nextButton.hidden = true;
+        return;
+    }
+
+    if (selectedAction === question.correctAction) {
+        setFeedback("action-feedback", question.explanation, "good");
+    } else {
+        setFeedback("action-feedback", "Safest move: \"" + question.correctAction + "\". " + question.explanation, "learn");
+    }
+
+    nextButton.hidden = false;
+    if (currentQuestion === questions.length - 1) {
+        nextButton.textContent = "See my result";
+    } else {
+        nextButton.textContent = "Next";
     }
 }
 
-function paintPicked(button, value, pickedValue, correctValue, showMark) {
+function paintPicked(button, value, pickedValue, correctValue, reveal) {
     const note = button.querySelector(".choice-note");
     button.className = "choice-btn";
-    note.textContent = "";
-    if (!showMark || pickedValue === "") {
+    if (note) note.textContent = "";
+
+    if (!reveal || pickedValue === "") {
         return;
     }
     if (value === correctValue) {
         button.className = "choice-btn is-correct";
-        note.textContent = "Correct";
+        if (note) note.textContent = "Correct";
         return;
     }
     if (value === pickedValue) {
         button.className = "choice-btn is-wrong";
-        note.textContent = "Your choice";
+        if (note) note.textContent = "Your choice";
     }
 }
 
-function drawChoiceRow(rowId, options, pickedValue, correctValue, canClick, onPick) {
-    const row = document.getElementById(rowId);
-    row.innerHTML = "";
+function paintList(containerId, options, pickedValue, correctValue, locked, onPick) {
+    const box = document.getElementById(containerId);
+    box.innerHTML = "";
+
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
         const button = document.createElement("button");
         button.type = "button";
         button.className = "choice-btn";
+
         const label = document.createElement("span");
         label.className = "choice-label";
         label.textContent = option;
         button.appendChild(label);
-        addChoiceHelp(button, option);
+
         const note = document.createElement("span");
         note.className = "choice-note";
         button.appendChild(note);
-        paintPicked(button, option, pickedValue, correctValue, pickedValue !== "");
-        if (canClick) {
+
+        if (locked) {
+            button.disabled = true;
+            if (option === correctValue) {
+                button.className = button.className + " is-correct";
+                note.textContent = "Correct";
+            } else if (option === pickedValue) {
+                button.className = button.className + " is-wrong";
+                note.textContent = "Your choice";
+            }
+        } else {
             button.addEventListener("click", function () {
                 onPick(option);
             });
-        } else {
-            button.disabled = true;
         }
-        row.appendChild(button);
+
+        box.appendChild(button);
     }
 }
 
@@ -204,8 +275,10 @@ function checkAnswer(answer) {
     if (step !== "classify") {
         return;
     }
+
     selectedAnswer = answer;
-    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+    const question = questions[currentQuestion];
+    if (selectedAnswer === question.correctAnswer) {
         score = score + 1;
     }
     step = "clue";
@@ -218,8 +291,10 @@ function checkClue(answer) {
     if (step !== "clue") {
         return;
     }
+
     selectedClue = answer;
-    if (selectedClue === questions[currentQuestion].correctClue) {
+    const question = questions[currentQuestion];
+    if (selectedClue === question.correctClue) {
         clueScore = clueScore + 1;
     }
     step = "action";
@@ -232,8 +307,10 @@ function checkAction(answer) {
     if (step !== "action") {
         return;
     }
+
     selectedAction = answer;
-    if (selectedAction === questions[currentQuestion].correctAction) {
+    const question = questions[currentQuestion];
+    if (selectedAction === question.correctAction) {
         actionScore = actionScore + 1;
     }
     step = "explain";
@@ -249,26 +326,20 @@ function nextQuestion() {
     }
 
     const question = questions[currentQuestion];
+    const classifyCorrect = selectedAnswer === question.correctAnswer;
+    const clueCorrect = selectedClue === question.correctClue;
+    const actionCorrect = selectedAction === question.correctAction;
+
     records.push({
-        heading: "Message " + question.id,
+        heading: "Message " + (currentQuestion + 1),
         prompt: "From: " + question.sender + " — " + question.message,
         yourAnswer: selectedAnswer,
         rightAnswer: question.correctAnswer,
-        correct: selectedAnswer === question.correctAnswer,
+        correct: classifyCorrect,
         explanation: question.explanation,
         extras: [
-            {
-                label: "Clue",
-                yours: selectedClue,
-                right: question.correctClue,
-                correct: selectedClue === question.correctClue
-            },
-            {
-                label: "Safe action",
-                yours: selectedAction,
-                right: question.correctAction,
-                correct: selectedAction === question.correctAction
-            }
+            { label: "Clue", yours: selectedClue, right: question.correctClue, correct: clueCorrect },
+            { label: "Safe action", yours: selectedAction, right: question.correctAction, correct: actionCorrect }
         ]
     });
 
@@ -297,17 +368,18 @@ function showResult() {
     recordCaseScore(3, score);
     const data = loadProgress();
     const passed = score >= 15;
-    let message = "Nice effort. Let's learn from these answers. You can try again.";
+    let message = "Nice effort. Replay to practice with new challenge messages!";
     if (passed) {
-        message = "Great detective work! You passed the Real-World Challenge.";
+        message = "Master detective work! You passed the Real-World Simulation.";
     } else if (data.case3Passed) {
         message = "This try is below 15 out of 20. Your earlier pass still counts.";
     }
 
+    data.case3Cycle = ((data.case3Cycle || 0) + 1) % 5;
     data.activeCase3 = null;
     data.lastResult = {
         activity: "case3",
-        title: "Case 3 — Real-World Challenge",
+        title: "Case 3 — Real-World Simulation",
         score: score,
         total: 20,
         passMark: 15,
@@ -319,8 +391,8 @@ function showResult() {
         ],
         message: message,
         retryHref: "case3.html?retry=1",
-        nextHref: data.case3Passed ? "training.html" : "",
-        nextLabel: "Go to Company Training",
+        nextHref: "training.html",
+        nextLabel: "Proceed to Training",
         records: records
     };
     saveProgress();
@@ -328,10 +400,7 @@ function showResult() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const ready = loadAttempt();
-    if (!ready) {
-        return;
-    }
+    loadAttempt();
 
     document.getElementById("choose-scam").addEventListener("click", function () {
         checkAnswer("Scam");
@@ -342,10 +411,4 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("next-btn").addEventListener("click", function () {
         nextQuestion();
     });
-
-    if (currentQuestion >= questions.length) {
-        showResult();
-        return;
-    }
-    showQuestion();
 });

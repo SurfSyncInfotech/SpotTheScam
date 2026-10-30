@@ -1,200 +1,166 @@
-@import url("base.css?v=7");
+/* ==========================================================================
+   Results Page - Professional Score & Debriefing Dashboard
+   ========================================================================== */
 
-/* Result: score first, next step second, review on request. */
+@import url("base.css");
 
-.result-card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 20px 28px;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 8px 0 0;
-    margin-bottom: 20px;
+.results-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
 }
 
-/* Big round score so the number is the first thing you see */
-.score-ring {
+.result-card-container {
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 38px 36px;
+    margin-bottom: 32px;
+}
+
+.result-header-row {
     display: flex;
     align-items: center;
+    gap: 28px;
+    margin-bottom: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1.5px solid var(--border-warm);
+}
+
+.score-radial-box {
+    width: 110px;
+    height: 110px;
+    border-radius: var(--radius-lg);
+    background: var(--gold-bg);
+    border: 2px solid var(--gold-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: 132px;
-    height: 132px;
-    border-radius: 50%;
-    border: 2px solid var(--line-strong);
-    background-color: #ffffff;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.18);
+    flex-shrink: 0;
 }
 
-.result-pass .score-ring {
-    border-color: var(--success);
-    background-color: #ffffff;
+.score-digits {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: var(--gold-text);
+    line-height: 1;
 }
 
-.result-learn .score-ring {
-    border-color: var(--warn);
-    background-color: #ffffff;
+.score-unit-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gold-accent);
+    margin-top: 6px;
 }
 
-.score-big {
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--ink-900);
-    line-height: 1.1;
-    margin: 0;
-    letter-spacing: -0.02em;
-    text-align: center;
+.result-summary-wrap {
+    flex: 1;
 }
 
-.status-row {
+.result-badge-kicker {
     margin-bottom: 8px;
 }
 
-.status-row .pill {
+.result-verdict-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--ink-black);
+    margin: 0 0 8px;
+}
+
+.result-debrief-copy {
     font-size: 1rem;
-    padding: 5px 14px;
+    color: var(--ink-body);
+    line-height: 1.55;
+    margin: 0;
 }
 
-#result-pass {
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-#result-note {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin: 12px 0 0;
-}
-
-#result-message {
-    max-width: none;
-    font-size: 1.15rem;
-    color: var(--text);
-    padding: 0;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 0;
-}
-
-.practice-list {
+.practice-records-list {
     list-style: none;
     padding: 0;
-    margin: 12px 0 0;
-    display: grid;
-    gap: 6px;
-    color: var(--muted);
+    margin: 18px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.practice-list:empty {
-    display: none;
+.practice-records-list li {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink-body);
+    background: var(--surface-warm);
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-warm);
 }
 
-.practice-list li {
-    padding-left: 14px;
-    border-left: 3px solid var(--line-strong);
+.result-actions-grid {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 26px;
 }
 
-.result-card .button-row {
-    grid-column: 1 / -1;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-}
-
-.result-card .button-row .btn {
-    min-height: 54px;
-}
-
-/* The primary action is always first in the row */
-#result-panel .button-row #next-btn {
-    order: -2;
-}
-
-.result-learn .button-row #retry-btn {
-    order: -1;
-}
-
-#next-btn {
-    margin-top: 0;
-}
-
-/* Review list */
-#review-box {
+/* Review Answers Collapsible List */
+.review-answers-section {
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 32px;
     margin-top: 28px;
 }
 
-#review-box h2 {
+.review-section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--ink-black);
+    margin: 0 0 18px;
+}
+
+.review-item-dossier {
+    background: var(--surface-warm);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-md);
+    padding: 20px;
     margin-bottom: 14px;
 }
 
-.review-item {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
-    padding: 16px 0;
-    margin-bottom: 0;
-}
-
-.review-item h3 {
+.review-item-dossier h3 {
     font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ink-black);
+    margin: 0 0 8px;
 }
 
-.review-item p {
-    margin-bottom: 6px;
-}
-
-.review-item p:last-child {
-    margin-bottom: 0;
-    color: var(--muted);
+.review-item-dossier p {
+    font-size: 0.92rem;
+    margin: 0 0 6px;
+    color: var(--ink-body);
 }
 
 .review-good {
-    color: var(--success);
-    font-weight: 700;
-}
-
-.review-good::before {
-    content: "\2713\00a0";
+    color: var(--safe-green) !important;
+    font-weight: 800;
 }
 
 .review-learn {
-    color: var(--warn);
-    font-weight: 700;
+    color: var(--scam-red) !important;
+    font-weight: 800;
 }
 
-.review-learn::before {
-    content: "\2715\00a0";
-}
-
-#empty-result h1 {
-    font-size: 1.5rem;
-}
-
-@media (max-width: 720px) {
-    .result-card {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        text-align: center;
-        padding: 22px;
+@media (max-width: 640px) {
+    .result-header-row {
+        flex-direction: column;
+        align-items: flex-start;
     }
-
-    .result-words {
-        width: 100%;
-        text-align: left;
-    }
-
-    .score-ring {
-        width: 140px;
-        height: 140px;
-    }
-
-    .score-big {
-        font-size: 2rem;
-    }
-
-    .result-card .button-row {
+    .result-actions-grid .btn {
         width: 100%;
     }
 }

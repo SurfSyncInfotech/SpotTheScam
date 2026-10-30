@@ -1,4 +1,3 @@
-// Shows the latest case or quiz result saved in this browser.
 
 function showResultPage() {
     const data = loadProgress();

@@ -1,11 +1,371 @@
-@import url("base.css?v=7");
+/* ==========================================================================
+   Case 1 - Spot the Scam Interactive Investigation Screen
+   Authentic Sleuth Mail Sandbox with Clickable Threat Inspection
+   ========================================================================== */
 
-/* Case 1: the email stays above the two steps. */
+@import url("base.css");
 
-.clue-btn {
-    min-height: 118px;
+/* Breadcrumb & Investigation Header */
+.case-page-head {
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1.5px solid var(--border-warm);
 }
 
-#clue-box .choice-row {
-    grid-template-columns: 1fr 1fr;
+.case-kicker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--tone-case1-chip);
+    background: var(--tone-case1-bg);
+    border: 1.5px solid var(--tone-case1-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 10px;
+}
+
+.case-main-title {
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink-black);
+    margin: 0 0 8px;
+}
+
+.case-sub-instructions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--ink-body);
+    margin: 0 0 12px;
+}
+
+.target-badge {
+    background: var(--surface-card);
+    color: var(--ink-black);
+    border: 1.5px solid var(--border-warm);
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+}
+
+.practice-time-callout {
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-left: 4px solid var(--tone-case1-chip);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    color: var(--ink-body);
+    margin: 10px 0 0;
+}
+
+/* Status Tracker Bar */
+.session-metrics-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-lg);
+    padding: 14px 20px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow-soft);
+}
+
+.metric-label-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.metric-pill-num {
+    color: var(--ink-black);
+    font-family: var(--font-mono);
+}
+
+.metric-score-display {
+    color: var(--gold-text);
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    padding: 3px 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-weight: 800;
+}
+
+.tracker-bar-wrap {
+    flex: 1;
+    max-width: 280px;
+}
+
+/* Two-Column Investigation Layout */
+.investigation-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 28px;
+    align-items: start;
+}
+
+/* Left Column: Simulated Mail Client Window */
+.mail-viewer-window {
+    background: #ffffff;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+
+.mail-window-header {
+    background: var(--surface-tint);
+    border-bottom: 1.5px solid var(--border-warm);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.window-dots {
+    display: flex;
+    gap: 6px;
+}
+.window-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+.window-dot:nth-child(1) { background-color: #f87171; }
+.window-dot:nth-child(2) { background-color: #fbbf24; }
+.window-dot:nth-child(3) { background-color: #34d399; }
+
+.window-subject-preview {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+}
+
+.inspect-cue-chip {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--gold-text);
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
+}
+
+/* Inspectable Mail Header Rows */
+.mail-metadata-table {
+    padding: 20px 22px;
+    border-bottom: 1.5px solid var(--border-warm);
+    background: var(--surface-warm);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mail-field-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    transition: all 0.18s ease;
+}
+
+.field-name-tag {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    width: 64px;
+    flex-shrink: 0;
+}
+
+.field-value-text {
+    font-size: 0.98rem;
+    color: var(--ink-black);
+    font-weight: 700;
+    word-break: break-all;
+}
+
+.mail-body-content {
+    padding: 24px 22px;
+}
+
+.inspectable-body-line {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink-black);
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    transition: all 0.18s ease;
+}
+
+/* Inspection State Active */
+.is-inspecting .mail-field-row,
+.is-inspecting .inspectable-body-line {
+    cursor: pointer;
+    background-color: var(--surface-card);
+    border-color: var(--border-warm);
+}
+
+.is-inspecting .mail-field-row:hover,
+.is-inspecting .inspectable-body-line:hover {
+    background-color: var(--tone-case1-bg);
+    border-color: var(--tone-case1-chip);
+    color: var(--tone-case1-accent);
+    box-shadow: 0 2px 8px rgba(234, 88, 12, 0.15);
+}
+
+/* Result highlighting */
+.is-selected-correct {
+    background-color: var(--safe-bg) !important;
+    border-color: var(--safe-green) !important;
+    color: var(--safe-green) !important;
+    font-weight: 800;
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.2) !important;
+}
+
+.is-selected-wrong {
+    background-color: var(--scam-bg) !important;
+    border-color: var(--scam-red) !important;
+    color: var(--scam-red) !important;
+    box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.2) !important;
+}
+
+.lesson-topic-footer {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--tone-case1-chip);
+    margin-top: 12px;
+}
+
+/* Right Column: Decision Console Panel */
+.decisions-console-panel {
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-soft);
+}
+
+.step-card-module {
+    margin-bottom: 22px;
+}
+
+.step-number-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--surface-tint);
+    color: var(--ink-black);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 8px;
+}
+
+.step-prompt-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ink-black);
+    margin: 0 0 16px;
+}
+
+/* Step 1 Two Large Cards */
+.binary-choice-pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.verdict-button {
+    background: var(--surface-warm);
+    border: 2px solid var(--border-warm);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.verdict-button:hover:not(:disabled) {
+    background: #ffffff;
+    border-color: var(--ink-black);
+    box-shadow: 0 4px 14px rgba(30, 25, 20, 0.12);
+    transform: translateY(-2px);
+}
+
+.verdict-button.is-correct {
+    background: var(--safe-bg) !important;
+    border-color: var(--safe-green) !important;
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.2) !important;
+}
+
+.verdict-button.is-wrong {
+    background: var(--scam-bg) !important;
+    border-color: var(--scam-red) !important;
+    box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.2) !important;
+}
+
+.verdict-label {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ink-black);
+}
+
+.verdict-help {
+    font-size: 0.85rem;
+    color: var(--ink-body);
+    line-height: 1.45;
+}
+
+.choice-note {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--ink-muted);
+    margin-top: 4px;
+}
+
+/* Step 2 Line Selection Instruction */
+.step2-guidance-note {
+    font-size: 0.92rem;
+    color: var(--ink-body);
+    line-height: 1.55;
+    background: var(--surface-warm);
+    border: 1.5px dashed var(--border-strong);
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    margin: 10px 0;
+}
+
+.next-action-footer {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1.5px solid var(--border-warm);
+}
+
+@media (max-width: 860px) {
+    .investigation-grid {
+        grid-template-columns: 1fr;
+    }
 }

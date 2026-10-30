@@ -1,0 +1,42 @@
+Key Challenges Faced in Spot the Scam
+=======================================
+
+1. Card Squeezing at 90% Zoom on Desktop
+- The issue: On desktop screens and especially at 90% browser zoom, all 4 cards (Case 1, Case 2, Case 3, and Training) tried to squeeze into a single row, making each card narrow and cramped.
+- The fix: Set `.cases-cards-grid` to a strict 3-column grid (`repeat(3, minmax(0, 1fr))`) for the 3 core cases, and styled the Company Training card as a wide banner spanning full width across the bottom (`grid-column: 1 / -1`).
+
+2. White-on-White Invisible Button Labels
+- The issue: Action buttons (like "Open Training", "Start Case 1", and form buttons) rendered white text (`#ffffff`) on white and cream backgrounds, making the button text completely invisible.
+- The fix: Explicitly separated button classes: styled `.btn-primary` with a dark `#1e293b` background and white text, and styled `.btn-secondary` with a white background, dark `#0f172a` ink text, and clean border contrast.
+
+3. "Ready" Status Pill Centered in Card Body
+- The issue: On the Company Training card, the "Ready" status tag was sitting awkwardly in the middle of the text block instead of in the corner like the other cards.
+- The fix: Added `position: absolute; top: 22px; right: 24px;` to `#training-status` inside `.mission-card-training` so it pins cleanly to the top-right corner.
+
+4. Browser Cache Blocking Updates (Service Worker)
+- The issue: Because this is an installable offline PWA, the Service Worker (`sw.js`) kept serving old cached CSS and JS files instead of newly updated code.
+- The fix: Cleaned up file paths in the cache manifest, bumped the cache version to `spot-the-scam-v9`, and added `self.skipWaiting()` and `self.clients.claim()` so fresh code activates immediately.
+
+5. Losing Progress on Accidental Page Refresh
+- The issue: If a student refreshed the page or accidentally closed their tab mid-case, all answered questions were wiped and they had to start over from question 1.
+- The fix: Added `activeCase1`, `activeCase2`, and `activeCase3` bookmark objects in localStorage that save the current question index, score, and answers on every step, with a `?retry=1` URL parameter to start fresh only when requested.
+
+6. Interactive Sentence Clicking in Case 1
+- The issue: In Case 1, students must click on the specific suspicious line inside the email body, but regular text paragraphs didn't have separate clickable areas.
+- The fix: Wrapped every sender line, subject line, and body sentence in distinct `<span>` elements with hover outlines and pointer cursors, checking the clicked element against `question.suspiciousLine`.
+
+7. Memorizing Choice Positions in Case 2
+- The issue: When replaying Case 2, students could memorize that button "B" or "C" was the safe choice without actually reading the dilemma.
+- The fix: Created a `shuffleArray()` helper that randomizes the position of all 4 choice buttons every time a question renders, while keeping tracking tied to the true `correctAnswer`.
+
+8. Sticky "Next" Bar Covering Explanations on Mobile
+- The issue: On mobile screens, the sticky "Continue to Next" bottom bar floated over the explanation text, preventing students from reading why an answer was right or wrong.
+- The fix: Wrote a custom `bringIntoView()` helper that measures `stickyBar.offsetHeight` and adds dynamic bottom clearance so feedback is never covered.
+
+9. Top Navigation Drift on Mid-Sized Laptops
+- The issue: On screen widths between 768px and 1024px, the header logo, navigation items, and PWA button collided and wrapped into a broken second row.
+- The fix: Switched `.header-container` to a strict single-line flex layout, gave nav items `flex-shrink: 0`, and collapsed navigation into a clean mobile hamburger menu at 768px and below.
+
+10. Shared Classroom Computer Score Overlap
+- The issue: On shared school computers or lab laptops, the previous student's scores, XP, and unlocked badges remained on screen for the next student.
+- The fix: Added a dedicated "Reset browser progress" button on the Dashboard with a confirmation prompt that safely resets localStorage back to `defaultProgress()`.

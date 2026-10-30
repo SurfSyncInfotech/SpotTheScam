@@ -1,0 +1,65 @@
+This file explains manifest.json (Web App Manifest).
+manifest.json is a standard JSON configuration file that allows the web application to be installed as a Progressive Web App (PWA) on desktop computers, Android phones, tablets, and iPhones without needing an app store.
+
+Core Properties
+================
+
+Line 2: "name": "Spot the Scam"
+The full human-readable title of the application. Browsers display this name in installation prompts, splash screens, and app manager lists.
+
+Line 3: "short_name": "Spot the Scam"
+A concise version of the app name. This is displayed beneath the app icon on mobile home screens or taskbars where display space is limited.
+
+Line 4: "description": "A short online-safety lesson. Spot scam messages and choose the safe action."
+A brief summary explaining the application's purpose to users and browser installation dialogues.
+
+Line 5: "id": "./"
+A unique identity string representing this PWA. Browsers use this to differentiate this app from others on the same domain and to manage background updates.
+
+Line 6: "start_url": "index.html"
+The exact page that loads when the user launches the installed app from their desktop or home screen.
+
+Line 7: "scope": "./"
+Defines the URL navigation boundary of the PWA. Any URL inside this path opens within the standalone app window. Navigating outside this scope opens in a normal browser tab.
+
+Line 8: "display": "standalone"
+Controls how the app is presented to the user:
+- "standalone" removes the browser address bar, back/forward buttons, and browser tabs.
+- The web app runs inside its own dedicated window, looking and feeling like a native desktop or mobile application.
+
+Line 9: "background_color": "#f7f6f3"
+The background color displayed on the splash launch screen while the browser initializes the app and loads stylesheets.
+
+Line 10: "theme_color": "#243f6b"
+The color applied to the operating system title bar, status bar (on mobile), and task switcher toolbar.
+
+Line 11: "lang": "en"
+Specifies the primary language tag for the application's metadata (English).
+
+
+Application Icons
+=================
+
+Lines 12-31: "icons" array
+Contains an array of icon image files at various resolutions so the operating system can display crisp, sharp icons across different screen sizes and display densities.
+
+1. Icon 1 (Lines 13-18):
+- "src": "assets/images/icon-192.png"
+- "sizes": "192x192"
+- "type": "image/png"
+- "purpose": "any"
+Used for standard mobile home screen shortcuts, app switchers, and push notification headers.
+
+2. Icon 2 (Lines 19-24):
+- "src": "assets/images/icon-512.png"
+- "sizes": "512x512"
+- "type": "image/png"
+- "purpose": "any"
+High-resolution icon utilized for splash screens, desktop app windows, and high-DPI displays.
+
+3. Icon 3 (Lines 25-30):
+- "src": "assets/images/icon-maskable-512.png"
+- "sizes": "512x512"
+- "type": "image/png"
+- "purpose": "maskable"
+Adaptive/maskable icon formatted specifically for Android adaptive icons. It features safe-zone padding around the logo so the operating system can crop the icon into circles, rounded rectangles, teardrops, or squircles without cutting off the main artwork.

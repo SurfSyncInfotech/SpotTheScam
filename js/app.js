@@ -1,4 +1,3 @@
-// Shared progress for this browser. The app does not know student names.
 
 const storageKey = "spotTheScam";
 
@@ -23,7 +22,10 @@ function defaultProgress() {
         activeCase1: null,
         activeCase2: null,
         activeCase3: null,
-        lastResult: null
+        lastResult: null,
+        case1Cycle: 0,
+        case2Cycle: 0,
+        case3Cycle: 0
     };
 }
 
@@ -152,9 +154,6 @@ function recordCaseScore(caseNumber, score) {
     saveProgress();
 }
 
-/* ---------- Small screen helpers shared by the case pages ---------- */
-
-// Writes a feedback message and gives the box a mood: "good", "learn", or "tip".
 function setFeedback(boxId, text, mood) {
     const box = document.getElementById(boxId);
     if (!box) {
@@ -168,13 +167,12 @@ function setFeedback(boxId, text, mood) {
     }
 }
 
-// Scrolls an element into view only if it is not already fully visible.
 function bringIntoView(elementId, where) {
     const element = document.getElementById(elementId);
     if (!element || element.hidden) {
         return;
     }
-    // The sticky Next bar can cover the bottom of the screen, so leave room for it.
+
     let bottomEdge = window.innerHeight;
     const stickyBar = document.querySelector(".next-bar");
     if (stickyBar && stickyBar.offsetHeight > 0 && !stickyBar.contains(element)) {
@@ -191,26 +189,6 @@ function bringIntoView(elementId, where) {
         behavior = "auto";
     }
     element.scrollIntoView({ behavior: behavior, block: where || "center" });
-}
-
-// Short, child-friendly meaning for each clue name.
-const clueHelpText = {
-    "Fake Sender": "The email address or name looks wrong.",
-    "Fake Urgency": "It says hurry, act now, or you will lose something.",
-    "Information Requests": "It asks for a password, code, or private details.",
-    "No warning sign": "Nothing suspicious. This message is real."
-};
-
-// Adds the helper line under a choice button when we know one.
-function addChoiceHelp(button, option) {
-    const helpText = clueHelpText[option];
-    if (!helpText) {
-        return;
-    }
-    const help = document.createElement("span");
-    help.className = "choice-help";
-    help.textContent = helpText;
-    button.appendChild(help);
 }
 
 const badgeCatalog = [
@@ -252,7 +230,6 @@ function showDashboard() {
     fillNextStep(data);
 }
 
-// One big button that always points at the next thing to do.
 function fillNextStep(data) {
     const button = document.getElementById("next-step-btn");
     const note = document.getElementById("next-step-text");
@@ -317,17 +294,29 @@ function fillCaseCard(caseNumber, data, total, passMark) {
     }
 
     if (!open) {
-        status.textContent = "Locked";
-        status.className = "pill pill-lock";
-        button.textContent = "Locked";
-        button.href = "#";
-        button.className = "btn btn-lock";
-        button.setAttribute("aria-disabled", "true");
+        status.textContent = "Recommended after Case " + (caseNumber - 1);
+        status.className = "pill pill-sun";
+        button.textContent = "Start";
+        button.className = "btn";
+        button.removeAttribute("aria-disabled");
+        button.href = "case" + caseNumber + ".html?retry=1";
+        button.onclick = function (e) {
+            const prevCase = caseNumber - 1;
+            const confirmProceed = confirm(
+                "We recommend finishing Case " + prevCase + " first to practice the core skills.\n\nDo you want to proceed to Case " + caseNumber + " anyway?"
+            );
+            if (!confirmProceed) {
+                e.preventDefault();
+                return false;
+            }
+        };
+        lockNote.textContent = "Suggested: finish Case " + (caseNumber - 1) + " first, or start now anyway.";
         lockNote.hidden = false;
         restart.hidden = true;
         return;
     }
 
+    button.onclick = null;
     lockNote.hidden = true;
     button.className = "btn";
     button.removeAttribute("aria-disabled");

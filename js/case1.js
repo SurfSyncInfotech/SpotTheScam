@@ -1,30 +1,42 @@
-// Case 1: 20 emails. The official score is Scam or Legitimate. Pass with 15.
 
-let questions = case1Questions;
+let questions = [];
 let currentQuestion = 0;
 let selectedAnswer = "";
-let selectedClue = "";
+let selectedLine = "";
 let score = 0;
-let clueScore = 0;
+let lineScore = 0;
 let records = [];
 let step = "classify";
 let finished = false;
 
-const clueNames = ["Fake Sender", "Fake Urgency", "Information Requests", "No warning sign"];
+function getCurrentCycleQuestions() {
+    const data = loadProgress();
+    const cycle = (data.case1Cycle || 0) % 5;
+    const startIndex = cycle * 20;
+    return case1Questions.slice(startIndex, startIndex + 20);
+}
 
 function loadAttempt() {
     const data = loadProgress();
     const params = new URLSearchParams(window.location.search);
+    questions = getCurrentCycleQuestions();
 
     if (params.get("retry") === "1" || data.activeCase1 === null || data.activeCase1.index >= questions.length) {
+
+        if (params.get("retry") === "1" && data.activeCase1 !== null) {
+            data.case1Cycle = ((data.case1Cycle || 0) + 1) % 5;
+            saveProgress();
+            questions = getCurrentCycleQuestions();
+        }
+
         data.activeCase1 = {
             index: 0,
             score: 0,
-            clueScore: 0,
+            lineScore: 0,
             records: [],
             step: "classify",
             selectedAnswer: "",
-            selectedClue: ""
+            selectedLine: ""
         };
         saveProgress();
     }
@@ -32,11 +44,11 @@ function loadAttempt() {
     const active = data.activeCase1;
     currentQuestion = active.index;
     score = active.score;
-    clueScore = active.clueScore;
+    lineScore = active.lineScore || 0;
     records = active.records;
     step = active.step;
     selectedAnswer = active.selectedAnswer;
-    selectedClue = active.selectedClue;
+    selectedLine = active.selectedLine || "";
 }
 
 function saveAttempt() {
@@ -44,11 +56,11 @@ function saveAttempt() {
     data.activeCase1 = {
         index: currentQuestion,
         score: score,
-        clueScore: clueScore,
+        lineScore: lineScore,
         records: records,
         step: step,
         selectedAnswer: selectedAnswer,
-        selectedClue: selectedClue
+        selectedLine: selectedLine
     };
     saveProgress();
 }
@@ -60,18 +72,33 @@ function showQuestion() {
     }
 
     const question = questions[currentQuestion];
-    document.getElementById("progress-label").textContent = "Email " + (currentQuestion + 1) + " of " + questions.length;
+    const data = loadProgress();
+    const cycleNum = ((data.case1Cycle || 0) % 5) + 1;
+
+    document.getElementById("progress-label").textContent =
+        "Email " + (currentQuestion + 1) + " of " + questions.length + " (Set " + cycleNum + " of 5)";
     document.getElementById("score-label").textContent = "Score: " + score;
     document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
-    // The topic would give the answer away, so it only appears after both answers.
+
     if (step === "explain") {
         document.getElementById("category-label").textContent = "Lesson topic: " + question.category;
     } else {
         document.getElementById("category-label").textContent = "";
     }
+
     document.getElementById("email-from").textContent = question.sender;
     document.getElementById("email-subject").textContent = question.subject;
-    document.getElementById("email-message").textContent = question.message;
+
+    const bodyContainer = document.getElementById("email-body-lines");
+    bodyContainer.innerHTML = "";
+    const lines = question.bodyLines || [question.message];
+    for (let i = 0; i < lines.length; i++) {
+        const p = document.createElement("p");
+        p.className = "inspectable-line";
+        p.setAttribute("data-line-id", "line" + i);
+        p.textContent = lines[i];
+        bodyContainer.appendChild(p);
+    }
 
     const scamButton = document.getElementById("choose-scam");
     const legitButton = document.getElementById("choose-legit");
@@ -80,48 +107,66 @@ function showQuestion() {
     markChoice(scamButton, "Scam", selectedAnswer, question.correctAnswer, step !== "classify");
     markChoice(legitButton, "Legitimate", selectedAnswer, question.correctAnswer, step !== "classify");
 
+    const emailCard = document.getElementById("email-inspect-card");
+    const inspectHint = document.getElementById("inspect-hint");
     const clueBox = document.getElementById("clue-box");
     const nextButton = document.getElementById("next-btn");
 
-    // Plain words for the answer: "a scam" or "a real, safe message".
-    let answerWords = "a scam";
+    let answerWords = "a scam (suspicious)";
     if (question.correctAnswer === "Legitimate") {
-        answerWords = "legitimate (a real, safe message)";
+        answerWords = "legitimate (safe)";
     }
 
     if (step === "classify") {
-        setFeedback("feedback", "Look at who sent it, the subject, and what it asks you to do.", "tip");
+        emailCard.classList.remove("is-inspecting");
+        if (inspectHint) inspectHint.hidden = true;
+        setFeedback("feedback", "Check the sender address, subject, and message lines.", "tip");
         clueBox.hidden = true;
         setFeedback("clue-feedback", "", "");
         nextButton.hidden = true;
+        resetInspectHighlights();
         return;
     }
 
     if (selectedAnswer === question.correctAnswer) {
-        setFeedback("feedback", "This email is " + answerWords + ".", "good");
+        setFeedback("feedback", "Good observation! This email is indeed " + answerWords + ".", "good");
     } else {
-        setFeedback("feedback", "This email is actually " + answerWords + ". Let's find out why.", "learn");
+        setFeedback("feedback", "Careful! This email is actually " + answerWords + ".", "learn");
     }
 
     clueBox.hidden = false;
-    const clueButtons = document.querySelectorAll(".clue-btn");
-    for (let i = 0; i < clueButtons.length; i++) {
-        const button = clueButtons[i];
-        button.disabled = step === "explain";
-        markChoice(button, button.getAttribute("data-clue"), selectedClue, question.clue, step === "explain");
-    }
 
     if (step === "clue") {
-        setFeedback("clue-feedback", "Which clue helped you decide? Pick one.", "tip");
+
+        if (question.correctAnswer === "Legitimate") {
+            emailCard.classList.remove("is-inspecting");
+            if (inspectHint) inspectHint.hidden = true;
+            setFeedback("clue-feedback", "Since this message is legitimate, there are no suspicious lines! " + question.explanation, "good");
+            step = "explain";
+            saveAttempt();
+            nextButton.hidden = false;
+            nextButton.textContent = (currentQuestion === questions.length - 1) ? "See my result" : "Next";
+            return;
+        }
+
+        emailCard.classList.add("is-inspecting");
+        if (inspectHint) inspectHint.hidden = false;
+        setFeedback("clue-feedback", "Now click on the suspicious line on the left (Sender, Subject, or text).", "tip");
         nextButton.hidden = true;
         return;
     }
 
-    if (selectedClue === question.clue) {
-        setFeedback("clue-feedback", question.explanation, "good");
+    emailCard.classList.remove("is-inspecting");
+    if (inspectHint) inspectHint.hidden = true;
+    highlightInspectedLine(question);
+
+    const isLineCorrect = (selectedLine === question.suspiciousTarget);
+    if (isLineCorrect) {
+        setFeedback("clue-feedback", "Spot on! That line is suspicious. " + question.explanation, "good");
     } else {
-        setFeedback("clue-feedback", "The main clue is " + question.clue + ". " + question.explanation, "learn");
+        setFeedback("clue-feedback", "Notice highlighted in green: that's the key clue. " + question.explanation, "learn");
     }
+
     nextButton.hidden = false;
     if (currentQuestion === questions.length - 1) {
         nextButton.textContent = "See my result";
@@ -130,23 +175,45 @@ function showQuestion() {
     }
 }
 
+function resetInspectHighlights() {
+    const all = document.querySelectorAll(".inspectable-row, .inspectable-line");
+    all.forEach(el => {
+        el.classList.remove("is-selected-correct", "is-selected-wrong");
+    });
+}
+
+function highlightInspectedLine(question) {
+    resetInspectHighlights();
+    const correctTarget = question.suspiciousTarget;
+
+    const all = document.querySelectorAll(".inspectable-row, .inspectable-line");
+    all.forEach(el => {
+        const lineId = el.getAttribute("data-line-id");
+        if (lineId === correctTarget) {
+            el.classList.add("is-selected-correct");
+        } else if (lineId === selectedLine) {
+            el.classList.add("is-selected-wrong");
+        }
+    });
+}
+
 function markChoice(button, value, pickedValue, correctValue, reveal) {
     const note = button.querySelector(".choice-note");
     const baseClass = button.getAttribute("data-base-class");
     button.className = baseClass;
-    note.textContent = "";
+    if (note) note.textContent = "";
 
     if (!reveal || pickedValue === "") {
         return;
     }
     if (value === correctValue) {
         button.className = baseClass + " is-correct";
-        note.textContent = "Correct";
+        if (note) note.textContent = "Correct";
         return;
     }
     if (value === pickedValue) {
         button.className = baseClass + " is-wrong";
-        note.textContent = "Your choice";
+        if (note) note.textContent = "Your choice";
     }
 }
 
@@ -166,15 +233,15 @@ function checkAnswer(answer) {
     bringIntoView("clue-box");
 }
 
-function checkClue(answer) {
+function checkLineClick(lineId) {
     if (step !== "clue") {
         return;
     }
 
-    selectedClue = answer;
+    selectedLine = lineId;
     const question = questions[currentQuestion];
-    if (selectedClue === question.clue) {
-        clueScore = clueScore + 1;
+    if (selectedLine === question.suspiciousTarget) {
+        lineScore = lineScore + 1;
     }
     step = "explain";
     saveAttempt();
@@ -190,7 +257,7 @@ function nextQuestion() {
 
     const question = questions[currentQuestion];
     const classifyCorrect = selectedAnswer === question.correctAnswer;
-    const clueCorrect = selectedClue === question.clue;
+    const lineCorrect = (selectedLine === question.suspiciousTarget) || (question.correctAnswer === "Legitimate");
 
     records.push({
         heading: question.subject,
@@ -201,17 +268,17 @@ function nextQuestion() {
         explanation: question.explanation,
         extras: [
             {
-                label: "Clue",
-                yours: selectedClue,
-                right: question.clue,
-                correct: clueCorrect
+                label: "Suspicious line",
+                yours: selectedLine || "None",
+                right: question.suspiciousTarget,
+                correct: lineCorrect
             }
         ]
     });
 
     currentQuestion = currentQuestion + 1;
     selectedAnswer = "";
-    selectedClue = "";
+    selectedLine = "";
     step = "classify";
     saveAttempt();
 
@@ -233,29 +300,28 @@ function showResult() {
     recordCaseScore(1, score);
     const data = loadProgress();
     const passed = score >= 15;
-    let message = "Nice effort. Let's learn from these answers. You can try again.";
+    let message = "Nice effort! Review your answers and try again to cycle through new questions.";
     if (passed) {
-        message = "Great detective work! You passed Case 1. Case 2 is now unlocked.";
-    } else if (data.case1Passed) {
-        message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 2 stays open.";
+        message = "Outstanding detective work! You passed Case 1. You can now take Case 2 or replay for new questions.";
     }
 
+    data.case1Cycle = ((data.case1Cycle || 0) + 1) % 5;
     data.activeCase1 = null;
     data.lastResult = {
         activity: "case1",
-        title: "Case 1 — Email Check",
+        title: "Case 1 — Spot the Scam",
         score: score,
         total: 20,
         passMark: 15,
         passed: passed,
         scoreNote: "The official score uses the Scam or Legitimate answers.",
         practice: [
-            { label: "Clue practice", score: clueScore, total: 20 }
+            { label: "Clue discovery", score: lineScore, total: 20 }
         ],
         message: message,
         retryHref: "case1.html?retry=1",
-        nextHref: data.case1Passed ? "case2.html?retry=1" : "",
-        nextLabel: "Go to Case 2",
+        nextHref: "case2.html?retry=1",
+        nextLabel: "Proceed to Case 2",
         records: records
     };
     saveProgress();
@@ -277,10 +343,14 @@ function startCase() {
         checkAnswer("Legitimate");
     });
 
-    const clueButtons = document.querySelectorAll(".clue-btn");
-    for (let i = 0; i < clueButtons.length; i++) {
-        clueButtons[i].addEventListener("click", function () {
-            checkClue(this.getAttribute("data-clue"));
+    const emailCard = document.getElementById("email-inspect-card");
+    if (emailCard) {
+        emailCard.addEventListener("click", function (e) {
+            const row = e.target.closest(".inspectable-row, .inspectable-line");
+            if (row && step === "clue") {
+                const lineId = row.getAttribute("data-line-id");
+                checkLineClick(lineId);
+            }
         });
     }
 

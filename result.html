@@ -1,85 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Result · Spot the Scam</title>
+    <title>Investigation Result · Spot the Scam</title>
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#243f6b">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Spot the Scam">
-    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-    <link rel="stylesheet" href="css/result.css?v=6">
+    <meta name="theme-color" content="#3b49df">
+    <link rel="stylesheet" href="css/result.css?v=25">
 </head>
+
 <body>
-    <a class="skip" href="#main">Skip to content</a>
-    <input class="menu-toggle" type="checkbox" id="menu-toggle">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
     <header class="site-header">
-        <a class="logo" href="index.html">
-            <img src="assets/images/logo.svg" alt="" width="48" height="48">
-            <span>Spot the Scam</span>
-        </a>
-        <label class="menu-btn" for="menu-toggle">
-            <span class="menu-bars" aria-hidden="true"></span>
-            <span class="sr">Menu</span>
-        </label>
-        <div class="header-tools">
-        <nav aria-label="Main">
-                <a href="case1.html">Case 1</a>
-                <a href="case2.html">Case 2</a>
-                <a href="case3.html">Case 3</a>
-                <a href="training.html">Training</a>
-                <a href="index.html?pane=badges">Badges</a>
+        <div class="header-container">
+            <a class="brand-anchor" href="index.html">
+                <div class="brand-logo-mark">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <div class="brand-text-wrap">
+                    <span class="brand-title">Spot the Scam</span>
+                    <span class="brand-tag">Cyber Defense Lab</span>
+                </div>
+            </a>
+
+            <nav class="site-nav" id="site-nav" aria-label="Main Navigation">
+                <a href="index.html" class="nav-item">Dashboard</a>
+                <a href="case1.html" class="nav-item">Case 1</a>
+                <a href="case2.html" class="nav-item">Case 2</a>
+                <a href="case3.html" class="nav-item">Case 3</a>
+                <a href="training.html" class="nav-item">Training</a>
             </nav>
-            <div class="install-wrap">
-                <button type="button" class="btn btn-quiet" id="install-btn" hidden>Install app</button>
-                <p class="install-note" id="install-note" hidden></p>
+
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-secondary btn-sm">&larr; Dashboard</a>
             </div>
         </div>
     </header>
-    <label class="menu-backdrop" for="menu-toggle"></label>
 
-    <main id="main">
-        <section id="empty-result" class="panel" hidden>
-            <h1>No result yet</h1>
-            <p>Finish a case to see a score here.</p>
-            <a class="btn" href="index.html">Back to Home</a>
-        </section>
-
-        <section id="result-panel" hidden>
-            <div class="page-head">
-                <p class="kicker">Your result</p>
-                <h1 id="result-title">Result</h1>
-            </div>
-            <div class="result-card">
-                <div class="score-ring">
-                    <p class="score-big" id="result-score">0 / 0</p>
-                </div>
-                <div class="result-words">
-                    <p class="status-row"><span class="pill" id="result-status">Result</span></p>
-                    <p id="result-pass">Pass mark</p>
-                    <p id="result-message" class="lead"></p>
-                    <ul id="practice-list" class="practice-list"></ul>
-                    <p id="result-note"></p>
-                </div>
-                <div class="button-row">
-                    <a class="btn btn-teal" id="next-btn" href="index.html" hidden>Next</a>
-                    <a class="btn" id="retry-btn" href="index.html">Retry Case</a>
-                    <button type="button" class="btn btn-quiet" id="review-btn">See my answers</button>
-                    <a class="btn btn-quiet" href="index.html">Back to Home</a>
-                </div>
-            </div>
-            <section id="review-box" hidden>
-                <h2>My answers</h2>
-                <div id="review-list"></div>
+    <main class="main-wrapper" id="main">
+        <div class="results-wrapper">
+            <section id="empty-result" class="result-card-container panel" hidden>
+                <h2>No Session Results Found</h2>
+                <p>Complete an active investigation case first to see your evaluation debrief here.</p>
+                <a class="btn btn-primary" href="index.html">Return to Dashboard</a>
             </section>
-        </section>
+
+            <section id="result-panel" hidden>
+                <div class="result-card-container result-card">
+                    <div class="result-header-row">
+                        <div class="score-radial-box score-ring">
+                            <span class="score-digits" id="result-score">0 / 0</span>
+                            <span class="score-unit-tag">Official Score</span>
+                        </div>
+                        <div class="result-summary-wrap result-words">
+                            <div class="result-badge-kicker status-row">
+                                <span class="status-pill pill" id="result-status">Evaluation Complete</span>
+                            </div>
+                            <h1 class="result-verdict-title" id="result-title">Investigation Debrief</h1>
+                            <p class="result-debrief-copy lead" id="result-message"></p>
+                            <p id="result-pass" style="font-size: 0.875rem; color: var(--slate-500); margin: 6px 0 0;"></p>
+                            <ul class="practice-records-list practice-list" id="practice-list"></ul>
+                            <p id="result-note" style="font-size: 0.8125rem; color: var(--slate-400); margin-top: 8px;"></p>
+                        </div>
+                    </div>
+
+                    <div class="result-actions-grid button-row">
+                        <a class="btn btn-primary btn-lg" id="next-btn" href="index.html" hidden>Proceed to Next Mission &rarr;</a>
+                        <a class="btn btn-secondary btn-lg" id="retry-btn" href="index.html">Play Case Again</a>
+                        <button type="button" class="btn btn-quiet" id="review-btn">Review All Answers</button>
+                        <a class="btn btn-ghost" href="index.html">Return to Home</a>
+                    </div>
+                </div>
+
+                <!-- Review Section -->
+                <section class="review-answers-section" id="review-box" hidden>
+                    <h2 class="review-section-title">Case Answers & Feedback</h2>
+                    <div id="review-list"></div>
+                </section>
+            </section>
+        </div>
     </main>
 
-    <script src="js/app.js?v=9"></script>
-    <script src="js/result.js"></script>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <span>Spot the Scam &bull; Assessment Report</span>
+            <span>Local Browser Evaluation</span>
+        </div>
+    </footer>
+
+    <script src="js/app.js?v=25"></script>
+    <script src="js/result.js?v=25"></script>
     <script src="js/install.js"></script>
 </body>
+
 </html>

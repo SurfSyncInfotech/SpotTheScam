@@ -1,38 +1,59 @@
-@import url("base.css?v=7");
+@import url("base.css");
 
-/* Company Training: one title and one video placeholder. */
-main h1 {
-    margin-bottom: 18px;
-}
-
-.video-box {
+/* Training Video Container & Layout */
+.training-video-wrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
-    background-color: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: 14px;
+    background: #0f172a;
+    border: 2px solid var(--border-warm);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
     position: relative;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
 }
 
-.video-box::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 68px;
-    height: 68px;
-    margin: -34px 0 0 -34px;
-    border-radius: 50%;
-    background-color: var(--teal-soft);
+.training-video-wrapper iframe,
+.training-video-wrapper video {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
 }
 
-.video-box::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -10px 0 0 -6px;
-    border-style: solid;
-    border-width: 10px 0 10px 16px;
-    border-color: transparent transparent transparent var(--teal);
+/* Empty Video Placeholder */
+.video-empty-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 32px 20px;
+}
+
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 360px;
+}
+
+.placeholder-content svg {
+    color: #64748b;
+    opacity: 0.85;
+}
+
+.placeholder-main-text {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #f8fafc;
+    margin: 0;
+}
+
+.placeholder-sub-text {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.5;
 }

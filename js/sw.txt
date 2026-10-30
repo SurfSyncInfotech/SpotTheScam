@@ -1,0 +1,36 @@
+This file explains sw.js (Service Worker).
+sw.js provides Progressive Web App (PWA) offline caching capabilities so the site works without an internet connection.
+
+Cache Configuration
+Line 1: var CACHE = "spot-the-scam-v9";
+Names the current cache storage bucket. Incrementing the version string forces the browser to discard old cached files and download fresh ones.
+
+FILES Array
+Line 3-34:
+Lists all static assets required for offline operation:
+- Core HTML pages: index.html, case1.html, case2.html, case3.html, training.html, result.html
+- Web App Manifest: manifest.json
+- CSS stylesheets: base.css, index.css, case1.css, case2.css, case3.css, training.css, result.css
+- JavaScript files: app.js, questions.js, case1.js, case2.js, case3.js, result.js, install.js
+- Assets and icons: logo.svg, training.svg, case SVG cards, and PNG launcher icons (192px, 512px, maskable)
+
+Lifecycle Events
+
+1. Install Event (Line 36-43):
+self.addEventListener("install", function (event) {
+- Opens the designated cache bucket with caches.open(CACHE).
+- Downloads and pre-caches all files listed in the FILES array using cache.addAll(FILES).
+- Calls self.skipWaiting() to activate the new service worker immediately without waiting for existing tabs to close.
+
+2. Activate Event (Line 45-57):
+self.addEventListener("activate", function (event) {
+- Inspects all cache keys in cache storage using caches.keys().
+- Deletes any outdated cache buckets whose names do not match the current CACHE version.
+- Calls self.clients.claim() to immediately take control of all active clients/tabs.
+
+3. Fetch Event (Line 59-82):
+self.addEventListener("fetch", function (event) {
+- Intercepts outgoing HTTP GET requests originating from the same domain.
+- Tries network fetch first: if successful and valid, updates the local cache with the new response clone.
+- If network fails (offline mode), falls back to caches.match(request) to serve the saved version from cache.
+- If a navigation request fails while offline, gracefully serves the cached "./index.html".

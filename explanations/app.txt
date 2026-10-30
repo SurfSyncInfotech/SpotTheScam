@@ -1,0 +1,1069 @@
+This file explains js/app.js.
+app.js is loaded on every page.
+It saves progress in this browser. It does not know student names.
+The storage name is on line 3: storageKey = "spotTheScam".
+Line 5: progressData starts as null. After the first load, the same object is reused.
+
+defaultProgress line number 7
+
+Line 7: function defaultProgress() {
+The function starts. It builds a brand new progress object.
+
+Line 8: return {
+Hand this object back.
+
+Line 9: case1Best: 0,
+Best Case 1 score starts at 0.
+
+Line 10: case1Passed: false,
+Case 1 has not been passed.
+
+Line 11: case1Bonus: false,
+The first-pass XP bonus for Case 1 has not been given.
+
+Line 12: case1Tried: false,
+Case 1 has not been finished even once.
+
+Line 13: case2Best: 0,
+Best Case 2 score starts at 0.
+
+Line 14: case2Passed: false,
+Case 2 has not been passed.
+
+Line 15: case2Bonus: false,
+The Case 2 first-pass bonus has not been given.
+
+Line 16: case2Tried: false,
+Case 2 has not been finished.
+
+Line 17: case3Best: 0,
+Best Case 3 score starts at 0.
+
+Line 18: case3Passed: false,
+Case 3 has not been passed.
+
+Line 19: case3Bonus: false,
+The Case 3 first-pass bonus has not been given.
+
+Line 20: case3Tried: false,
+Case 3 has not been finished.
+
+Line 21: xp: 0,
+Experience points start at 0.
+
+Line 22: badges: [],
+No badges yet.
+
+Line 23: activeCase1: null,
+No Case 1 try is in progress.
+
+Line 24: activeCase2: null,
+No Case 2 try is in progress.
+
+Line 25: activeCase3: null,
+No Case 3 try is in progress.
+
+Line 26: lastResult: null
+No result is waiting for the result page.
+
+Line 28: }
+The function ends.
+
+loadProgress line number 30
+
+Line 30: function loadProgress() {
+The function starts. It returns the progress object.
+
+Line 31: if (progressData !== null) {
+If progress was already loaded during this page visit, use that same object.
+
+Line 32: return progressData;
+Hand it back. Do not read storage again.
+
+Line 35: const saved = localStorage.getItem(storageKey);
+Read the saved text from this browser. The key is "spotTheScam".
+
+Line 36: try {
+Start a protected block. Bad saved text should not crash the page.
+
+Line 37: if (saved) {
+If some text was saved, try to read it.
+
+Line 38: progressData = JSON.parse(saved);
+Turn the saved text back into an object.
+
+Line 39: repairProgress(progressData);
+Fill any missing fields from older saved data.
+
+Line 41: progressData = defaultProgress();
+If nothing was saved, start from the blank object.
+
+Line 43: } catch (error) {
+If the saved text is broken and cannot be read, land here.
+
+Line 44: progressData = defaultProgress();
+Throw away the broken text and start fresh in memory. The broken text is replaced the next time saveProgress runs.
+
+Line 47: return progressData;
+Hand back the progress object.
+
+Line 48: }
+The function ends.
+
+repairProgress line number 50
+
+Line 50: function repairProgress(data) {
+The function starts. data is the object read from storage.
+
+Line 51: const fresh = defaultProgress();
+Make a complete blank object so we know every field name.
+
+Line 52: const keys = Object.keys(fresh);
+Get the list of field names, such as case1Best and xp.
+
+Line 53: for (let i = 0; i < keys.length; i++) {
+Loop through those names.
+
+Line 54: const key = keys[i];
+Read one field name.
+
+Line 55: if (data[key] === undefined) {
+If the saved object does not have this field, it is from an older save.
+
+Line 56: data[key] = fresh[key];
+Copy the blank value into the saved object. Existing scores are left alone.
+
+Line 59: }
+The function ends.
+
+saveProgress line number 61
+
+Line 61: function saveProgress() {
+The function starts.
+
+Line 62: localStorage.setItem(storageKey, JSON.stringify(progressData));
+Turn the progress object into text and store it in this browser under "spotTheScam".
+
+Line 63: }
+The function ends.
+
+resetProgress line number 65
+
+Line 65: function resetProgress() {
+The function starts. It clears scores for the next student on this computer.
+
+Line 66: localStorage.removeItem(storageKey);
+Delete the saved text.
+
+Line 67: progressData = defaultProgress();
+Replace the memory object with a blank one.
+
+Line 68: saveProgress();
+Write that blank object back into storage.
+
+Line 69: }
+The function ends.
+
+getRank line number 71
+
+Line 71: function getRank(xp) {
+The function starts. xp is the student's experience points.
+
+Line 72: if (xp >= 800) {
+800 or more is the top rank.
+
+Line 73: return { name: "Principal", next: 0, base: 800 };
+The name is Principal. next is 0 because there is no higher rank. base is 800, the start of this rank.
+
+Line 75: if (xp >= 500) {
+500 to 799 is the next rank down.
+
+Line 76: return { name: "Lead", next: 800, base: 500 };
+Lead. The next rank starts at 800 XP. This rank started at 500.
+
+Line 78: if (xp >= 250) {
+250 to 499.
+
+Line 79: return { name: "Specialist", next: 500, base: 250 };
+Specialist. Next rank at 500. This rank started at 250.
+
+Line 81: if (xp >= 100) {
+100 to 249.
+
+Line 82: return { name: "Analyst", next: 250, base: 100 };
+Analyst. Next rank at 250. This rank started at 100.
+
+Line 84: return { name: "Beginner", next: 100, base: 0 };
+0 to 99 is Beginner. Next rank at 100. This rank started at 0.
+
+Line 85: }
+The function ends.
+
+giveBadge line number 87
+
+Line 87: function giveBadge(badgeId) {
+The function starts. badgeId is a badge name such as "email-expert".
+
+Line 88: const data = loadProgress();
+Read progress.
+
+Line 89: if (data.badges.indexOf(badgeId) === -1) {
+indexOf returns -1 when the badge is not already in the list. Only then add it.
+
+Line 90: data.badges.push(badgeId);
+Add the badge id to the list.
+
+Line 91: saveProgress();
+Save the new list.
+
+Line 93: }
+The function ends. If the badge was already there, nothing is saved.
+
+caseIsOpen line number 95
+
+Line 95: function caseIsOpen(caseNumber) {
+The function starts. caseNumber is 1, 2, or 3.
+
+Line 96: const data = loadProgress();
+Read progress.
+
+Line 97: if (caseNumber === 1) {
+Case 1 is always open.
+
+Line 98: return true;
+Say yes.
+
+Line 100: if (caseNumber === 2) {
+Case 2 depends on Case 1.
+
+Line 101: return data.case1Passed === true;
+True only after Case 1 has been passed.
+
+Line 103: if (caseNumber === 3) {
+Case 3 depends on Case 2.
+
+Line 104: return data.case2Passed === true;
+True only after Case 2 has been passed.
+
+Line 106: return false;
+Any other number is closed.
+
+Line 107: }
+The function ends.
+
+addScoreXp line number 109
+
+Line 109: function addScoreXp(oldBest, newScore) {
+The function starts. oldBest is the previous best score. newScore is the score just earned.
+
+Line 110: if (newScore > oldBest) {
+XP is added only when the new score beats the old best. A lower retry adds no XP.
+
+Line 111: const data = loadProgress();
+Read progress.
+
+Line 112: const extraPoints = (newScore - oldBest) * 10;
+Each new point above the old best is worth 10 XP.
+
+Line 113: data.xp = data.xp + extraPoints;
+Add those points to the total XP.
+
+Line 114: saveProgress();
+Save the new XP.
+
+Line 116: }
+The function ends.
+
+recordCaseScore line number 118
+
+Line 118: function recordCaseScore(caseNumber, score) {
+The function starts. caseNumber is 1, 2, or 3. score is the official score for this try.
+
+Line 119: const data = loadProgress();
+Read progress.
+
+Line 120: const bestName = "case" + caseNumber + "Best";
+Build the field name, such as case1Best.
+
+Line 121: const passName = "case" + caseNumber + "Passed";
+Build the pass field name, such as case1Passed.
+
+Line 122: const bonusName = "case" + caseNumber + "Bonus";
+Build the bonus field name, such as case1Bonus.
+
+Line 123: const oldBest = data[bestName];
+Read the old best score before it changes.
+
+Line 125: addScoreXp(oldBest, score);
+Add XP for any improvement.
+
+Line 127: if (score > data[bestName]) {
+If this try is better than the saved best, replace the best.
+
+Line 128: data[bestName] = score;
+Store the new best. A lower score does not replace a higher one.
+
+Line 131: data["case" + caseNumber + "Tried"] = true;
+Remember that this case has been finished at least once.
+
+Line 133: const passMark = 15;
+Every case passes at 15 correct answers out of 20.
+
+Line 135: if (score >= passMark) {
+This block runs only on a passing try.
+
+Line 136: data[passName] = true;
+Mark the case as passed. A later lower score does not turn this back to false.
+
+Line 137: if (data[bonusName] === false) {
+The 50 XP bonus is given only the first time this case is passed.
+
+Line 138: data.xp = data.xp + 50;
+Add 50 XP.
+
+Line 139: data[bonusName] = true;
+Remember that the bonus was given.
+
+Line 141: if (caseNumber === 1) {
+Case 1 has its own badge.
+
+Line 142: giveBadge("email-expert");
+Give Email Expert.
+
+Line 144: if (caseNumber === 2) {
+Case 2 has its own badge.
+
+Line 145: giveBadge("safe-choices");
+Give Safe Choices.
+
+Line 147: if (caseNumber === 3) {
+Case 3 has its own badge.
+
+Line 148: giveBadge("real-world-ready");
+Give Real-World Ready.
+
+Line 152: saveProgress();
+Write the best score, pass flag, XP, and tried flag.
+
+Line 153: }
+The function ends.
+
+setFeedback line number 158
+
+Line 158: function setFeedback(boxId, text, mood) {
+The function starts.
+boxId is the id of the message box, such as "feedback".
+text is the sentence to show.
+mood is "good", "learn", "tip", or "saved".
+
+Line 159: const box = document.getElementById(boxId);
+Find that box.
+
+Line 160: if (!box) {
+If the page has no box with that id, do nothing.
+
+Line 161: return;
+Stop.
+
+Line 163: box.textContent = text;
+Put the sentence in the box.
+
+Line 164: if (text === "") {
+An empty sentence means the box should stay hidden by its CSS.
+
+Line 165: box.className = "feedback";
+Use only the plain feedback class.
+
+Line 167: box.className = "feedback " + mood;
+Add the mood class, such as "feedback good", so the color matches the message.
+
+Line 169: }
+The function ends.
+
+bringIntoView line number 172
+
+Line 172: function bringIntoView(elementId, where) {
+The function starts.
+elementId is the id to scroll to.
+where is "start" or "center". If it is missing, center is used later.
+
+Line 173: const element = document.getElementById(elementId);
+Find the element.
+
+Line 174: if (!element || element.hidden) {
+If it is missing or hidden, there is nothing to scroll to.
+
+Line 175: return;
+Stop.
+
+Line 178: let bottomEdge = window.innerHeight;
+Start with the bottom of the visible window.
+
+Line 179: const stickyBar = document.querySelector(".next-bar");
+Find the sticky Next bar  button bar, if the page has one.
+
+Line 180: if (stickyBar && stickyBar.offsetHeight > 0 && !stickyBar.contains(element)) {
+If that bar is visible and the target is not inside the bar, the bar covers the bottom of the screen.
+
+Line 181: bottomEdge = bottomEdge - stickyBar.offsetHeight;
+Shrink the visible area by the bar height so the target is not hidden behind the bar.
+
+Line 184: const box = element.getBoundingClientRect();
+Read the target's position on the screen.
+
+Line 185: const fullyVisible = box.top >= 0 && box.bottom <= bottomEdge;
+True when the whole target is already on screen.
+
+Line 186: if (fullyVisible) {
+If it is already visible, do not scroll.
+
+Line 187: return;
+Stop.
+
+Line 189: let behavior = "smooth";
+Normally scroll smoothly.
+
+Line 190: if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+If the student asked the computer to reduce motion, do not animate.
+
+Line 191: behavior = "auto";
+Jump instead of sliding.
+
+Line 193: element.scrollIntoView({ behavior: behavior, block: where || "center" });
+Scroll the target into view. If where was not given, use "center".
+
+Line 194: }
+The function ends.
+
+clueHelpText, lines 229 to 234
+
+This is not a function. It is a lookup list used by addChoiceHelp.
+Line 198: "Fake Sender" means the email address or name looks wrong.
+Line 199: "Fake Urgency" means the message says hurry or you will lose something.
+Line 200: "Information Requests" means it asks for a password, code, or private details.
+Line 201: "No warning sign" means nothing looks suspicious.
+
+addChoiceHelp line number 205
+
+Line 205: function addChoiceHelp(button, option) {
+The function starts. button is a choice button. option is the choice text.
+
+Line 206: const helpText = clueHelpText[option];
+Look up a helper sentence for that exact choice text.
+
+Line 207: if (!helpText) {
+If this choice is not one of the four clue names, there is no helper.
+
+Line 208: return;
+Stop. Other buttons are left unchanged.
+
+Line 210: const help = document.createElement("span");
+Make a span for the helper sentence.
+
+Line 211: help.className = "choice-help";
+Give it the helper style.
+
+Line 212: help.textContent = helpText;
+Put the sentence in the span.
+
+Line 213: button.appendChild(help);
+Put the span inside the button.
+
+Line 214: }
+The function ends.
+
+badgeCatalog, lines 216 to 220
+
+This is not a function. It is the list of badges the home page can show.
+Line 217: Email Expert, earned by passing Case 1.
+Line 218: Safe Choices, earned by passing Case 2.
+Line 219: Real-World Ready, earned by passing Case 3.
+
+showDashboard line number 222
+
+Line 222: function showDashboard() {
+The function starts. It fills the home page.
+
+Line 223: const grid = document.getElementById("case-grid");
+Find the case card area. Only the home page has this id.
+
+Line 224: if (!grid) {
+On other pages, there is no case grid.
+
+Line 225: return;
+Stop. Those pages do not need the dashboard fill.
+
+Line 228: const data = loadProgress();
+Read progress.
+
+Line 229: const rank = getRank(data.xp);
+Turn the XP number into a rank name and the next rank target.
+
+Line 231: document.getElementById("xp-count").textContent = String(data.xp);
+Show the XP number.
+
+Line 232: document.getElementById("rank-name").textContent = rank.name;
+Show the rank name.
+
+Line 234: const rankBar = document.getElementById("rank-bar");
+Find the rank progress bar.
+
+Line 235: if (rank.next === 0) {
+next is 0 only for Principal. There is no higher rank.
+
+Line 236: rankBar.style.width = "100%";
+Fill the bar completely.
+
+Line 237: document.getElementById("rank-next").textContent = "You reached the top rank.";
+Say the top rank is reached.
+
+Line 239: const span = rank.next - rank.base;
+How many XP this rank covers. Example: Junior is 250 - 100 = 150.
+
+Line 240: const done = data.xp - rank.base;
+How many XP the student has earned inside this rank.
+
+Line 241: const percent = Math.round((done / span) * 100);
+Turn that into a whole-number percent.
+
+Line 242: rankBar.style.width = percent + "%";
+Set the bar width.
+
+Line 243: document.getElementById("rank-next").textContent = "Next rank at " + rank.next + " XP";
+Show the next rank target.
+
+Line 246: fillCaseCard(1, data, 20, 15);
+Fill the Case 1 card. 20 questions. Pass at 15.
+
+Line 247: fillCaseCard(2, data, 20, 15);
+Fill the Case 2 card the same way.
+
+Line 248: fillCaseCard(3, data, 20, 15);
+Fill the Case 3 card the same way.
+
+Line 249: fillSkills(data);
+Fill the skill stats.
+
+Line 250: fillBadges(data);
+Fill the badge lists.
+
+Line 251: fillOverall(data);
+Fill "n of 3 passed".
+
+Line 252: fillNextStep(data);
+Fill the big Continue button.
+
+Line 253: }
+The function ends.
+
+fillNextStep line number 256
+
+Line 256: function fillNextStep(data) {
+The function starts. data is the progress object. This sets the one big home button.
+
+Line 257: const button = document.getElementById("next-step-btn");
+Find the button.
+
+Line 258: const note = document.getElementById("next-step-text");
+Find the sentence next to the button.
+
+Line 259: if (!button || !note) {
+If this page is not the home page, those ids are missing.
+
+Line 260: return;
+Stop.
+
+Line 263: const caseNames = ["", "Email Check", "What Would You Do?", "Real-World Challenge"];
+Names for cases 1, 2, and 3. The first slot is empty so case number 1 lines up with "Email Check".
+
+Line 264: const caseTotals = [0, 20, 20, 20];
+Each case has 20 questions. The first slot is unused.
+
+Line 266: for (let caseNumber = 1; caseNumber <= 3; caseNumber++) {
+Check Case 1, then Case 2, then Case 3. The first unfinished job wins.
+
+Line 267: const active = data["activeCase" + caseNumber];
+Read the in-progress try, or null.
+
+Line 268: const passed = data["case" + caseNumber + "Passed"];
+Read whether this case has been passed.
+
+Line 269: const tried = data["case" + caseNumber + "Tried"];
+Read whether this case has been finished at least once.
+
+Line 271: if (active) {
+If a try is in progress, the button continues it.
+
+Line 272: button.textContent = "Continue Case " + caseNumber;
+Example: "Continue Case 1".
+
+Line 273: button.href = "case" + caseNumber + ".html";
+Open that case page without retry=1, so the saved question is kept.
+
+Line 274: note.textContent = "You stopped on question " + (active.index + 1) + " of " + caseTotals[caseNumber] + " in " + caseNames[caseNumber] + ".";
+Example: "You stopped on question 1 of 20 in Email Check."
+
+Line 275: return;
+Stop. Do not look at later cases.
+
+Line 277: if (!passed) {
+If this case is not passed, it is the next job. Locked cases still land here when an earlier case is not passed, because the loop reaches them only after earlier cases are passed or in progress.
+
+Line 278: if (tried) {
+If they finished it before but did not pass, offer a retry.
+
+Line 279: button.textContent = "Try Case " + caseNumber + " again";
+The button words.
+
+Line 280: note.textContent = caseNames[caseNumber] + " is not passed yet. 15 correct answers out of " + caseTotals[caseNumber] + " is enough.";
+Example: "Email Check is not passed yet. 15 correct answers out of 20 is enough."
+
+Line 282: button.textContent = "Start Case " + caseNumber;
+If they have never finished it, the button says Start.
+
+Line 283: note.textContent = caseNames[caseNumber] + " is open. It has " + caseTotals[caseNumber] + " questions.";
+Example: "Email Check is open. It has 20 questions."
+
+Line 285: button.href = "case" + caseNumber + ".html?retry=1";
+retry=1 starts that case from question 1.
+
+Line 286: return;
+Stop.
+
+Line 290: button.textContent = "Play Case 1 again";
+Everything is done. The button offers a replay.
+
+Line 291: button.href = "case1.html?retry=1";
+Start Case 1 from the first email.
+
+Line 292: note.textContent = "Everything is finished. Replay a case if you want more practice.";
+The note.
+
+Line 293: }
+The function ends.
+
+fillCaseCard line number 295
+
+Line 295: function fillCaseCard(caseNumber, data, total, passMark) {
+The function starts.
+caseNumber is 1, 2, or 3.
+data is progress.
+total is 20.
+passMark is 15.
+
+Line 296: const open = caseIsOpen(caseNumber);
+True when this case is unlocked.
+
+Line 297: const best = data["case" + caseNumber + "Best"];
+The saved best score.
+
+Line 298: const passed = data["case" + caseNumber + "Passed"];
+True if this case has ever been passed.
+
+Line 299: const active = data["activeCase" + caseNumber];
+The in-progress try, or null.
+
+Line 300: const status = document.getElementById("case" + caseNumber + "-status");
+The small pill, such as case1-status.
+
+Line 301: const bestText = document.getElementById("case" + caseNumber + "-best");
+The best-score sentence.
+
+Line 302: const bar = document.getElementById("case" + caseNumber + "-bar");
+The score bar fill.
+
+Line 303: const button = document.getElementById("case" + caseNumber + "-btn");
+The Start, Continue, or Locked button.
+
+Line 304: const lockNote = document.getElementById("case" + caseNumber + "-lock");
+The sentence that says what to finish first.
+
+Line 305: const restart = document.getElementById("case" + caseNumber + "-restart");
+The Start over link.
+
+Line 307: if (data["case" + caseNumber + "Tried"] || best > 0) {
+Show a number when the case has been finished, or when a best score exists.
+
+Line 308: let shownBest = best;
+Start with the saved best.
+
+Line 309: if (shownBest > total) {
+An old save might be higher than 20, from when Case 1 had 30 questions.
+
+Line 310: shownBest = total;
+Show 20 instead, so the bar does not run past the end.
+
+Line 312: bestText.textContent = "Best score: " + shownBest + "/" + total;
+Example: "Best score: 15/20".
+
+Line 313: bar.style.width = Math.round((shownBest / total) * 100) + "%";
+Set the bar from that score.
+
+Line 315: bestText.textContent = "Best score: not tried yet";
+If there is no score, say it has not been tried.
+
+Line 316: bar.style.width = "0%";
+Empty the bar.
+
+Line 319: if (!open) {
+If the case is locked, set the locked look and stop.
+
+Line 320: status.textContent = "Locked";
+The pill says Locked.
+
+Line 321: status.className = "pill pill-lock";
+Use the locked pill style.
+
+Line 322: button.textContent = "Locked";
+The button says Locked.
+
+Line 323: button.href = "#";
+The link does not open a case.
+
+Line 324: button.className = "btn btn-lock";
+Use the locked button style.
+
+Line 325: button.setAttribute("aria-disabled", "true");
+Tell assistive tools the link is disabled. blockLockedLinks also blocks the click.
+
+Line 326: lockNote.hidden = false;
+Show the "finish the earlier case" sentence.
+
+Line 327: restart.hidden = true;
+Hide Start over.
+
+Line 328: return;
+Stop. The open-case code below does not run.
+
+Line 331: lockNote.hidden = true;
+The case is open, so hide the lock sentence.
+
+Line 332: button.className = "btn";
+Use the normal button style.
+
+Line 333: button.removeAttribute("aria-disabled");
+The button can be used.
+
+Line 335: if (passed) {
+A passed case gets the green pill.
+
+Line 336: status.textContent = "Passed";
+The pill says Passed.
+
+Line 337: status.className = "pill pill-good";
+Use the pass style.
+
+Line 338: } else if (active) {
+If it is not passed but a try is in progress, show that.
+
+Line 339: status.textContent = "In progress";
+The pill says In progress.
+
+Line 340: status.className = "pill pill-sun";
+Use the in-progress style.
+
+Line 342: status.textContent = "Ready";
+Otherwise the case is open and not started, or a finished try did not pass and is not active.
+
+Line 343: status.className = "pill";
+Use the plain pill.
+
+Line 346: if (active) {
+A saved try gets a Continue button.
+
+Line 347: button.textContent = "Continue";
+The button says Continue.
+
+Line 348: button.href = "case" + caseNumber + ".html";
+Open the case without retry, so the saved question stays.
+
+Line 349: restart.hidden = false;
+Show Start over.
+
+Line 350: restart.href = "case" + caseNumber + ".html?retry=1";
+Start over begins at question 1.
+
+Line 351: } else if (best > 0) {
+If there is a best score and no try in progress, offer a replay.
+
+Line 352: button.textContent = "Play Again";
+The button says Play Again.
+
+Line 353: button.href = "case" + caseNumber + ".html?retry=1";
+The replay starts at question 1.
+
+Line 354: restart.hidden = true;
+Hide the extra Start over link. Play Again already starts over.
+
+Line 356: button.textContent = "Start";
+If there is no score yet, the button says Start.
+
+Line 357: button.href = "case" + caseNumber + ".html?retry=1";
+Start at question 1.
+
+Line 358: restart.hidden = true;
+Hide Start over.
+
+Line 361: if (passed && best < passMark) {
+If the case was passed before, but the stored best number is now below 15, keep the pill saying Passed. The pass flag is what matters.
+
+Line 362: status.textContent = "Passed";
+Set the pill text again.
+
+Line 364: }
+The function ends.
+
+fillSkills line number 366
+
+Line 366: function fillSkills(data) {
+The function starts. It fills the four skill rows.
+
+Line 367: setSkill("skill-email", data.case1Best, 20, data.case1Tried);
+Email spotting uses the Case 1 best score out of 20.
+
+Line 368: setSkill("skill-choices", data.case2Best, 20, data.case2Tried);
+Safe choices uses the Case 2 best score out of 20.
+
+Line 369: setSkill("skill-world", data.case3Best, 20, data.case3Tried);
+Real-world skills uses the Case 3 best score out of 20.
+
+Line 370: }
+The function ends.
+
+setSkill line number 372
+
+Line 372: function setSkill(id, score, total, tried) {
+The function starts.
+id is the start of the element ids, such as "skill-email".
+score is the best score.
+total is 20.
+tried is true when this skill has been attempted.
+
+Line 373: const label = document.getElementById(id + "-label");
+Find the sentence, such as skill-email-label.
+
+Line 374: const bar = document.getElementById(id + "-bar");
+Find the bar fill.
+
+Line 375: if (!tried) {
+If this skill has not been tried, do not show a score.
+
+Line 376: label.textContent = "Not tried yet";
+Write that sentence.
+
+Line 377: bar.style.width = "0%";
+Empty the bar.
+
+Line 378: return;
+Stop.
+
+Line 380: let shownScore = score;
+Start with the saved score.
+
+Line 381: if (shownScore > total) {
+Cap an old score that is higher than 20.
+
+Line 382: shownScore = total;
+Show 20.
+
+Line 384: const percent = Math.round((shownScore / total) * 100);
+Turn the score into a whole-number percent.
+
+Line 385: label.textContent = shownScore + "/" + total + " (" + percent + "%)";
+Example: "15/20 (75%)".
+
+Line 386: bar.style.width = percent + "%";
+Set the bar.
+
+Line 387: }
+The function ends.
+
+fillBadges line number 389
+
+Line 389: function fillBadges(data) {
+The function starts. It splits badges into earned and not earned.
+
+Line 390: const earnedBox = document.getElementById("earned-badges");
+Find the earned list.
+
+Line 391: const laterBox = document.getElementById("later-badges");
+Find the not-yet list.
+
+Line 392: earnedBox.innerHTML = "";
+Clear old earned rows.
+
+Line 393: laterBox.innerHTML = "";
+Clear old waiting rows.
+
+Line 395: let earnedCount = 0;
+Start the earned count at 0.
+
+Line 396: for (let i = 0; i < badgeCatalog.length; i++) {
+Loop through the five badges.
+
+Line 397: const badge = badgeCatalog[i];
+Read one badge.
+
+Line 398: const item = document.createElement("li");
+Make a list row.
+
+Line 399: item.className = "badge-item";
+Use the earned badge style first.
+
+Line 400: item.textContent = badge.name + " — " + badge.detail;
+Example: "Email Expert — Pass Case 1".
+
+Line 401: if (data.badges.indexOf(badge.id) !== -1) {
+If the saved badge list contains this id, it is earned.
+
+Line 402: earnedBox.appendChild(item);
+Put the row in the earned list.
+
+Line 403: earnedCount = earnedCount + 1;
+Count it.
+
+Line 405: item.className = "badge-item badge-wait";
+If it is not earned, use the waiting style.
+
+Line 406: laterBox.appendChild(item);
+Put the row in the waiting list.
+
+Line 410: const empty = document.getElementById("no-badges");
+Find the "no badges yet" sentence.
+
+Line 411: if (earnedCount === 0) {
+If nothing is earned, show that sentence.
+
+Line 412: empty.hidden = false;
+Show it.
+
+Line 414: empty.hidden = true;
+If at least one badge is earned, hide the empty sentence.
+
+Line 417: const laterTitle = document.getElementById("later-title");
+Find the "Badges to earn" heading.
+
+Line 418: if (laterBox.children.length === 0) {
+If every badge is earned, there is no waiting list.
+
+Line 419: laterTitle.hidden = true;
+Hide the heading.
+
+Line 421: laterTitle.hidden = false;
+Otherwise show the heading.
+
+Line 423: }
+The function ends.
+
+fillOverall line number 425
+
+Line 425: function fillOverall(data) {
+The function starts. It counts passed paths.
+
+Line 426: let done = 0;
+Start at 0.
+
+Line 427: if (data.case1Passed) {
+Case 1 is one path.
+
+Line 428: done = done + 1;
+Add 1.
+
+Line 430: if (data.case2Passed) {
+Case 2 is one path.
+
+Line 431: done = done + 1;
+Add 1.
+
+Line 433: if (data.case3Passed) {
+Case 3 is one path.
+
+Line 434: done = done + 1;
+Add 1.
+
+Line 436: document.getElementById("overall-label").textContent = done + " of 3 passed";
+Example: "2 of 3 passed".
+
+Line 437: document.getElementById("overall-bar").style.width = Math.round(done * 100 / 3) + "%";
+Each passed case fills one third of the bar.
+
+Line 438: }
+The function ends.
+
+startResetButton line number 440
+
+Line 440: function startResetButton() {
+The function starts. It wires the Reset Progress button on the home page.
+
+Line 441: const button = document.getElementById("reset-btn");
+Find the button.
+
+Line 442: if (!button) {
+Other pages do not have this button.
+
+Line 443: return;
+Stop.
+
+Line 446: button.addEventListener("click", function () {
+When the button is clicked, run the function below.
+
+Line 447: const yes = confirm("This clears scores and badges saved in this browser. Continue?");
+Ask the student to confirm. yes is true only if they press OK.
+
+Line 448: if (yes) {
+Only clear progress after a yes.
+
+Line 449: resetProgress();
+Delete the saved scores.
+
+Line 450: showDashboard();
+Redraw the home page from the blank progress.
+
+Line 453: }
+The function ends.
+
+blockLockedLinks line number 455
+
+Line 455: function blockLockedLinks() {
+The function starts. It stops clicks on locked case buttons.
+
+Line 456: const grid = document.getElementById("case-grid");
+Find the case card area.
+
+Line 457: if (!grid) {
+Other pages do not have it.
+
+Line 458: return;
+Stop.
+
+Line 461: grid.addEventListener("click", function (event) {
+Listen for any click inside the case cards.
+
+Line 462: const link = event.target.closest("a");
+Find the link that was clicked, even if the click landed on text inside the link.
+
+Line 463: if (link && link.getAttribute("aria-disabled") === "true") {
+If that link is marked disabled, block it.
+
+Line 464: event.preventDefault();
+Cancel the navigation. The locked button stays on the home page.
+
+Line 467: }
+The function ends.
+
+Page start, line number 469
+
+Line 469: document.addEventListener("DOMContentLoaded", function () {
+When any page that loads app.js is ready, run the function below.
+
+Line 470: showDashboard();
+Fill the home page if this is the home page. On other pages it returns immediately.
+
+Line 471: startResetButton();
+Wire Reset if this page has that button.
+
+Line 472: blockLockedLinks();
+Block locked case links if this page has the case grid.
+
+Line 473: });
+The page-start listener ends.

@@ -1,0 +1,830 @@
+This file explains js/case3.js.
+case3.js runs Case 3, the Real-World Challenge.
+There are 20 messages. Each message has three steps.
+Step 1 is Scam or Legitimate. That step is the official score.
+Step 2 is the clue. That step is practice only.
+Step 3 is the safe action. That step is practice only.
+The student passes with 15 correct official answers.
+Case 3 stays locked until Case 2 has been passed.
+
+Lines 3 to 13 are variables used by the functions below.
+Line 3: questions is the list case3Challenges from questions.js.
+Line 4: currentQuestion is the position in that list. 0 is the first message.
+Line 5: selectedAnswer is "Scam" or "Legitimate".
+Line 6: selectedClue is the clue the student picked.
+Line 7: selectedAction is the safe-action choice.
+Line 8: score is the official score.
+Line 9: clueScore is the clue practice score.
+Line 10: actionScore is the safe-action practice score.
+Line 11: records will hold the review for the result page.
+Line 12: step is "classify", then "clue", then "action", then "explain".
+Line 13: finished stops the result from being saved twice.
+
+
+loadAttempt line number 15
+
+Line 15: function loadAttempt() {
+The function starts. It loads a saved Case 3 try, starts a new one, or shows the lock.
+
+Line 16: const data = loadProgress();
+Read saved progress. loadProgress is in app.js.
+
+Line 17: const params = new URLSearchParams(window.location.search);
+Read the address after the question mark. Example: case3.html?retry=1.
+
+Line 19: if (!caseIsOpen(3)) {
+caseIsOpen is in app.js. Case 3 is open only when Case 2 has been passed.
+
+Line 20: document.getElementById("play-panel").hidden = true;
+Hide the messages.
+
+Line 21: document.getElementById("lock-panel").hidden = false;
+Show the locked message.
+
+Line 22: return false;
+Tell the page start code not to continue.
+
+Line 25: if (params.get("retry") === "1" || data.activeCase3 === null || data.activeCase3.index >= questions.length) {
+Start fresh if the address says retry=1, if no try is saved, or if the saved position is past the last message.
+
+Line 26: data.activeCase3 = emptyAttempt();
+Use the blank try object from emptyAttempt.
+
+Line 27: saveProgress();
+Write that blank try into storage.
+
+Line 30: const active = data.activeCase3;
+Read the try we will use.
+
+Line 31: currentQuestion = active.index;
+Copy the saved position.
+
+Line 32: score = active.score;
+Copy the official score.
+
+Line 33: clueScore = active.clueScore;
+Copy the clue practice score.
+
+Line 34: actionScore = active.actionScore;
+Copy the action practice score.
+
+Line 35: records = active.records;
+Copy the review rows.
+
+Line 36: step = active.step;
+Copy the step name.
+
+Line 37: selectedAnswer = active.selectedAnswer;
+Copy Scam or Legitimate.
+
+Line 38: selectedClue = active.selectedClue;
+Copy the clue.
+
+Line 39: selectedAction = active.selectedAction;
+Copy the safe action.
+
+Line 40: return true;
+Tell the page start code that Case 3 can be played.
+
+Line 41: }
+The function ends.
+
+
+emptyAttempt line number 43
+
+Line 43: function emptyAttempt() {
+The function starts. It builds a blank Case 3 try.
+
+Line 44: return {
+Hand this object back to the caller.
+
+Line 45: index: 0,
+Start at the first message.
+
+Line 46: score: 0,
+Official score starts at 0.
+
+Line 47: clueScore: 0,
+Clue practice starts at 0.
+
+Line 48: actionScore: 0,
+Action practice starts at 0.
+
+Line 49: records: [],
+No review rows yet.
+
+Line 50: step: "classify",
+The first step is Scam or Legitimate.
+
+Line 51: selectedAnswer: "",
+No answer yet.
+
+Line 52: selectedClue: "",
+No clue yet.
+
+Line 53: selectedAction: ""
+No action yet.
+
+Line 55: }
+The function ends.
+
+
+saveAttempt line number 57
+
+Line 57: function saveAttempt() {
+The function starts. It writes the current Case 3 try into storage.
+
+Line 58: const data = loadProgress();
+Get the progress object.
+
+Line 59: data.activeCase3 = {
+Replace the saved Case 3 try.
+
+Line 60: index: currentQuestion,
+Save which message is on screen.
+
+Line 61: score: score,
+Save the official score.
+
+Line 62: clueScore: clueScore,
+Save the clue score.
+
+Line 63: actionScore: actionScore,
+Save the action score.
+
+Line 64: records: records,
+Save the review rows.
+
+Line 65: step: step,
+Save the step name.
+
+Line 66: selectedAnswer: selectedAnswer,
+Save Scam or Legitimate.
+
+Line 67: selectedClue: selectedClue,
+Save the clue.
+
+Line 68: selectedAction: selectedAction
+Save the action.
+
+Line 70: saveProgress();
+Write it into localStorage.
+
+Line 71: }
+The function ends.
+
+
+showQuestion line number 73
+
+Line 73: function showQuestion() {
+The function starts. It draws the message and whichever step is active.
+
+Line 74: if (currentQuestion >= questions.length) {
+If the position is past the last message, the case is over.
+
+Line 75: showResult();
+Build the result.
+
+Line 76: return;
+Stop.
+
+Line 79: const question = questions[currentQuestion];
+Read the message object.
+
+Line 80: document.getElementById("progress-label").textContent = "Message " + (currentQuestion + 1) + " of " + questions.length;
+Show "Message 1 of 20" style text.
+
+Line 81: document.getElementById("score-label").textContent = "Score: " + score;
+Show the official score.
+
+Line 82: document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
+Set the bar from how far through the 20 messages the student is.
+
+Line 83: document.getElementById("email-from").textContent = question.sender;
+Show the sender.
+
+Line 84: document.getElementById("email-message").textContent = question.message;
+Show the message text.
+
+Line 86: const scamButton = document.getElementById("choose-scam");
+Find the Scam button.
+
+Line 87: const legitButton = document.getElementById("choose-legit");
+Find the Legitimate button.
+
+Line 88: scamButton.disabled = step !== "classify";
+The Scam button can be clicked only on the first step.
+
+Line 89: legitButton.disabled = step !== "classify";
+The Legitimate button follows the same rule.
+
+Line 90: paintPicked(scamButton, "Scam", selectedAnswer, question.correctAnswer, step !== "classify");
+Paint the Scam button. Marks show after the first step.
+
+Line 91: paintPicked(legitButton, "Legitimate", selectedAnswer, question.correctAnswer, step !== "classify");
+Paint the Legitimate button the same way.
+
+Line 94: let answerWords = "a scam";
+Start with the words used when the message is a scam.
+
+Line 95: if (question.correctAnswer === "Legitimate") {
+If the real answer is Legitimate, change those words.
+
+Line 96: answerWords = "legitimate (a real, safe message)";
+Use the longer plain-language phrase.
+
+Line 99: if (step === "classify") {
+Before an answer, show a hint.
+
+Line 100: setFeedback("feedback", "Who sent it? What does it want you to do?", "tip");
+The hint. setFeedback is in app.js.
+
+Line 101: } else if (selectedAnswer === question.correctAnswer) {
+After an answer, if it was right, show the good message.
+
+Line 102: setFeedback("feedback", "This message is " + answerWords + ".", "good");
+Example: "This message is a scam."
+
+Line 104: setFeedback("feedback", "This message is actually " + answerWords + ".", "learn");
+If the answer was wrong, say what the message actually is.
+
+Line 107: const clueBox = document.getElementById("clue-box");
+Find the clue section.
+
+Line 108: clueBox.hidden = step === "classify";
+Hide the clues on the first step. Show them after that.
+
+Line 109: if (step !== "classify") {
+Draw the clue buttons only after the first answer.
+
+Line 110: drawChoiceRow("clue-row", question.clueOptions, selectedClue, question.correctClue, step === "clue", function (answer) {
+Build the clue buttons. They can be clicked only while step is "clue". A click runs the function on the next line.
+
+Line 111: checkClue(answer);
+Send the clue the student clicked.
+
+Line 115: if (step === "clue") {
+On the clue step, ask for a clue.
+
+Line 116: setFeedback("clue-feedback", "Which clue helped you decide? Pick one.", "tip");
+The clue hint.
+
+Line 117: } else if (step === "action" || step === "explain") {
+After a clue is chosen, show whether it was right.
+
+Line 118: if (selectedClue === question.correctClue) {
+If the clue matches, use the good style.
+
+Line 119: setFeedback("clue-feedback", "The main clue is " + question.correctClue + ".", "good");
+Name the right clue.
+
+Line 121: setFeedback("clue-feedback", "The main clue is " + question.correctClue + ".", "learn");
+If the clue was wrong, still name the right clue, in the learning style.
+
+Line 124: setFeedback("clue-feedback", "", "");
+On the classify step, clear the clue message.
+
+Line 127: const actionBox = document.getElementById("action-box");
+Find the safe-action section.
+
+Line 128: actionBox.hidden = step !== "action" && step !== "explain";
+Show the action section only on the action step and the explain step.
+
+Line 129: if (step === "action" || step === "explain") {
+Draw the action buttons on those steps.
+
+Line 130: drawChoiceRow("action-row", question.actionOptions, selectedAction, question.correctAction, step === "action", function (answer) {
+Build the action buttons. They can be clicked only while step is "action".
+
+Line 131: checkAction(answer);
+Send the action the student clicked.
+
+Line 135: const nextButton = document.getElementById("next-btn");
+Find Next.
+
+Line 136: if (step === "action") {
+On the action step, the student still needs to pick an action.
+
+Line 137: setFeedback("action-feedback", "What would keep you safe here? Pick one.", "tip");
+Ask for a safe action.
+
+Line 138: nextButton.hidden = true;
+Hide Next until an action is chosen.
+
+Line 139: } else if (step === "explain") {
+After an action, show the lesson and Next.
+
+Line 140: if (selectedAction === question.correctAction) {
+If the action was the safe one, show the explanation as correct.
+
+Line 141: setFeedback("action-feedback", question.explanation, "good");
+Show the explanation.
+
+Line 143: setFeedback("action-feedback", "A safe thing to do: " + question.correctAction + ". " + question.explanation, "learn");
+If the action was not safe, name the safe action and then the explanation.
+
+Line 145: nextButton.hidden = false;
+Show Next.
+
+Line 146: if (currentQuestion === questions.length - 1) {
+On the last message, Next opens the result.
+
+Line 147: nextButton.textContent = "See my result";
+Change the words.
+
+Line 149: nextButton.textContent = "Next";
+On earlier messages, the button says Next.
+
+Line 152: setFeedback("action-feedback", "", "");
+On classify and clue, clear the action message.
+
+Line 153: nextButton.hidden = true;
+Keep Next hidden until the action step is finished.
+
+Line 155: }
+The function ends.
+
+
+paintPicked line number 157
+
+Line 157: function paintPicked(button, value, pickedValue, correctValue, showMark) {
+The function starts.
+button is the button to paint.
+value is what this button stands for.
+pickedValue is what the student chose.
+correctValue is the right answer.
+showMark is true when marks should be visible.
+
+Line 158: const note = button.querySelector(".choice-note");
+Find the small note inside the button.
+
+Line 159: button.className = "choice-btn";
+Reset the button to the plain choice style.
+
+Line 160: note.textContent = "";
+Clear the old note.
+
+Line 161: if (!showMark || pickedValue === "") {
+If marks should stay hidden, or nothing has been chosen, leave the button plain.
+
+Line 162: return;
+Stop.
+
+Line 164: if (value === correctValue) {
+If this button is the right answer, mark it.
+
+Line 165: button.className = "choice-btn is-correct";
+Add the correct style.
+
+Line 166: note.textContent = "Correct";
+Write Correct.
+
+Line 167: return;
+Stop.
+
+Line 169: if (value === pickedValue) {
+If this button is the student's choice and it was not right, mark it wrong.
+
+Line 170: button.className = "choice-btn is-wrong";
+Add the wrong style.
+
+Line 171: note.textContent = "Your choice";
+Write "Your choice".
+
+Line 173: }
+The function ends.
+
+
+drawChoiceRow line number 175
+
+Line 175: function drawChoiceRow(rowId, options, pickedValue, correctValue, canClick, onPick) {
+The function starts.
+rowId is the id of the box that will hold the buttons.
+options is the list of choice texts.
+pickedValue is the student's choice.
+correctValue is the right choice.
+canClick is true when the buttons should still work.
+onPick is the function to call when a button is clicked.
+
+Line 176: const row = document.getElementById(rowId);
+Find that box.
+
+Line 177: row.innerHTML = "";
+Clear old buttons.
+
+Line 178: for (let i = 0; i < options.length; i++) {
+Loop through the choices.
+
+Line 179: const option = options[i];
+Read one choice.
+
+Line 180: const button = document.createElement("button");
+Make a button.
+
+Line 181: button.type = "button";
+This button does not submit a form.
+
+Line 182: button.className = "choice-btn";
+Use the choice style.
+
+Line 183: const label = document.createElement("span");
+Make a span for the words.
+
+Line 184: label.className = "choice-label";
+Give it the label class.
+
+Line 185: label.textContent = option;
+Put the choice words in the span.
+
+Line 186: button.appendChild(label);
+Put the span in the button.
+
+Line 187: addChoiceHelp(button, option);
+If this choice is a known clue name, add the one-line helper under it. addChoiceHelp is in app.js. Action choices are not in that helper list, so they get no extra line.
+
+Line 188: const note = document.createElement("span");
+Make a span for Correct or Your choice.
+
+Line 189: note.className = "choice-note";
+Give it the note class.
+
+Line 190: button.appendChild(note);
+Put the note in the button.
+
+Line 191: paintPicked(button, option, pickedValue, correctValue, pickedValue !== "");
+Paint marks when a choice has already been saved.
+
+Line 192: if (canClick) {
+If this step is still open, listen for a click.
+
+Line 193: button.addEventListener("click", function () {
+A click runs the next line.
+
+Line 194: onPick(option);
+Call the function that was passed in, with this choice.
+
+Line 197: button.disabled = true;
+If the step is closed, the button cannot be clicked.
+
+Line 199: row.appendChild(button);
+Put the button in the row.
+
+Line 201: }
+The function ends.
+
+
+checkAnswer line number 203
+
+Line 203: function checkAnswer(answer) {
+The function starts. answer is "Scam" or "Legitimate".
+
+Line 204: if (step !== "classify") {
+Ignore the click after the first step.
+
+Line 205: return;
+Stop.
+
+Line 207: selectedAnswer = answer;
+Remember the choice.
+
+Line 208: if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+If it matches the real answer, it counts toward the pass.
+
+Line 209: score = score + 1;
+Add 1 to the official score.
+
+Line 211: step = "clue";
+Move to the clue step.
+
+Line 212: saveAttempt();
+Save the step.
+
+Line 213: showQuestion();
+Redraw the page with the clue buttons.
+
+Line 214: bringIntoView("clue-box");
+Scroll the clue box into view.
+
+Line 215: }
+The function ends.
+
+
+checkClue line number 217
+
+Line 217: function checkClue(answer) {
+The function starts. answer is the clue text.
+
+Line 218: if (step !== "clue") {
+Ignore the click unless the student is on the clue step.
+
+Line 219: return;
+Stop.
+
+Line 221: selectedClue = answer;
+Remember the clue.
+
+Line 222: if (selectedClue === questions[currentQuestion].correctClue) {
+If the clue matches, it counts as practice.
+
+Line 223: clueScore = clueScore + 1;
+Add 1 to the clue practice score. This does not decide the pass.
+
+Line 225: step = "action";
+Move to the safe-action step.
+
+Line 226: saveAttempt();
+Save the clue and the new step.
+
+Line 227: showQuestion();
+Redraw the page with the action buttons.
+
+Line 228: bringIntoView("action-box");
+Scroll the action box into view.
+
+Line 229: }
+The function ends.
+
+
+checkAction line number 231
+
+Line 231: function checkAction(answer) {
+The function starts. answer is the safe-action text.
+
+Line 232: if (step !== "action") {
+Ignore the click unless the student is on the action step.
+
+Line 233: return;
+Stop.
+
+Line 235: selectedAction = answer;
+Remember the action.
+
+Line 236: if (selectedAction === questions[currentQuestion].correctAction) {
+If the action matches, it counts as practice.
+
+Line 237: actionScore = actionScore + 1;
+Add 1 to the action practice score. This does not decide the pass.
+
+Line 239: step = "explain";
+Move to the explain step.
+
+Line 240: saveAttempt();
+Save the action and the new step.
+
+Line 241: showQuestion();
+Redraw the page with the explanation and Next.
+
+Line 242: bringIntoView("action-feedback");
+Scroll the explanation into view.
+
+Line 243: document.getElementById("next-btn").focus({ preventScroll: true });
+Move keyboard focus to Next without another scroll.
+
+Line 244: }
+The function ends.
+
+
+nextQuestion line number 246
+
+Line 246: function nextQuestion() {
+The function starts. It stores this message and moves on.
+
+Line 247: if (step !== "explain") {
+Next only works after all three steps.
+
+Line 248: return;
+Stop.
+
+Line 251: const question = questions[currentQuestion];
+Read the message just finished.
+
+Line 252: records.push({
+Add one review row.
+
+Line 253: heading: "Message " + question.id,
+The review heading uses the message id.
+
+Line 254: prompt: "From: " + question.sender + " — " + question.message,
+The review text is the sender and the message.
+
+Line 255: yourAnswer: selectedAnswer,
+The Scam or Legitimate choice.
+
+Line 256: rightAnswer: question.correctAnswer,
+The right official answer.
+
+Line 257: correct: selectedAnswer === question.correctAnswer,
+True when the official answer was right.
+
+Line 258: explanation: question.explanation,
+The lesson sentence.
+
+Line 259: extras: [
+The practice extras start.
+
+Line 261: label: "Clue",
+This extra is the clue.
+
+Line 262: yours: selectedClue,
+The clue the student picked.
+
+Line 263: right: question.correctClue,
+The right clue.
+
+Line 264: correct: selectedClue === question.correctClue
+True when the clue was right.
+
+Line 267: label: "Safe action",
+This extra is the safe action.
+
+Line 268: yours: selectedAction,
+The action the student picked.
+
+Line 269: right: question.correctAction,
+The right action.
+
+Line 270: correct: selectedAction === question.correctAction
+True when the action was right.
+
+Line 275: currentQuestion = currentQuestion + 1;
+Move to the next message.
+
+Line 276: selectedAnswer = "";
+Clear Scam or Legitimate.
+
+Line 277: selectedClue = "";
+Clear the clue.
+
+Line 278: selectedAction = "";
+Clear the action.
+
+Line 279: step = "classify";
+The next message starts at step 1.
+
+Line 280: saveAttempt();
+Save the new position.
+
+Line 282: if (currentQuestion >= questions.length) {
+If that move went past the last message, finish.
+
+Line 283: showResult();
+Open the result flow.
+
+Line 285: showQuestion();
+Otherwise draw the next message.
+
+Line 286: bringIntoView("progress-label", "start");
+Scroll up to "Message n of 20".
+
+Line 287: document.getElementById("choose-scam").focus({ preventScroll: true });
+Put keyboard focus on the Scam button.
+
+Line 289: }
+The function ends.
+
+
+showResult line number 291
+
+Line 291: function showResult() {
+The function starts. It saves the score and opens the result page.
+
+Line 292: if (finished) {
+Do not save twice.
+
+Line 293: return;
+Stop.
+
+Line 295: finished = true;
+Mark the try as finished.
+
+Line 297: recordCaseScore(3, score);
+Save the Case 3 official score in app.js. 15 or more passes and can give the Real-World Ready badge.
+
+Line 298: const data = loadProgress();
+Read progress after the score is saved.
+
+Line 299: const passed = score >= 15;
+True when this try has 15 or more correct official answers.
+
+Line 300: let message = "Nice effort. Let's learn from these answers. You can try again.";
+The message when this try does not pass.
+
+Line 301: if (passed) {
+If this try passes, use the pass message.
+
+Line 302: message = "Great detective work! You passed the Real-World Challenge.";
+The pass message.
+
+Line 303: } else if (data.case3Passed) {
+If an earlier try already passed, that pass still counts.
+
+Line 304: message = "This try is below 15 out of 20. Your earlier pass still counts.";
+That message.
+
+Line 307: data.activeCase3 = null;
+Clear the in-progress try.
+
+Line 308: data.lastResult = {
+Save the object the result page reads.
+
+Line 309: activity: "case3",
+This result is Case 3.
+
+Line 310: title: "Case 3 — Real-World Challenge",
+The result heading.
+
+Line 311: score: score,
+Official correct answers.
+
+Line 312: total: 20,
+There are 20 messages.
+
+Line 313: passMark: 15,
+15 correct official answers pass.
+
+Line 314: passed: passed,
+True or false for this try.
+
+Line 315: scoreNote: "The official score uses the Scam or Legitimate answers.",
+The clue and the action do not decide the pass.
+
+Line 316: practice: [
+The practice scores start.
+
+Line 317: { label: "Clue practice", score: clueScore, total: 20 },
+Clue score out of 20.
+
+Line 318: { label: "Safe action practice", score: actionScore, total: 20 }
+Action score out of 20.
+
+Line 320: message: message,
+The sentence chosen above.
+
+Line 321: retryHref: "case3.html?retry=1",
+Retry starts Case 3 from message 1.
+
+Line 322: nextHref: data.case3Passed ? "training.html" : "",
+If Case 3 has ever been passed, the next button opens Company Training.
+
+Line 323: nextLabel: "Go to Company Training",
+The words on that button.
+
+Line 324: records: records
+The review of every message.
+
+Line 326: saveProgress();
+Write lastResult into storage.
+
+Line 327: window.location.href = "result.html";
+Open the result page.
+
+Line 328: }
+The function ends.
+
+
+Page start, line number 330
+
+Line 330: document.addEventListener("DOMContentLoaded", function () {
+When the Case 3 HTML has loaded, run the function below.
+
+Line 331: const ready = loadAttempt();
+Load the try, or show the lock.
+
+Line 332: if (!ready) {
+If the case is locked, stop.
+
+Line 333: return;
+Do not attach buttons.
+
+Line 336: document.getElementById("choose-scam").addEventListener("click", function () {
+When Scam is clicked, run the next line.
+
+Line 337: checkAnswer("Scam");
+Treat the click as Scam.
+
+Line 339: document.getElementById("choose-legit").addEventListener("click", function () {
+When Legitimate is clicked, run the next line.
+
+Line 340: checkAnswer("Legitimate");
+Treat the click as Legitimate.
+
+Line 342: document.getElementById("next-btn").addEventListener("click", function () {
+When Next is clicked, run the next line.
+
+Line 343: nextQuestion();
+Save this message and move on.
+
+Line 346: if (currentQuestion >= questions.length) {
+If the saved position is already past the end, finish.
+
+Line 347: showResult();
+Open the result flow.
+
+Line 348: return;
+Stop.
+
+Line 350: showQuestion();
+Draw the current message.
+
+Line 351: });
+The page-start listener ends.

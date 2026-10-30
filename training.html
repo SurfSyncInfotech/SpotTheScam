@@ -1,52 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Company Training · Spot the Scam</title>
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#243f6b">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Spot the Scam">
-    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-    <link rel="stylesheet" href="css/training.css?v=7">
+    <meta name="theme-color" content="#3b49df">
+    <link rel="stylesheet" href="css/training.css?v=25">
 </head>
+
 <body>
-    <a class="skip" href="#main">Skip to content</a>
-    <input class="menu-toggle" type="checkbox" id="menu-toggle">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
     <header class="site-header">
-        <a class="logo" href="index.html">
-            <img src="assets/images/logo.svg" alt="" width="48" height="48">
-            <span>Spot the Scam</span>
-        </a>
-        <label class="menu-btn" for="menu-toggle">
-            <span class="menu-bars" aria-hidden="true"></span>
-            <span class="sr">Menu</span>
-        </label>
-        <div class="header-tools">
-        <nav aria-label="Main">
-                <a href="case1.html">Case 1</a>
-                <a href="case2.html">Case 2</a>
-                <a href="case3.html">Case 3</a>
-                <a href="training.html" aria-current="page">Training</a>
-                <a href="index.html?pane=badges">Badges</a>
+        <div class="header-container">
+            <a class="brand-anchor" href="index.html">
+                <div class="brand-logo-mark">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <div class="brand-text-wrap">
+                    <span class="brand-title">Spot the Scam</span>
+                    <span class="brand-tag">Cyber Defense Lab</span>
+                </div>
+            </a>
+
+            <nav class="site-nav" id="site-nav" aria-label="Main Navigation">
+                <a href="index.html" class="nav-item">Dashboard</a>
+                <a href="case1.html" class="nav-item">Case 1</a>
+                <a href="case2.html" class="nav-item">Case 2</a>
+                <a href="case3.html" class="nav-item">Case 3</a>
+                <a href="training.html" class="nav-item active" aria-current="page">Training</a>
             </nav>
-            <div class="install-wrap">
-                <button type="button" class="btn btn-quiet" id="install-btn" hidden>Install app</button>
-                <p class="install-note" id="install-note" hidden></p>
+
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-secondary btn-sm">&larr; Return to Dashboard</a>
             </div>
         </div>
     </header>
-    <label class="menu-backdrop" for="menu-toggle"></label>
 
-    <main id="main">
-        <h1>Company Training</h1>
-        <div class="video-box" role="img" aria-label="Training video placeholder"></div>
+    <main class="main-wrapper" id="main">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="case-page-head" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px;">
+                <span class="case-kicker-badge" style="display:inline-block; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--brand-600); background:var(--brand-50); padding:3px 10px; border-radius:999px; margin-bottom:8px;">
+                    Educational Briefing
+                </span>
+                <h1 style="font-size: 1.875rem; font-weight: 800; color: var(--slate-950); margin: 0 0 6px;">Company Training Video</h1>
+                <p style="font-size: 0.95rem; color: var(--slate-600); margin: 0;">
+                    Review foundational techniques scammers use to manipulate emotions and bypass email defenses.
+                </p>
+            </div>
+
+            <div class="training-video-wrapper video-empty-placeholder" id="player-container">
+                <div class="placeholder-content">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                        <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
+                    </svg>
+                    <p class="placeholder-main-text">Training Video Coming Soon</p>
+                    <p class="placeholder-sub-text">The official training briefing will appear here once uploaded.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 28px; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm);">
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-950); margin: 0 0 12px;">Three Non-Negotiable Rules</h2>
+                <ul style="padding-left: 20px; margin: 0; color: var(--slate-700); line-height: 1.7; font-size: 0.9375rem;">
+                    <li><strong>Stop:</strong> Never click under sudden pressure, panic warnings, or countdowns.</li>
+                    <li><strong>Check:</strong> Scrutinize the sender address domain letter-by-letter.</li>
+                    <li><strong>Verify:</strong> Always confirm through official apps, parent guidance, or trusted school contacts.</li>
+                </ul>
+            </div>
+        </div>
     </main>
 
-    <script src="js/app.js?v=9"></script>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <span>Spot the Scam &bull; Interactive Cyber Safety</span>
+            <span>Local Browser Session</span>
+        </div>
+    </footer>
+
+    <script src="js/app.js?v=25"></script>
     <script src="js/install.js"></script>
 </body>
+
 </html>
