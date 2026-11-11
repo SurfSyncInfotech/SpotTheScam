@@ -217,13 +217,15 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 8px 15px;
+    padding: 8px 14px;
     border-radius: var(--radius-pill);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--ink-body);
     text-decoration: none;
     transition: all 0.15s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .nav-item:hover {
@@ -466,7 +468,34 @@ body {
     color: var(--ink-muted);
 }
 
-@media (max-width: 960px) {
+
+/* Intermediate desktop navbar scaling so items never wrap */
+@media (max-width: 1240px) {
+    .header-container {
+        padding: 0 16px;
+        gap: 10px;
+    }
+    .brand-title {
+        font-size: 1.1rem;
+    }
+    .brand-tag {
+        font-size: 0.65rem;
+    }
+    .site-nav {
+        gap: 4px;
+    }
+    .nav-item {
+        padding: 6px 9px;
+        font-size: 0.82rem;
+        gap: 5px;
+    }
+    .nav-item svg {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (max-width: 1040px) {
     .site-nav {
         display: none;
     }
@@ -586,5 +615,112 @@ body {
 @media (max-width: 380px) {
     .brand-tag {
         display: none;
+    }
+}
+
+/* Shared Case Page & Metrics Bar Responsive Rules */
+.session-metrics-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--surface-card);
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--radius-lg);
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+}
+
+.metric-label-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.metric-pill-num {
+    color: var(--ink-black);
+    font-family: var(--font-mono);
+}
+
+.metric-score-display {
+    color: var(--gold-text);
+    background: var(--gold-bg);
+    border: 1.5px solid var(--gold-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tracker-bar-wrap {
+    flex: 1;
+    max-width: 280px;
+}
+
+@media (max-width: 680px) {
+    .session-metrics-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 18px !important;
+    }
+    .metric-label-group {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+    .metric-pill-num {
+        font-size: 0.85rem !important;
+        line-height: 1.35 !important;
+    }
+    .metric-score-display {
+        font-size: 0.82rem !important;
+        padding: 3px 10px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+    .tracker-bar-wrap {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+    .progress-track, .progress-track.bar {
+        width: 100% !important;
+        height: 6px !important;
+    }
+    .case-page-head {
+        margin-bottom: 18px !important;
+        padding-bottom: 12px !important;
+    }
+    .case-main-title {
+        font-size: 1.5rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 6px !important;
+    }
+    .case-sub-instructions {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        font-size: 0.88rem !important;
+        margin-bottom: 10px !important;
+    }
+    .target-badge {
+        display: inline-block !important;
+        white-space: nowrap !important;
+        font-size: 0.78rem !important;
+        padding: 4px 10px !important;
+    }
+    .practice-time-callout {
+        font-size: 0.85rem !important;
+        padding: 8px 12px !important;
+        margin-top: 8px !important;
     }
 }

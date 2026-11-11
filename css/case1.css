@@ -198,7 +198,7 @@
     font-size: 0.98rem;
     color: var(--ink-black);
     font-weight: 700;
-    word-break: break-all;
+    overflow-wrap: anywhere; word-break: break-word;
 }
 
 .mail-body-content {
@@ -367,5 +367,56 @@
 @media (max-width: 860px) {
     .investigation-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .mail-metadata-table {
+        padding: 14px 14px;
+        gap: 8px;
+    }
+    .mail-field-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px 10px;
+    }
+    .field-name-tag {
+        width: auto;
+        font-size: 0.72rem;
+    }
+    .mail-body-content {
+        padding: 16px 14px;
+    }
+    .inspectable-line, .inspectable-body-line {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+    }
+    .decisions-console-panel {
+        padding: 18px 16px;
+        border-radius: var(--radius-lg);
+    }
+    .step-prompt-heading {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    .verdict-button {
+        padding: 14px 14px;
+    }
+    .verdict-label {
+        font-size: 0.98rem;
+    }
+    .verdict-help {
+        font-size: 0.82rem;
+    }
+    .step2-guidance-note {
+        font-size: 0.86rem;
+        padding: 10px 12px;
+    }
+    .next-action-footer {
+        margin-top: 18px;
+        padding-top: 14px;
     }
 }
