@@ -129,9 +129,17 @@ function showQuestion() {
     }
 
     if (selectedAnswer === question.correctAnswer) {
-        setFeedback("feedback", "Good observation! This email is indeed " + answerWords + ".", "good");
+        if (question.correctAnswer === "Scam") {
+            setFeedback("feedback", "Correct — this email is suspicious. Now find the clue that gave it away.", "good");
+        } else {
+            setFeedback("feedback", "Correct — this email looks legitimate. The sender and details are authentic.", "good");
+        }
     } else {
-        setFeedback("feedback", "Careful! This email is actually " + answerWords + ".", "learn");
+        if (question.correctAnswer === "Scam") {
+            setFeedback("feedback", "Not quite — this email is actually a scam. Take another look at the sender or wording.", "learn");
+        } else {
+            setFeedback("feedback", "Not quite — this email is actually safe and legitimate.", "learn");
+        }
     }
 
     clueBox.hidden = false;
@@ -162,9 +170,9 @@ function showQuestion() {
 
     const isLineCorrect = (selectedLine === question.suspiciousTarget);
     if (isLineCorrect) {
-        setFeedback("clue-feedback", "Spot on! That line is suspicious. " + question.explanation, "good");
+        setFeedback("clue-feedback", "Correct! That line is suspicious. " + question.explanation, "good");
     } else {
-        setFeedback("clue-feedback", "Notice highlighted in green: that's the key clue. " + question.explanation, "learn");
+        setFeedback("clue-feedback", "Take another look at the highlighted line. " + question.explanation, "learn");
     }
 
     nextButton.hidden = false;
@@ -300,9 +308,9 @@ function showResult() {
     recordCaseScore(1, score);
     const data = loadProgress();
     const passed = score >= 15;
-    let message = "Nice effort! Review your answers and try again to cycle through new questions.";
+    let message = "You've finished Case 1 with " + score + " out of " + questions.length + " correct. Review the answers below to see what clues you missed, then try again.";
     if (passed) {
-        message = "Outstanding detective work! You passed Case 1. You can now take Case 2 or replay for new questions.";
+        message = "You passed Case 1 with " + score + " out of " + questions.length + " correct! You're ready for Case 2, or you can practice with a new set of emails.";
     }
 
     data.case1Cycle = ((data.case1Cycle || 0) + 1) % 5;
@@ -321,7 +329,7 @@ function showResult() {
         message: message,
         retryHref: "case1.html?retry=1",
         nextHref: "case2.html?retry=1",
-        nextLabel: "Proceed to Case 2",
+        nextLabel: "Continue to Case 2",
         records: records
     };
     saveProgress();

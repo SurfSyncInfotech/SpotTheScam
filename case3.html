@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Case 3 · Real-World Simulation · Advanced Phishing Scenarios</title>
+    <title>Case 3 · Mixed Scenarios · Put It All Together</title>
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3b49df">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="brand-text-wrap">
                     <span class="brand-title">Spot the Scam</span>
-                    <span class="brand-tag">Cyber Defense Lab</span>
+                    <span class="brand-tag">Online Safety Practice</span>
                 </div>
             </a>
 
@@ -53,7 +53,7 @@
             </nav>
 
             <div class="header-actions">
-                <a href="index.html" class="btn btn-secondary btn-sm">&larr; Return to Dashboard</a>
+                <a href="index.html" class="btn btn-secondary btn-sm">&larr; Back to Home</a>
             </div>
         </div>
     </header>
@@ -61,25 +61,25 @@
     <main class="main-wrapper" id="main">
         <!-- Advisory Notice if accessed early -->
         <section id="lock-panel" class="lock-advisory-panel panel" hidden>
-            <h2>Suggestion: Try Previous Cases First</h2>
-            <p>Cases 1 and 2 build foundational identification skills. We suggest completing them first, but you can jump into this challenge anytime!</p>
+            <h2>Suggested: Try Earlier Cases First</h2>
+            <p>Cases 1 and 2 cover sender clues and safe choices first. We recommend completing them first, but you can start Case 3 whenever you feel ready.</p>
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button type="button" class="btn btn-primary" id="proceed-anyway-btn">Proceed to Case 3 Anyway</button>
-                <a class="btn btn-secondary" href="index.html">Back to Dashboard</a>
+                <button type="button" class="btn btn-primary" id="proceed-anyway-btn">Start Case 3 Anyway</button>
+                <a class="btn btn-secondary" href="index.html">Back to Home</a>
             </div>
         </section>
 
         <!-- Active Playing Area -->
         <section id="play-panel">
             <div class="case-page-head">
-                <span class="case-kicker-badge">Mission 03</span>
-                <h1 class="case-main-title">Real-World Simulation</h1>
+                <span class="case-kicker-badge">Case 3 · Mixed Scenarios</span>
+                <h1 class="case-main-title">Put It All Together</h1>
                 <div class="case-sub-instructions">
-                    <span>Evaluate the message across 3 tactical verification steps.</span>
-                    <span class="target-badge">Passing Goal: 15 / 20</span>
+                    <span>Inspect the message, spot what is suspicious, and pick the safest next step.</span>
+                    <span class="target-badge">Goal: 15 / 20 to pass</span>
                 </div>
                 <div class="practice-time-callout">
-                    You can go at your own pace, but setting aside 30–45 minutes as a time limit is good practice.
+                    Work through each step: decide if it is suspicious, find the clue, and choose what to do next.
                 </div>
             </div>
 
@@ -102,7 +102,7 @@
                 <div class="evidence">
                     <article class="message-evidence-card email-card">
                         <div class="message-card-header">
-                            Simulated Threat Message
+                            Incoming Message
                         </div>
                         <div class="message-card-body">
                             <div class="message-from-line">
@@ -136,7 +136,7 @@
                     <!-- Step 2: Main Clue -->
                     <section id="clue-box" class="step-module question-block" hidden style="margin-top: 20px;">
                         <span class="step-tag-pill step-tag">Step 2</span>
-                        <h2 class="step-question-title">What is the primary indicator?</h2>
+                        <h2 class="step-question-title">What gave it away?</h2>
                         <div class="choices-stack choice-row" id="clue-row"></div>
                     </section>
                     <div id="clue-feedback" class="feedback" aria-live="polite"></div>
@@ -144,7 +144,7 @@
                     <!-- Step 3: Safe Action -->
                     <section id="action-box" class="step-module question-block" hidden style="margin-top: 20px;">
                         <span class="step-tag-pill step-tag">Step 3</span>
-                        <h2 class="step-question-title">What is the safest action to take?</h2>
+                        <h2 class="step-question-title">What is the safest next step?</h2>
                         <div class="choices-stack choice-row" id="action-row"></div>
                     </section>
                     <div id="action-feedback" class="feedback" aria-live="polite"></div>
@@ -161,8 +161,8 @@
 
     <footer class="site-footer">
         <div class="footer-container">
-            <span>Spot the Scam &bull; Case 3 Real-World Challenges</span>
-            <span>Local Progress Session</span>
+            <span>Spot the Scam &bull; Case 3 Practice</span>
+            <span>Saved in your browser</span>
         </div>
     </footer>
 

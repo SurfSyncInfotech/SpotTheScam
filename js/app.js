@@ -72,18 +72,18 @@ function resetProgress() {
 
 function getRank(xp) {
     if (xp >= 800) {
-        return { name: "Principal", next: 0, base: 800 };
+        return { name: "Safety Pro", next: 0, base: 800 };
     }
     if (xp >= 500) {
-        return { name: "Lead", next: 800, base: 500 };
+        return { name: "Scam Detector", next: 800, base: 500 };
     }
     if (xp >= 250) {
-        return { name: "Specialist", next: 500, base: 250 };
+        return { name: "Clue Spotter", next: 500, base: 250 };
     }
     if (xp >= 100) {
-        return { name: "Analyst", next: 250, base: 100 };
+        return { name: "Careful Reader", next: 250, base: 100 };
     }
-    return { name: "Beginner", next: 100, base: 0 };
+    return { name: "Getting Started", next: 100, base: 0 };
 }
 
 function giveBadge(badgeId) {
@@ -237,7 +237,7 @@ function fillNextStep(data) {
         return;
     }
 
-    const caseNames = ["", "Email Check", "What Would You Do?", "Real-World Challenge"];
+    const caseNames = ["", "Case 1 · Email Check", "Case 2 · What Would You Do?", "Case 3 · Mixed Scenarios"];
     const caseTotals = [0, 20, 20, 20];
 
     for (let caseNumber = 1; caseNumber <= 3; caseNumber++) {

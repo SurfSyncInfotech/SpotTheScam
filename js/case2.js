@@ -235,11 +235,11 @@ function showResult() {
     recordCaseScore(2, score);
     const data = loadProgress();
     const passed = score >= 15;
-    let message = "Nice effort. Replay to practice with new scenarios!";
+    let message = "You've finished Case 2 with " + score + " out of " + questions.length + " correct. Review the explanations below, then try again to hit 15.";
     if (passed) {
-        message = "Brilliant decisions! You passed Case 2. Case 3 is now unlocked.";
+        message = "You passed Case 2 with " + score + " out of " + questions.length + " correct! Case 3 is now unlocked, or you can replay for more scenarios.";
     } else if (data.case2Passed) {
-        message = "This try is below 15 out of 20. Your earlier pass still counts!";
+        message = "This try scored " + score + " out of 20. Your earlier pass still counts!";
     }
 
     data.case2Cycle = ((data.case2Cycle || 0) + 1) % 5;
@@ -256,7 +256,7 @@ function showResult() {
         message: message,
         retryHref: "case2.html?retry=1",
         nextHref: "case3.html?retry=1",
-        nextLabel: "Proceed to Case 3",
+        nextLabel: "Continue to Case 3",
         records: records
     };
     saveProgress();

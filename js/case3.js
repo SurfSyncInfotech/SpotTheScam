@@ -151,9 +151,9 @@ function showQuestion() {
     }
 
     if (selectedAnswer === question.correctAnswer) {
-        setFeedback("feedback", "That's right! This message is " + answerWords + ".", "good");
+        setFeedback("feedback", "Correct — this message is " + answerWords + ".", "good");
     } else {
-        setFeedback("feedback", "This message is actually " + answerWords + ".", "learn");
+        setFeedback("feedback", "Not quite. This message is actually " + answerWords + ".", "learn");
     }
 
     clueBox.hidden = false;
@@ -177,9 +177,9 @@ function showQuestion() {
     }
 
     if (selectedClue === question.correctClue) {
-        setFeedback("clue-feedback", "Correct clue!", "good");
+        setFeedback("clue-feedback", "Correct — you spotted the main warning sign.", "good");
     } else {
-        setFeedback("clue-feedback", "The key sign is: " + question.correctClue + ".", "learn");
+        setFeedback("clue-feedback", "Not quite. The main clue here is: " + question.correctClue + ".", "learn");
     }
 
     actionBox.hidden = false;
@@ -368,11 +368,11 @@ function showResult() {
     recordCaseScore(3, score);
     const data = loadProgress();
     const passed = score >= 15;
-    let message = "Nice effort. Replay to practice with new challenge messages!";
+    let message = "You've finished Case 3 with " + score + " out of " + questions.length + " correct. Review the questions below to see what gave away the scams, then try again.";
     if (passed) {
-        message = "Master detective work! You passed the Real-World Simulation.";
+        message = "You passed Case 3 with " + score + " out of " + questions.length + " correct! You've finished all three practice cases.";
     } else if (data.case3Passed) {
-        message = "This try is below 15 out of 20. Your earlier pass still counts.";
+        message = "This try scored " + score + " out of 20. Your earlier pass still counts.";
     }
 
     data.case3Cycle = ((data.case3Cycle || 0) + 1) % 5;
@@ -392,7 +392,7 @@ function showResult() {
         message: message,
         retryHref: "case3.html?retry=1",
         nextHref: "training.html",
-        nextLabel: "Proceed to Training",
+        nextLabel: "Review Core Safety Rules",
         records: records
     };
     saveProgress();
