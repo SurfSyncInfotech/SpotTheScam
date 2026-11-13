@@ -224,12 +224,12 @@ function paintPicked(button, value, pickedValue, correctValue, reveal) {
     }
     if (value === correctValue) {
         button.className = "choice-btn is-correct";
-        if (note) note.textContent = "Correct";
+        if (note) note.textContent = "✓ Correct";
         return;
     }
     if (value === pickedValue) {
         button.className = "choice-btn is-wrong";
-        if (note) note.textContent = "Your choice";
+        if (note) note.textContent = "✕ Your choice";
     }
 }
 
@@ -256,10 +256,10 @@ function paintList(containerId, options, pickedValue, correctValue, locked, onPi
             button.disabled = true;
             if (option === correctValue) {
                 button.className = button.className + " is-correct";
-                note.textContent = "Correct";
+                note.textContent = "✓ Correct";
             } else if (option === pickedValue) {
                 button.className = button.className + " is-wrong";
-                note.textContent = "Your choice";
+                note.textContent = "✕ Your choice";
             }
         } else {
             button.addEventListener("click", function () {

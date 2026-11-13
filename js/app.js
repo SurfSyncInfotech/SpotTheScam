@@ -347,14 +347,10 @@ function fillCaseCard(caseNumber, data, total, passMark) {
             button.removeAttribute("aria-disabled");
             button.href = "case" + caseNumber + ".html?retry=1";
             button.onclick = function (e) {
+                e.preventDefault();
                 const prevCase = caseNumber - 1;
-                const confirmProceed = confirm(
-                    "We recommend finishing Case " + prevCase + " first to practice the core skills.\n\nDo you want to proceed to Case " + caseNumber + " anyway?"
-                );
-                if (!confirmProceed) {
-                    e.preventDefault();
-                    return false;
-                }
+                showOrderModal(caseNumber, prevCase);
+                return false;
             };
         }
         if (lockNote) {
@@ -517,6 +513,58 @@ function fillOverall(data) {
         const offset = circumference - (overallPercent / 100) * circumference;
         circle.style.strokeDashoffset = String(offset);
     }
+}
+
+function showOrderModal(targetCase, prevCase) {
+    let modal = document.getElementById("order-advisory-modal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "order-advisory-modal";
+        modal.className = "custom-modal-overlay";
+        modal.innerHTML = `
+            <div class="custom-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                <div class="modal-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <h3 class="modal-title" id="modal-title">Recommended Learning Order</h3>
+                <p class="modal-text" id="modal-text"></p>
+                <div class="modal-actions-row">
+                    <button type="button" class="btn btn-secondary" id="modal-stay-btn">Start Case 1</button>
+                    <button type="button" class="btn btn-primary" id="modal-proceed-btn">Proceed Anyway &rarr;</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    const modalText = document.getElementById("modal-text");
+    const proceedBtn = document.getElementById("modal-proceed-btn");
+    const stayBtn = document.getElementById("modal-stay-btn");
+
+    modalText.textContent = "We recommend completing Case " + prevCase + " first to build foundational scam-detection skills. Would you like to proceed to Case " + targetCase + " anyway?";
+    stayBtn.textContent = "Start Case " + prevCase;
+
+    proceedBtn.onclick = function() {
+        modal.classList.remove("is-visible");
+        window.location.href = "case" + targetCase + ".html?retry=1";
+    };
+
+    stayBtn.onclick = function() {
+        modal.classList.remove("is-visible");
+        window.location.href = "case" + prevCase + ".html?retry=1";
+    };
+
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            modal.classList.remove("is-visible");
+        }
+    };
+
+    modal.classList.add("is-visible");
 }
 
 function initMobileNav() {

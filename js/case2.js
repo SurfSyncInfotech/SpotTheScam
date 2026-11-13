@@ -145,10 +145,10 @@ function showQuestion() {
             button.disabled = true;
             if (option === question.correctAnswer) {
                 button.className = button.className + " is-correct";
-                note.textContent = "Correct";
+                note.textContent = "✓ Correct";
             } else if (option === selectedAnswer) {
                 button.className = button.className + " is-wrong";
-                note.textContent = "Your choice";
+                note.textContent = "✕ Your choice";
             }
         } else {
             button.addEventListener("click", function () {
