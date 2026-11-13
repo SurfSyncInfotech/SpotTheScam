@@ -220,14 +220,22 @@ Hide Next until both steps are done.
 Line 97: return;
 Stop. The clue and explain code below is not for this step.
 
-Line 100: if (selectedAnswer === question.correctAnswer) {
-The student has answered. If the choice matches the real answer, show the good message.
+Line 131: if (selectedAnswer === question.correctAnswer) {
+The student has answered. We evaluate their classification and deliver direct, educational feedback.
 
-Line 101: setFeedback("feedback", "This email is " + answerWords + ".", "good");
-Example: "This email is a scam."
+Line 132: if (question.correctAnswer === "Scam") {
+Line 133: setFeedback("feedback", "Correct — this email is suspicious. Now find the clue that gave it away.", "good");
+If the student correctly identified a scam, acknowledge it and prompt them to find the clue on the left.
 
-Line 103: setFeedback("feedback", "This email is actually " + answerWords + ". Let's find out why.", "learn");
-If the choice was wrong, say what the email actually is.
+Line 135: setFeedback("feedback", "Correct — this email looks legitimate. The sender and details are authentic.", "good");
+If the student correctly identified a legitimate email, confirm it is safe.
+
+Line 138: if (question.correctAnswer === "Scam") {
+Line 139: setFeedback("feedback", "Not quite — this email is actually a scam. Take another look at the sender or wording.", "learn");
+If the student thought a scam was safe, guide them to examine the sender address or urgent tone.
+
+Line 141: setFeedback("feedback", "Not quite — this email is actually safe and legitimate.", "learn");
+If the student marked a safe email as a scam, explain that it is authentic.
 
 Line 106: clueBox.hidden = false;
 Show the clue buttons.
@@ -526,20 +534,14 @@ Read progress again after the score is saved.
 Line 235: const passed = score >= 15;
 True when this try has 15 or more correct official answers.
 
-Line 236: let message = "Nice effort. Let's learn from these answers. You can try again.";
-The message used when this try does not pass.
+Line 303: let message = "You've finished Case 1 with " + score + " out of " + questions.length + " correct. Review the answers below to see what clues you missed, then try again.";
+The student-friendly message used when this try does not pass yet.
 
-Line 237: if (passed) {
-If this try passes, use the unlock message.
+Line 304: if (passed) {
+If the score reaches 15 or more, set the completion message.
 
-Line 238: message = "Great detective work! You passed Case 1. Case 2 is now unlocked.";
-The pass message.
-
-Line 239: } else if (data.case1Passed) {
-If this try failed but an earlier try already passed, keep Case 2 open.
-
-Line 240: message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 2 stays open.";
-That message.
+Line 305: message = "You passed Case 1 with " + score + " out of " + questions.length + " correct! You're ready for Case 2, or you can practice with a new set of emails.";
+The completion message congratulating the student in natural language.
 
 Line 243: data.activeCase1 = null;
 Clear the in-progress try. The home page will no longer say Continue.
@@ -583,8 +585,8 @@ Retry starts Case 1 from email 1.
 Line 257: nextHref: data.case1Passed ? "case2.html?retry=1" : "",
 If Case 1 has ever been passed, the next button opens Case 2. If not, there is no next button.
 
-Line 258: nextLabel: "Go to Case 2",
-The words on that button.
+Line 324: nextLabel: "Continue to Case 2",
+The words on that button to advance smoothly to Case 2.
 
 Line 259: records: records
 The review of every email.

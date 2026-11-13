@@ -397,19 +397,19 @@ Read progress after the score is saved.
 Line 176: const passed = score >= 15;
 True when this try has 15 or more correct answers.
 
-Line 177: let message = "Nice effort. Let's learn from these answers. You can try again.";
-The message when this try does not pass.
+Line 238: let message = "You've finished Case 2 with " + score + " out of " + questions.length + " correct. Review the explanations below, then try again to hit 15.";
+The student-friendly message when this try does not reach the 15/20 pass mark yet.
 
-Line 178: if (passed) {
-If this try passes, use the unlock message.
+Line 239: if (passed) {
+If the score is 15 or higher, use the unlocked pass message.
 
-Line 179: message = "Great detective work! You passed Case 2. Case 3 is now unlocked.";
-The pass message.
+Line 240: message = "You passed Case 2 with " + score + " out of " + questions.length + " correct! Case 3 is now unlocked, or you can replay for more scenarios.";
+The natural pass message.
 
-Line 180: } else if (data.case2Passed) {
-If an earlier try already passed, Case 3 stays open.
+Line 241: } else if (data.case2Passed) {
+If an earlier try already passed, reassure the student that the pass is retained.
 
-Line 181: message = "This try is below 15 out of 20. Your earlier pass still counts, so Case 3 stays open.";
+Line 242: message = "This try scored " + score + " out of 20. Your earlier pass still counts!";
 That message.
 
 Line 184: data.activeCase2 = null;
@@ -451,8 +451,8 @@ Retry starts Case 2 from situation 1.
 Line 196: nextHref: data.case2Passed ? "case3.html?retry=1" : "",
 If Case 2 has ever been passed, the next button opens Case 3.
 
-Line 197: nextLabel: "Go to Case 3",
-The words on that button.
+Line 259: nextLabel: "Continue to Case 3",
+The words on that button to advance to Case 3.
 
 Line 198: records: records
 The review of every situation.

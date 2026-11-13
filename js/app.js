@@ -197,6 +197,22 @@ const badgeCatalog = [
     { id: "real-world-ready", name: "Real-World Ready", detail: "Pass Case 3" }
 ];
 
+function getEffectiveXp(data) {
+    let effective = data.xp || 0;
+    for (let c = 1; c <= 3; c++) {
+        const active = data["activeCase" + c];
+        const best = data["case" + c + "Best"] || 0;
+        if (active && active.score) {
+            const activePts = active.score * 10;
+            const finalizedPts = best * 10;
+            if (activePts > finalizedPts) {
+                effective += (activePts - finalizedPts);
+            }
+        }
+    }
+    return effective;
+}
+
 function showDashboard() {
     const grid = document.getElementById("case-grid");
     if (!grid) {
@@ -204,21 +220,32 @@ function showDashboard() {
     }
 
     const data = loadProgress();
-    const rank = getRank(data.xp);
+    const effectiveXp = getEffectiveXp(data);
+    const rank = getRank(effectiveXp);
 
-    document.getElementById("xp-count").textContent = String(data.xp);
-    document.getElementById("rank-name").textContent = rank.name;
+    const xpCount = document.getElementById("xp-count");
+    if (xpCount) xpCount.textContent = String(effectiveXp);
+    const xpPointsVal = document.getElementById("xp-points-val");
+    if (xpPointsVal) xpPointsVal.textContent = effectiveXp + " XP";
+
+    const rankName = document.getElementById("rank-name");
+    if (rankName) rankName.textContent = rank.name;
+    const rankDisplayVal = document.getElementById("rank-display-val");
+    if (rankDisplayVal) rankDisplayVal.textContent = rank.name;
 
     const rankBar = document.getElementById("rank-bar");
-    if (rank.next === 0) {
-        rankBar.style.width = "100%";
-        document.getElementById("rank-next").textContent = "You reached the top rank.";
-    } else {
-        const span = rank.next - rank.base;
-        const done = data.xp - rank.base;
-        const percent = Math.round((done / span) * 100);
-        rankBar.style.width = percent + "%";
-        document.getElementById("rank-next").textContent = "Next rank at " + rank.next + " XP";
+    const rankNext = document.getElementById("rank-next");
+    if (rankBar && rankNext) {
+        if (rank.next === 0) {
+            rankBar.style.width = "100%";
+            rankNext.textContent = "You reached the top rank.";
+        } else {
+            const span = rank.next - rank.base;
+            const done = effectiveXp - rank.base;
+            const percent = Math.min(100, Math.round((done / span) * 100));
+            rankBar.style.width = percent + "%";
+            rankNext.textContent = "Next rank at " + rank.next + " XP";
+        }
     }
 
     fillCaseCard(1, data, 20, 15);
@@ -233,7 +260,7 @@ function showDashboard() {
 function fillNextStep(data) {
     const button = document.getElementById("next-step-btn");
     const note = document.getElementById("next-step-text");
-    if (!button || !note) {
+    if (!button) {
         return;
     }
 
@@ -246,130 +273,171 @@ function fillNextStep(data) {
         const tried = data["case" + caseNumber + "Tried"];
 
         if (active) {
-            button.textContent = "Continue Case " + caseNumber;
+            button.innerHTML = "Continue Case " + caseNumber + " &rarr;";
             button.href = "case" + caseNumber + ".html";
-            note.textContent = "You stopped on question " + (active.index + 1) + " of " + caseTotals[caseNumber] + " in " + caseNames[caseNumber] + ".";
+            if (note) note.textContent = "You stopped on question " + (active.index + 1) + " of " + caseTotals[caseNumber] + " in " + caseNames[caseNumber] + ".";
             return;
         }
         if (!passed) {
             if (tried) {
-                button.textContent = "Try Case " + caseNumber + " again";
-                note.textContent = caseNames[caseNumber] + " is not passed yet. 15 correct answers out of " + caseTotals[caseNumber] + " is enough.";
+                button.innerHTML = "Try Case " + caseNumber + " again &rarr;";
+                if (note) note.textContent = caseNames[caseNumber] + " is not passed yet. 15 correct answers out of " + caseTotals[caseNumber] + " is enough.";
             } else {
-                button.textContent = "Start Case " + caseNumber;
-                note.textContent = caseNames[caseNumber] + " is open. It has " + caseTotals[caseNumber] + " questions.";
+                button.innerHTML = "Start Case " + caseNumber + " &rarr;";
+                if (note) note.textContent = caseNames[caseNumber] + " is open. It has " + caseTotals[caseNumber] + " questions.";
             }
             button.href = "case" + caseNumber + ".html?retry=1";
             return;
         }
     }
 
-    button.textContent = "Play Case 1 again";
+    button.innerHTML = "Play Case 1 again &rarr;";
     button.href = "case1.html?retry=1";
-    note.textContent = "Everything is finished. Replay a case if you want more practice.";
+    if (note) note.textContent = "Everything is finished. Replay a case if you want more practice.";
 }
 
 function fillCaseCard(caseNumber, data, total, passMark) {
     const open = caseIsOpen(caseNumber);
-    const best = data["case" + caseNumber + "Best"];
+    const best = data["case" + caseNumber + "Best"] || 0;
     const passed = data["case" + caseNumber + "Passed"];
     const active = data["activeCase" + caseNumber];
+    const tried = data["case" + caseNumber + "Tried"];
+
     const status = document.getElementById("case" + caseNumber + "-status");
+    const statusDisplay = document.getElementById("case" + caseNumber + "-status-display");
     const bestText = document.getElementById("case" + caseNumber + "-best");
     const bar = document.getElementById("case" + caseNumber + "-bar");
     const button = document.getElementById("case" + caseNumber + "-btn");
     const lockNote = document.getElementById("case" + caseNumber + "-lock");
     const restart = document.getElementById("case" + caseNumber + "-restart");
+    const percentText = document.getElementById("case" + caseNumber + "-percent-text");
 
-    if (data["case" + caseNumber + "Tried"] || best > 0) {
-        let shownBest = best;
-        if (shownBest > total) {
-            shownBest = total;
+    let shownBest = best > total ? total : best;
+    let cardPct = 0;
+    let scoreMsg = "";
+
+    if (active && active.index > 0) {
+        cardPct = Math.round((active.index / total) * 100);
+        if (shownBest > 0) {
+            scoreMsg = "In progress: " + active.index + "/" + total + " (Best: " + shownBest + "/" + total + ")";
+        } else {
+            scoreMsg = "In progress: " + active.index + "/" + total + " completed (" + (active.score || 0) + " correct)";
         }
-        bestText.textContent = "Best score: " + shownBest + "/" + total;
-        bar.style.width = Math.round((shownBest / total) * 100) + "%";
+    } else if (tried || shownBest > 0) {
+        cardPct = Math.round((shownBest / total) * 100);
+        scoreMsg = "Best score: " + shownBest + "/" + total;
     } else {
-        bestText.textContent = "Best score: not tried yet";
-        bar.style.width = "0%";
+        cardPct = 0;
+        scoreMsg = "Best score: not tried yet";
     }
 
+    if (bestText) bestText.textContent = scoreMsg;
+    if (bar) bar.style.width = cardPct + "%";
+    if (percentText) percentText.textContent = cardPct + "%";
+
     if (!open) {
-        status.textContent = "Recommended after Case " + (caseNumber - 1);
-        status.className = "pill pill-sun";
-        button.textContent = "Start";
-        button.className = "btn";
-        button.removeAttribute("aria-disabled");
-        button.href = "case" + caseNumber + ".html?retry=1";
-        button.onclick = function (e) {
-            const prevCase = caseNumber - 1;
-            const confirmProceed = confirm(
-                "We recommend finishing Case " + prevCase + " first to practice the core skills.\n\nDo you want to proceed to Case " + caseNumber + " anyway?"
-            );
-            if (!confirmProceed) {
-                e.preventDefault();
-                return false;
-            }
-        };
-        lockNote.textContent = "Suggested: finish Case " + (caseNumber - 1) + " first, or start now anyway.";
-        lockNote.hidden = false;
-        restart.hidden = true;
+        if (status) {
+            status.textContent = "Recommended after Case " + (caseNumber - 1);
+            status.className = "pill pill-sun";
+        }
+        if (statusDisplay) statusDisplay.textContent = "Recommended after Case " + (caseNumber - 1);
+        if (button) {
+            button.innerHTML = "Start &rarr;";
+            button.className = "btn-case-action btn-case-light";
+            button.removeAttribute("aria-disabled");
+            button.href = "case" + caseNumber + ".html?retry=1";
+            button.onclick = function (e) {
+                const prevCase = caseNumber - 1;
+                const confirmProceed = confirm(
+                    "We recommend finishing Case " + prevCase + " first to practice the core skills.\n\nDo you want to proceed to Case " + caseNumber + " anyway?"
+                );
+                if (!confirmProceed) {
+                    e.preventDefault();
+                    return false;
+                }
+            };
+        }
+        if (lockNote) {
+            lockNote.textContent = "Suggested: finish Case " + (caseNumber - 1) + " first, or start now anyway.";
+            lockNote.hidden = false;
+        }
+        if (restart) restart.hidden = true;
         return;
     }
 
-    button.onclick = null;
-    lockNote.hidden = true;
-    button.className = "btn";
-    button.removeAttribute("aria-disabled");
+    if (button) {
+        button.onclick = null;
+        button.removeAttribute("aria-disabled");
+    }
+    if (lockNote) lockNote.hidden = true;
 
     if (passed) {
-        status.textContent = "Passed";
-        status.className = "pill pill-good";
+        if (status) {
+            status.textContent = "Passed";
+            status.className = "pill pill-good";
+        }
+        if (statusDisplay) statusDisplay.textContent = "Passed";
     } else if (active) {
-        status.textContent = "In progress";
-        status.className = "pill pill-sun";
+        if (status) {
+            status.textContent = "In progress";
+            status.className = "pill pill-sun";
+        }
+        if (statusDisplay) statusDisplay.textContent = "In Progress";
     } else {
-        status.textContent = "Ready";
-        status.className = "pill";
+        if (status) {
+            status.textContent = "Ready";
+            status.className = "pill";
+        }
+        if (statusDisplay) statusDisplay.textContent = (best > 0 ? "Started" : "Not Started");
     }
 
-    if (active) {
-        button.textContent = "Continue";
-        button.href = "case" + caseNumber + ".html";
-        restart.hidden = false;
-        restart.href = "case" + caseNumber + ".html?retry=1";
-    } else if (best > 0) {
-        button.textContent = "Play Again";
-        button.href = "case" + caseNumber + ".html?retry=1";
-        restart.hidden = true;
-    } else {
-        button.textContent = "Start";
-        button.href = "case" + caseNumber + ".html?retry=1";
-        restart.hidden = true;
-    }
-
-    if (passed && best < passMark) {
-        status.textContent = "Passed";
+    if (button) {
+        if (active) {
+            button.innerHTML = "Continue &rarr;";
+            button.className = "btn-case-action btn-case-dark";
+            button.href = "case" + caseNumber + ".html";
+            if (restart) {
+                restart.hidden = false;
+                restart.href = "case" + caseNumber + ".html?retry=1";
+            }
+        } else if (best > 0) {
+            button.innerHTML = "Play Again &rarr;";
+            button.className = "btn-case-action btn-case-light";
+            button.href = "case" + caseNumber + ".html?retry=1";
+            if (restart) restart.hidden = true;
+        } else {
+            button.innerHTML = "Start &rarr;";
+            button.className = (caseNumber === 1 ? "btn-case-action btn-case-dark" : "btn-case-action btn-case-light");
+            button.href = "case" + caseNumber + ".html?retry=1";
+            if (restart) restart.hidden = true;
+        }
     }
 }
 
 function fillSkills(data) {
-    setSkill("skill-email", data.case1Best, 20, data.case1Tried);
-    setSkill("skill-choices", data.case2Best, 20, data.case2Tried);
-    setSkill("skill-world", data.case3Best, 20, data.case3Tried);
+    setSkill("skill-email", data.case1Best, 20, data.case1Tried, data.activeCase1);
+    setSkill("skill-choices", data.case2Best, 20, data.case2Tried, data.activeCase2);
+    setSkill("skill-world", data.case3Best, 20, data.case3Tried, data.activeCase3);
 }
 
-function setSkill(id, score, total, tried) {
+function setSkill(id, score, total, tried, active) {
     const label = document.getElementById(id + "-label");
     const bar = document.getElementById(id + "-bar");
-    if (!tried) {
+    if (!label || !bar) return;
+
+    if (active && active.index > 0) {
+        const pct = Math.round((active.index / total) * 100);
+        label.textContent = (active.score || 0) + "/" + active.index + " (" + pct + "% through)";
+        bar.style.width = pct + "%";
+        return;
+    }
+
+    if (!tried && !score) {
         label.textContent = "Not tried yet";
         bar.style.width = "0%";
         return;
     }
-    let shownScore = score;
-    if (shownScore > total) {
-        shownScore = total;
-    }
+    let shownScore = score > total ? total : (score || 0);
     const percent = Math.round((shownScore / total) * 100);
     label.textContent = shownScore + "/" + total + " (" + percent + "%)";
     bar.style.width = percent + "%";
@@ -378,6 +446,7 @@ function setSkill(id, score, total, tried) {
 function fillBadges(data) {
     const earnedBox = document.getElementById("earned-badges");
     const laterBox = document.getElementById("later-badges");
+    if (!earnedBox || !laterBox) return;
     earnedBox.innerHTML = "";
     laterBox.innerHTML = "";
 
@@ -397,35 +466,58 @@ function fillBadges(data) {
     }
 
     const empty = document.getElementById("no-badges");
-    if (earnedCount === 0) {
-        empty.hidden = false;
-    } else {
-        empty.hidden = true;
+    if (empty) {
+        empty.hidden = (earnedCount !== 0);
     }
 
     const laterTitle = document.getElementById("later-title");
-    if (laterBox.children.length === 0) {
-        laterTitle.hidden = true;
-    } else {
-        laterTitle.hidden = false;
+    if (laterTitle) {
+        laterTitle.hidden = (laterBox.children.length === 0);
     }
 }
 
 function fillOverall(data) {
     let done = 0;
-    if (data.case1Passed) {
-        done = done + 1;
-    }
-    if (data.case2Passed) {
-        done = done + 1;
-    }
-    if (data.case3Passed) {
-        done = done + 1;
-    }
-    document.getElementById("overall-label").textContent = done + " of 3 passed";
-    document.getElementById("overall-bar").style.width = Math.round(done * 100 / 3) + "%";
-}
+    if (data.case1Passed) done = done + 1;
+    if (data.case2Passed) done = done + 1;
+    if (data.case3Passed) done = done + 1;
 
+    const overallLabel = document.getElementById("overall-label");
+    if (overallLabel) overallLabel.textContent = done + " of 3 passed";
+    const overallBar = document.getElementById("overall-bar");
+    if (overallBar) overallBar.style.width = Math.round(done * 100 / 3) + "%";
+
+    const casesCompletedVal = document.getElementById("cases-completed-val");
+    if (casesCompletedVal) casesCompletedVal.textContent = done + " / 3";
+
+    // Progress Donut Circle Computation across 60 total questions
+    let questionsDone = 0;
+    for (let c = 1; c <= 3; c++) {
+        const passed = data["case" + c + "Passed"];
+        const tried = data["case" + c + "Tried"];
+        const active = data["activeCase" + c];
+        if (passed || tried) {
+            questionsDone += 20;
+        } else if (active && active.index) {
+            questionsDone += active.index;
+        }
+    }
+
+    let overallPercent = Math.round((questionsDone / 60) * 100);
+    if (questionsDone > 0 && overallPercent === 0) {
+        overallPercent = 1;
+    }
+
+    const progressPercentVal = document.getElementById("progress-percent-val");
+    if (progressPercentVal) progressPercentVal.textContent = overallPercent + "%";
+
+    const circle = document.getElementById("progress-circle-fill");
+    if (circle) {
+        const circumference = 301.59; // 2 * pi * 48
+        const offset = circumference - (overallPercent / 100) * circumference;
+        circle.style.strokeDashoffset = String(offset);
+    }
+}
 
 function initMobileNav() {
     const toggle = document.getElementById("mobile-toggle");

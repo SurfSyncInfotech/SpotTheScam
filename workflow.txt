@@ -21,11 +21,11 @@ The application is built around realistic email scrutiny and threat reflex train
 1.1 index.html -> Dashboard / Home screen
 - Purpose: central mission hub and career progress tracker.
 - Responsibilities:
-  * Display current Detective Rank (Beginner, Analyst, Specialist, Lead, Principal).
+  * Display current Detective Rank (Getting Started, Careful Reader, Clue Spotter, Scam Detector, Safety Pro).
   * Show total XP and animated progress bar toward the next rank.
   * Next Recommended Action banner pointing directly to the next unfinished or in-progress case.
   * Quick-launch navigation pills for Cases 1, 2, and 3.
-  * 4 Mission Cards: Case 1, Case 2, Case 3, and Company Training.
+  * 4 Mission Cards: Case 1, Case 2, Case 3, and Three Core Safety Rules.
   * Badges panel displaying earned credentials and locked badges yet to unlock.
   * Collapsible Performance Analytics breakdown showing percentage mastery in Email Scrutiny, Decision Reflexes, and Threat Remediation.
   * Reset browser progress button to restart fresh on shared school or lab computers.
@@ -60,20 +60,20 @@ The application is built around realistic email scrutiny and threat reflex train
   * Award full points only when all steps are completed correctly.
 - JS files: js/questions.js, js/app.js, js/case3.js, js/install.js
 
-1.5 training.html -> Educational Security Briefing
-- Purpose: foundational cybersecurity briefing and guidance notes.
+1.5 training.html -> Three Core Safety Rules (Reference Guide)
+- Purpose: foundational cybersecurity guidelines and what to do if you clicked something.
 - Responsibilities:
-  * Display the training video briefing player container.
-  * Present the Three Non-Negotiable Rules: Stop, Check, and Verify.
+  * Present the Three Core Rules: Stop (Don't rush under pressure), Check (Look past the display name), and Verify (Use a separate trusted path).
+  * What to do if you clicked a suspicious link checklist.
   * Reinforce core security reflexes before or between case investigations.
 - JS files: js/app.js, js/install.js
 
-1.6 result.html -> Investigation Debrief
+1.6 result.html -> Activity Results & Review
 - Purpose: detailed post-case debriefing, grading, and answer breakdown.
 - Responsibilities:
   * Render a radial score ring displaying final score (e.g., "18 / 20") and percentage.
   * Award XP earned from the session and notify if a new badge was unlocked.
-  * Offer contextual navigation buttons: "Proceed to Next Mission", "Play Case Again", and "Review All Answers".
+  * Offer contextual navigation buttons: "Continue to Next Case", "Play Case Again", and "Review All Answers".
   * Interactive answer review panel revealing every scenario, the user's selected choice, the correct answer, and full security rationale.
 - JS files: js/app.js, js/result.js, js/install.js
 

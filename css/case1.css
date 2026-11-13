@@ -39,10 +39,12 @@
 .case-sub-instructions {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
     font-size: 0.95rem;
     color: var(--ink-body);
     margin: 0 0 12px;
+    flex-wrap: wrap;
 }
 
 .target-badge {
@@ -50,9 +52,13 @@
     color: var(--ink-black);
     border: 1.5px solid var(--border-warm);
     font-weight: 800;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: var(--radius-sm);
     font-size: 0.8125rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
 }
 
 .practice-time-callout {
@@ -418,5 +424,51 @@
     .next-action-footer {
         margin-top: 18px;
         padding-top: 14px;
+    }
+}
+
+@media (max-width: 680px) {
+    .case-sub-instructions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .target-badge {
+        align-self: flex-start;
+        display: inline-flex;
+    }
+    .session-metrics-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 12px 14px;
+    }
+    .metric-label-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 10px;
+    }
+    .metric-pill-num {
+        font-size: 0.88rem;
+    }
+    .metric-score-display {
+        white-space: nowrap;
+        flex-shrink: 0;
+        padding: 4px 12px;
+        font-size: 0.85rem;
+    }
+    .tracker-bar-wrap {
+        max-width: 100%;
+        width: 100%;
+    }
+    .verdict-choices-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .verdict-button {
+        width: 100%;
+        min-height: 52px;
     }
 }

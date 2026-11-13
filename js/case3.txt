@@ -706,19 +706,19 @@ Read progress after the score is saved.
 Line 299: const passed = score >= 15;
 True when this try has 15 or more correct official answers.
 
-Line 300: let message = "Nice effort. Let's learn from these answers. You can try again.";
-The message when this try does not pass.
+Line 371: let message = "You've finished Case 3 with " + score + " out of " + questions.length + " correct. Review the questions below to see what gave away the scams, then try again.";
+The student-friendly message when this try does not reach 15/20.
 
-Line 301: if (passed) {
-If this try passes, use the pass message.
+Line 372: if (passed) {
+If this try passes, congratulate the student on finishing all cases.
 
-Line 302: message = "Great detective work! You passed the Real-World Challenge.";
-The pass message.
+Line 373: message = "You passed Case 3 with " + score + " out of " + questions.length + " correct! You've finished all three practice cases.";
+The natural pass message.
 
-Line 303: } else if (data.case3Passed) {
-If an earlier try already passed, that pass still counts.
+Line 374: } else if (data.case3Passed) {
+If an earlier try passed, keep that record.
 
-Line 304: message = "This try is below 15 out of 20. Your earlier pass still counts.";
+Line 375: message = "This try scored " + score + " out of 20. Your earlier pass still counts.";
 That message.
 
 Line 307: data.activeCase3 = null;
@@ -763,11 +763,11 @@ The sentence chosen above.
 Line 321: retryHref: "case3.html?retry=1",
 Retry starts Case 3 from message 1.
 
-Line 322: nextHref: data.case3Passed ? "training.html" : "",
-If Case 3 has ever been passed, the next button opens Company Training.
+Line 394: nextHref: "training.html",
+The next button opens the Three Core Safety Rules guide (training.html).
 
-Line 323: nextLabel: "Go to Company Training",
-The words on that button.
+Line 395: nextLabel: "Review Core Safety Rules",
+The words on that button inviting the user to review the core rules.
 
 Line 324: records: records
 The review of every message.

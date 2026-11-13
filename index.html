@@ -7,25 +7,22 @@
     <title>Spot the Scam · Practical Online Safety Activity</title>
     <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#3b49df">
+    <meta name="theme-color" content="#1e293b">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Spot the Scam">
-    <link rel="stylesheet" href="css/index.css?v=26">
+    <link rel="stylesheet" href="css/index.css?v=29">
 </head>
 
 <body>
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Top Application Header -->
+    <!-- Top Application Header (Original Navbar Preserved) -->
     <header class="site-header">
         <div class="header-container">
             <a class="brand-anchor" href="index.html">
                 <div class="brand-logo-mark">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
+                    <img src="assets/images/logo.svg" alt="Spot the Scam Logo" width="26" height="26">
                 </div>
                 <div class="brand-text-wrap">
                     <span class="brand-title">Spot the Scam</span>
@@ -70,278 +67,320 @@
     </header>
 
     <main class="main-wrapper" id="main">
-        <!-- Dashboard Overview Grid -->
-        <section class="dashboard-grid">
-            <!-- Welcome Column -->
-            <article class="welcome-card">
-                <div class="welcome-header">
-                    <span class="context-tag">Online Safety Practice</span>
-                    <h1 class="welcome-title">Spot the Scam</h1>
-                    <p class="welcome-subtitle">Learn how to spot suspicious emails, check fake sender addresses, and know what to do when something looks off.</p>
+        <!-- Hero & Progress Overview Grid -->
+        <section class="hero-progress-grid">
+            <!-- Hero Card with Subtle Gray Wave/Shadow Background Overlay -->
+            <article class="hero-card">
+                <!-- Exact Gray Shadow Wave Graphic Matching Reference -->
+                <div class="hero-wave-graphic" aria-hidden="true">
+                    <svg viewBox="0 0 420 300" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M140 0 C220 50, 190 190, 420 180 L420 0 Z" fill="url(#wave-grad-1)"/>
+                        <path d="M220 0 C280 80, 240 220, 420 240 L420 0 Z" fill="url(#wave-grad-2)"/>
+                        <path d="M310 0 C330 110, 290 250, 420 300 L420 0 Z" fill="url(#wave-grad-3)"/>
+                        <defs>
+                            <linearGradient id="wave-grad-1" x1="140" y1="0" x2="420" y2="300" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#e2e8f0" stop-opacity="0.45"/>
+                                <stop offset="1" stop-color="#f8fafc" stop-opacity="0.05"/>
+                            </linearGradient>
+                            <linearGradient id="wave-grad-2" x1="220" y1="0" x2="420" y2="300" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#cbd5e1" stop-opacity="0.35"/>
+                                <stop offset="1" stop-color="#f1f5f9" stop-opacity="0.08"/>
+                            </linearGradient>
+                            <linearGradient id="wave-grad-3" x1="310" y1="0" x2="420" y2="300" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#e2e8f0" stop-opacity="0.6"/>
+                                <stop offset="1" stop-color="#ffffff" stop-opacity="0.2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
 
-                <!-- Case Navigation Pills -->
-                <div class="mission-pills-row">
-                    <a href="case1.html?retry=1" class="mission-pill-link">
-                        <span class="pill-step-label">Case 1</span>
-                        <span class="pill-title-text">Spot the Scam</span>
-                    </a>
-                    <a href="case2.html?retry=1" class="mission-pill-link active">
-                        <span class="pill-step-label">Case 2</span>
-                        <span class="pill-title-text">What would you do next?</span>
-                    </a>
-                    <a href="case3.html?retry=1" class="mission-pill-link">
-                        <span class="pill-step-label">Case 3</span>
-                        <span class="pill-title-text">Real-World Dilemmas</span>
-                    </a>
+                <div class="hero-content">
+                    <span class="hero-tag">ONLINE SAFETY PRACTICE</span>
+                    <h1 class="hero-title">Spot the Scam</h1>
+                    <p class="hero-description">Learn to identify suspicious messages, fake websites, and common online scams through real-world scenarios.</p>
                 </div>
 
-                <!-- Next Recommended Action Banner -->
-                <div class="resume-banner">
-                    <div class="resume-details">
-                        <span class="active-pulse-dot"></span>
-                        <div>
-                            <p class="resume-heading" id="next-step-text">Case 1: Spot the Scam is ready to start.</p>
-                            <p class="resume-caption">Take your time. Everything is saved locally in your browser.</p>
-                        </div>
-                    </div>
-                    <a class="btn btn-primary btn-lg" id="next-step-btn" href="case1.html?retry=1">
-                        Continue Case 1 →
+                <div class="hero-cta-group">
+                    <a class="btn-hero-primary" id="next-step-btn" href="case1.html?retry=1">
+                        Continue Case 1 &rarr;
                     </a>
+                    <a class="btn-hero-secondary" href="#case-grid">
+                        View All Cases
+                    </a>
+                    <p id="next-step-text" style="display:none;"></p>
                 </div>
             </article>
 
-            <!-- Rank & XP Metric Panel -->
-            <aside class="rank-panel">
-                <div>
-                    <div class="rank-profile-header">
-                        <div class="avatar-badge-box">
-                            <img src="assets/images/logo.svg" alt="Magnifying glass logo" width="52" height="52">
-                        </div>
-                        <div>
-                            <span class="rank-headline-label">&#128081; Your Level</span>
-                            <h2 class="rank-display-name" id="rank-name">Getting Started</h2>
-                        </div>
-                    </div>
+            <!-- Your Progress Card with Circular Donut Indicator -->
+            <aside class="progress-card">
+                <h2 class="progress-card-title">Your Progress</h2>
 
-                    <div class="xp-metric-box">
-                        <span class="xp-numeric-value" id="xp-count">0</span>
-                        <span class="xp-legend">Experience Points (XP)</span>
-                    </div>
-
-                    <div class="metrics-progress-group">
-                        <div class="metric-bar-item">
-                            <div class="metric-bar-header">
-                                <span>Level Progress</span>
-                                <span id="rank-next">Next level at 100 XP</span>
-                            </div>
-                            <div class="progress-track bar">
-                                <div class="progress-fill" id="rank-bar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-
-                        <div class="metric-bar-item">
-                            <div class="metric-bar-header">
-                                <span>Cases Completed</span>
-                                <span id="overall-label">0 of 3 passed</span>
-                            </div>
-                            <div class="progress-track bar overall-bar">
-                                <div class="progress-fill" id="overall-bar" style="width: 0%; background-color: var(--success-600);"></div>
-                            </div>
-                        </div>
+                <div class="donut-container">
+                    <svg class="donut-svg" viewBox="0 0 130 130" role="img" aria-label="Progress donut chart">
+                        <circle class="donut-bg-circle" cx="65" cy="65" r="48"></circle>
+                        <circle id="progress-circle-fill" class="donut-fill-circle" cx="65" cy="65" r="48" stroke-dasharray="301.59" stroke-dashoffset="301.59"></circle>
+                    </svg>
+                    <div class="donut-text-group">
+                        <span id="progress-percent-val" class="donut-percent-text">0%</span>
+                        <span class="donut-status-label">Completed</span>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-ghost btn-sm" id="reset-btn">Reset my progress</button>
+                <ul class="progress-stats-list">
+                    <li class="progress-stat-row">
+                        <span class="stat-row-left">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                            Cases Completed
+                        </span>
+                        <span class="stat-row-value" id="cases-completed-val">0 / 3</span>
+                        <!-- Preserved DOM IDs for compatibility -->
+                        <span id="overall-label" style="display:none;">0 of 3 passed</span>
+                        <div id="overall-bar" style="display:none;"></div>
+                    </li>
+                    <li class="progress-stat-row">
+                        <span class="stat-row-left">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m12 8 3 8-6-4h7"/></svg>
+                            XP Points
+                        </span>
+                        <span class="stat-row-value" id="xp-points-val">0 XP</span>
+                        <span id="xp-count" style="display:none;">0</span>
+                    </li>
+                    <li class="progress-stat-row">
+                        <span class="stat-row-left">
+                            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                            Current Level
+                        </span>
+                        <span class="stat-row-value" id="rank-display-val">Getting Started</span>
+                        <!-- Preserved rank hooks -->
+                        <span id="rank-name" style="display:none;">Getting Started</span>
+                        <span id="rank-next" style="display:none;">Next level at 100 XP</span>
+                        <div id="rank-bar" style="display:none;"></div>
+                    </li>
+                </ul>
+
+                <button type="button" class="reset-link-subtle" id="reset-btn">Reset progress</button>
             </aside>
         </section>
 
-        <!-- How this activity works (Clear student instructions & access info) -->
-        <section class="section-wrapper">
-            <div class="how-it-works-panel">
-                <div class="how-header">
-                    <span class="how-kicker">First time here?</span>
-                    <h2 class="section-title-main" style="margin: 4px 0 6px;">How this activity works</h2>
-                    <p class="section-caption-main">Three short cases to practice checking sender addresses, spotting fake urgency, and taking safe actions.</p>
+        <!-- How It Works (Clean 3-step student journey) -->
+        <section class="how-it-works-card">
+            <span class="how-tag">HOW IT WORKS</span>
+            <h2 class="how-heading">Learn by doing</h2>
+            <p class="how-subtitle">Practice with real-life situations and build the skills to stay safe online.</p>
+
+            <div class="how-steps-row">
+                <div class="how-step-item">
+                    <div class="step-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    </div>
+                    <h3 class="step-title">1. Read the Scenario</h3>
+                    <p class="step-desc">Understand the situation carefully.</p>
                 </div>
-                <div class="how-steps-grid">
-                    <div class="how-step-card">
-                        <div class="step-badge-num">1</div>
-                        <h3>Start with Case 1</h3>
-                        <p>Look at 20 simulated emails. Decide if each one is real or a scam, then click the exact line that gave it away.</p>
-                    </div>
-                    <div class="how-step-card">
-                        <div class="step-badge-num">2</div>
-                        <h3>Practice safe reactions</h3>
-                        <p>In Cases 2 and 3, face realistic situations like urgent password resets and fake delivery texts to pick the safest response.</p>
-                    </div>
-                    <div class="how-step-card">
-                        <div class="step-badge-num">3</div>
-                        <h3>Review your answers</h3>
-                        <p>At the end of each case, review clear explanations for every question to see what made it safe or risky.</p>
-                    </div>
+
+                <div class="step-connector-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </div>
-                <div class="access-sharing-callout">
-                    <span>💡 <strong>No account needed:</strong> Everything works directly in your browser on phone or PC. Progress is stored on this device, and you can share the link with anyone.</span>
+
+                <div class="step-item how-step-item">
+                    <div class="step-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <h3 class="step-title">2. Spot the Red Flags</h3>
+                    <p class="step-desc">Identify what looks suspicious.</p>
+                </div>
+
+                <div class="step-connector-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+
+                <div class="step-item how-step-item">
+                    <div class="step-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <h3 class="step-title">3. Check &amp; Learn</h3>
+                    <p class="step-desc">See the right answer and learn why it matters.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Cases Section -->
-        <section class="section-wrapper">
-            <div class="section-head-wrap">
-                <h2 class="section-title-main">Practice Cases</h2>
-                <p class="section-caption-main">Work through the scenarios at your own pace. Aim for 15 out of 20 to pass each case.</p>
+        <!-- Practice Cases Section -->
+        <section class="practice-cases-section">
+            <div class="section-title-row">
+                <div>
+                    <h2 class="section-main-heading">Practice Cases</h2>
+                    <p class="section-sub-heading">Work through realistic examples, from fake emails to risky links.</p>
+                </div>
+                <a href="#case-grid" class="view-all-link">View All Cases &rarr;</a>
             </div>
 
-            <div class="cases-cards-grid" id="case-grid">
+            <div class="cases-grid-three" id="case-grid">
                 <!-- Case 1 Card -->
-                <article class="mission-card">
-                    <div>
-                        <div class="card-meta-bar">
-                            <div class="mission-icon-box">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                            </div>
-                            <span class="status-pill pill" id="case1-status">Ready</span>
-                        </div>
-                        <span class="card-num-kicker">Case 1</span>
-                        <h3 class="card-heading-title">Spot the Scam</h3>
-                        <p class="card-summary-desc">Examine 20 emails. Check fake senders, urgency traps, and click directly on suspicious sentences.</p>
+                <article class="case-card-saas">
+                    <div class="case-thumb-wrap">
+                        <img class="case-thumb-img" src="assets/images/case1-thumb.jpg" alt="Laptop showing phishing email alert" loading="lazy">
                     </div>
-                    <div>
-                        <div class="card-score-line" id="case1-best">Best score: not tried yet</div>
-                        <div class="progress-track bar"><div class="progress-fill" id="case1-bar" style="width: 0%;"></div></div>
-                        <p class="lock-note" id="case1-lock" hidden></p>
-                        <div class="card-actions-row">
-                            <a class="btn btn-secondary btn-block" id="case1-btn" href="case1.html?retry=1">Start Case 1</a>
-                            <a class="card-restart-anchor text-link" id="case1-restart" href="case1.html?retry=1" hidden>Start over</a>
+                    <div class="case-card-body">
+                        <div>
+                            <span class="case-card-kicker">CASE 1</span>
+                            <h3 class="case-card-title">Spot the Scam</h3>
+                            <p class="case-card-desc">A suspicious email with an urgent request. Can you spot what's wrong?</p>
+                        </div>
+
+                        <div>
+                            <div class="case-status-line">
+                                <div class="case-progress-track">
+                                    <div class="case-progress-bar" id="case1-bar" style="width: 0%;"></div>
+                                </div>
+                                <span class="stat-row-value" id="case1-percent-text">0%</span>
+                            </div>
+                            <span id="case1-status" style="display:none;"></span>
+                            <span id="case1-best" style="display:none;"></span>
+                            <p id="case1-lock" style="display:none;"></p>
+
+                            <a class="btn-case-action btn-case-dark" id="case1-btn" href="case1.html?retry=1">
+                                Continue &rarr;
+                            </a>
+                            <a class="case-restart-link" id="case1-restart" href="case1.html?retry=1" hidden>Start over</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Case 2 Card -->
-                <article class="mission-card">
-                    <div>
-                        <div class="card-meta-bar">
-                            <div class="mission-icon-box">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                            </div>
-                            <span class="status-pill pill" id="case2-status">Ready</span>
-                        </div>
-                        <span class="card-num-kicker">Case 2</span>
-                        <h3 class="card-heading-title">What Would You Do Next?</h3>
-                        <p class="card-summary-desc">20 practical situations. Pick the safest response from 4 randomized choices to protect accounts.</p>
+                <article class="case-card-saas">
+                    <div class="case-thumb-wrap">
+                        <img class="case-thumb-img" src="assets/images/case2-thumb.jpg" alt="Mobile phone with incoming unknown caller" loading="lazy">
                     </div>
-                    <div>
-                        <div class="card-score-line" id="case2-best">Best score: not tried yet</div>
-                        <div class="progress-track bar"><div class="progress-fill" id="case2-bar" style="width: 0%;"></div></div>
-                        <p class="lock-note" id="case2-lock" hidden></p>
-                        <div class="card-actions-row">
-                            <a class="btn btn-secondary btn-block" id="case2-btn" href="case2.html?retry=1">Start Case 2</a>
-                            <a class="card-restart-anchor text-link" id="case2-restart" href="case2.html?retry=1" hidden>Start over</a>
+                    <div class="case-card-body">
+                        <div>
+                            <span class="case-card-kicker">CASE 2</span>
+                            <h3 class="case-card-title">What Would You Do Next?</h3>
+                            <p class="case-card-desc">A situation-based case to test your decision-making skills.</p>
+                        </div>
+
+                        <div>
+                            <div class="case-status-line">
+                                <span class="case-status-indicator">
+                                    <span class="status-radio-icon"></span>
+                                    <span id="case2-status-display">Not Started</span>
+                                </span>
+                                <div class="case-progress-track" style="display:none;">
+                                    <div class="case-progress-bar" id="case2-bar" style="width: 0%;"></div>
+                                </div>
+                                <span id="case2-percent-text" style="display:none;">0%</span>
+                            </div>
+                            <span id="case2-status" style="display:none;"></span>
+                            <span id="case2-best" style="display:none;"></span>
+                            <p id="case2-lock" style="display:none;"></p>
+
+                            <a class="btn-case-action btn-case-light" id="case2-btn" href="case2.html?retry=1">
+                                Start &rarr;
+                            </a>
+                            <a class="case-restart-link" id="case2-restart" href="case2.html?retry=1" hidden>Start over</a>
                         </div>
                     </div>
                 </article>
 
                 <!-- Case 3 Card -->
-                <article class="mission-card">
-                    <div>
-                        <div class="card-meta-bar">
-                            <div class="mission-icon-box">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            </div>
-                            <span class="status-pill pill" id="case3-status">Ready</span>
-                        </div>
-                        <span class="card-num-kicker">Case 3</span>
-                        <h3 class="card-heading-title">Real-World Dilemmas</h3>
-                        <p class="card-summary-desc">Three-step challenges: classify the message, identify the key giveaway clue, and pick the safest next step.</p>
+                <article class="case-card-saas">
+                    <div class="case-thumb-wrap">
+                        <img class="case-thumb-img" src="assets/images/case3-thumb.jpg" alt="Browser address bar showing fake website link" loading="lazy">
                     </div>
-                    <div>
-                        <div class="card-score-line" id="case3-best">Best score: not tried yet</div>
-                        <div class="progress-track bar"><div class="progress-fill" id="case3-bar" style="width: 0%;"></div></div>
-                        <p class="lock-note" id="case3-lock" hidden></p>
-                        <div class="card-actions-row">
-                            <a class="btn btn-secondary btn-block" id="case3-btn" href="case3.html?retry=1">Start Case 3</a>
-                            <a class="card-restart-anchor text-link" id="case3-restart" href="case3.html?retry=1" hidden>Start over</a>
+                    <div class="case-card-body">
+                        <div>
+                            <span class="case-card-kicker">CASE 3</span>
+                            <h3 class="case-card-title">Real-World Dilemmas</h3>
+                            <p class="case-card-desc">Everyday scenarios—offers, links, and messages. Choose the safest action.</p>
                         </div>
-                    </div>
-                </article>
 
-                <!-- Safety Guide Card (Clean, complete, no placeholder) -->
-                <article class="mission-card mission-card-training">
-                    <span class="status-pill pill" id="training-status">Guide</span>
-                    <div class="training-card-main">
-                        <div class="card-meta-bar">
-                            <div class="mission-icon-box">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        <div>
+                            <div class="case-status-line">
+                                <span class="case-status-indicator">
+                                    <span class="status-radio-icon"></span>
+                                    <span id="case3-status-display">Not Started</span>
+                                </span>
+                                <div class="case-progress-track" style="display:none;">
+                                    <div class="case-progress-bar" id="case3-bar" style="width: 0%;"></div>
+                                </div>
+                                <span id="case3-percent-text" style="display:none;">0%</span>
                             </div>
-                        </div>
-                        <span class="card-num-kicker">Quick Reference</span>
-                        <h3 class="card-heading-title">Three Core Safety Rules</h3>
-                        <p class="card-summary-desc">Stop, Check, and Verify. Review these foundational principles and what to do if you ever click a suspicious link.</p>
-                    </div>
-                    <div class="training-card-side">
-                        <div class="card-score-line">Always available</div>
-                        <div class="progress-track bar"><div class="progress-fill" style="width: 100%;"></div></div>
-                        <div class="card-actions-row">
-                            <a class="btn btn-secondary btn-block" id="training-btn" href="training.html">Read Safety Guide &rarr;</a>
+                            <span id="case3-status" style="display:none;"></span>
+                            <span id="case3-best" style="display:none;"></span>
+                            <p id="case3-lock" style="display:none;"></p>
+
+                            <a class="btn-case-action btn-case-light" id="case3-btn" href="case3.html?retry=1">
+                                Start &rarr;
+                            </a>
+                            <a class="case-restart-link" id="case3-restart" href="case3.html?retry=1" hidden>Start over</a>
                         </div>
                     </div>
                 </article>
             </div>
+        </section>
+
+        <!-- Safety Guide Banner -->
+        <section class="safety-guide-banner">
+            <div class="guide-banner-left">
+                <div class="guide-icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+                <div class="guide-banner-text">
+                    <span class="guide-banner-kicker">SAFETY GUIDE</span>
+                    <h3 class="guide-banner-title">Online Safety Rules</h3>
+                    <p class="guide-banner-desc">Key tips, common red flags, and a quick checklist to keep you safe online.</p>
+                </div>
+            </div>
+            <a href="training.html" class="btn-guide-white">Read the Guide &rarr;</a>
         </section>
 
         <!-- Achievements & Badges Panel -->
-        <section class="section-wrapper" id="badges-section">
-            <div class="badges-container-card">
-                <div class="badges-header-row">
-                    <h2 class="section-title-main">Badges to Earn</h2>
-                    <p class="section-caption-main">Score 15 out of 20 or higher on each case to unlock its badge.</p>
-                </div>
-                <p id="no-badges" class="card-summary-desc">Pass your first case with 15/20 to earn a badge here.</p>
-                <ul class="badges-items-grid badge-list" id="earned-badges"></ul>
-                <h3 id="later-title" class="section-title-main" style="font-size: 1rem; margin-top: 20px;">Remaining Badges</h3>
-                <ul class="badges-items-grid badge-list" id="later-badges"></ul>
+        <section class="badges-container-card" id="badges-section">
+            <div class="badges-header-row">
+                <h2 class="section-main-heading">Badges to Earn</h2>
+                <p class="section-sub-heading">Score 15 out of 20 or higher on each case to unlock its badge.</p>
             </div>
+            <p id="no-badges" class="card-summary-desc">Pass your first case with 15/20 to earn a badge here.</p>
+            <ul class="badges-items-grid" id="earned-badges"></ul>
+            <h3 id="later-title" class="section-main-heading" style="font-size: 1rem; margin-top: 20px;">Remaining Badges</h3>
+            <ul class="badges-items-grid" id="later-badges"></ul>
         </section>
 
-        <!-- Skill Breakdown Details -->
-        <section class="section-wrapper">
-            <details class="collapsible-stats-panel details-panel">
+        <!-- Category Score Breakdown -->
+        <section>
+            <details class="collapsible-stats-panel">
                 <summary class="stats-accordion-summary">
                     <span>Your scores by category</span>
                     <span class="btn btn-quiet btn-sm">Toggle Details</span>
                 </summary>
-                <div class="stats-accordion-body skill-grid">
+                <div class="stats-accordion-body">
                     <div class="stat-metric-card">
                         <span class="stat-field-label">Email Scrutiny (Case 1)</span>
                         <p class="stat-numeric-score" id="skill-email-label">Not tried yet</p>
-                        <div class="progress-track bar"><div class="progress-fill" id="skill-email-bar" style="width: 0%;"></div></div>
+                        <div class="case-progress-track"><div class="case-progress-bar" id="skill-email-bar" style="width: 0%;"></div></div>
                     </div>
                     <div class="stat-metric-card">
                         <span class="stat-field-label">Safe Choices (Case 2)</span>
                         <p class="stat-numeric-score" id="skill-choices-label">Not tried yet</p>
-                        <div class="progress-track bar"><div class="progress-fill" id="skill-choices-bar" style="width: 0%;"></div></div>
+                        <div class="case-progress-track"><div class="case-progress-bar" id="skill-choices-bar" style="width: 0%;"></div></div>
                     </div>
                     <div class="stat-metric-card">
                         <span class="stat-field-label">Real-World Dilemmas (Case 3)</span>
                         <p class="stat-numeric-score" id="skill-world-label">Not tried yet</p>
-                        <div class="progress-track bar"><div class="progress-fill" id="skill-world-bar" style="width: 0%;"></div></div>
+                        <div class="case-progress-track"><div class="case-progress-bar" id="skill-world-bar" style="width: 0%;"></div></div>
                     </div>
                 </div>
             </details>
         </section>
     </main>
 
-    <!-- Clean Footer -->
+    <!-- Clean SaaS Footer -->
     <footer class="site-footer">
         <div class="footer-container">
-            <span>Spot the Scam &bull; Class & Personal Online Safety Activity</span>
+            <span>Spot the Scam &bull; Interactive Cyber Safety Practice</span>
             <span>No login required &bull; All data stays saved in your local browser</span>
         </div>
     </footer>
 
-    <script src="js/app.js?v=26"></script>
+    <script src="js/app.js?v=29"></script>
     <script src="js/install.js"></script>
     <script>
         const mobileBtn = document.getElementById('mobile-toggle');

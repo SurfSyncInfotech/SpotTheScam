@@ -172,28 +172,28 @@ The function starts. xp is the student's experience points.
 Line 72: if (xp >= 800) {
 800 or more is the top rank.
 
-Line 73: return { name: "Principal", next: 0, base: 800 };
-The name is Principal. next is 0 because there is no higher rank. base is 800, the start of this rank.
+Line 73: return { name: "Safety Pro", next: 0, base: 800 };
+The name is Safety Pro (800+ XP). next is 0 because there is no higher rank. base is 800, the start of this top tier.
 
 Line 75: if (xp >= 500) {
 500 to 799 is the next rank down.
 
-Line 76: return { name: "Lead", next: 800, base: 500 };
-Lead. The next rank starts at 800 XP. This rank started at 500.
+Line 76: return { name: "Scam Detector", next: 800, base: 500 };
+Scam Detector. The next rank starts at 800 XP. This rank started at 500.
 
 Line 78: if (xp >= 250) {
 250 to 499.
 
-Line 79: return { name: "Specialist", next: 500, base: 250 };
-Specialist. Next rank at 500. This rank started at 250.
+Line 79: return { name: "Clue Spotter", next: 500, base: 250 };
+Clue Spotter. Next rank at 500. This rank started at 250.
 
 Line 81: if (xp >= 100) {
 100 to 249.
 
-Line 82: return { name: "Analyst", next: 250, base: 100 };
+Line 82: return { name: "Careful Reader", next: 250, base: 100 };
 Analyst. Next rank at 250. This rank started at 100.
 
-Line 84: return { name: "Beginner", next: 100, base: 0 };
+Line 84: return { name: "Getting Started", next: 100, base: 0 };
 0 to 99 is Beginner. Next rank at 100. This rank started at 0.
 
 Line 85: }
@@ -509,7 +509,7 @@ Line 234: const rankBar = document.getElementById("rank-bar");
 Find the rank progress bar.
 
 Line 235: if (rank.next === 0) {
-next is 0 only for Principal. There is no higher rank.
+next is 0 only for Safety Pro. There is no higher rank.
 
 Line 236: rankBar.style.width = "100%";
 Fill the bar completely.
@@ -573,7 +573,7 @@ If this page is not the home page, those ids are missing.
 Line 260: return;
 Stop.
 
-Line 263: const caseNames = ["", "Email Check", "What Would You Do?", "Real-World Challenge"];
+Line 263: const caseNames = ["", "Case 1 · Email Check", "Case 2 · What Would You Do?", "Case 3 · Mixed Scenarios"];
 Names for cases 1, 2, and 3. The first slot is empty so case number 1 lines up with "Email Check".
 
 Line 264: const caseTotals = [0, 20, 20, 20];
@@ -988,6 +988,51 @@ Line 437: document.getElementById("overall-bar").style.width = Math.round(done *
 Each passed case fills one third of the bar.
 
 Line 438: }
+The function ends.
+
+
+initMobileNav line number 430
+
+Line 430: function initMobileNav() {
+The function starts. It manages the mobile navigation menu toggle on smaller screens.
+
+Line 431: const toggle = document.getElementById("mobile-toggle");
+Find the hamburger menu button in the header.
+
+Line 432: const nav = document.getElementById("site-nav");
+Find the navigation links container.
+
+Line 433: if (!toggle || !nav) {
+If the button or navigation list is not on this page, stop.
+
+Line 434: return;
+Exit the function.
+
+Line 436: toggle.addEventListener("click", function (e) {
+When the user clicks the hamburger toggle button, handle the click.
+
+Line 437: e.stopPropagation();
+Prevent the click from immediately bubbling to the document-level click listener.
+
+Line 438: const isOpen = nav.classList.toggle("mobile-open");
+Toggle the "mobile-open" class on the navigation menu and record if it is currently open.
+
+Line 439: toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+Update the aria-expanded accessibility attribute for assistive technology.
+
+Line 441: document.addEventListener("click", function (e) {
+Listen for clicks anywhere on the document.
+
+Line 442: if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+If the user clicks outside both the navigation menu and the toggle button, close the menu.
+
+Line 443: nav.classList.remove("mobile-open");
+Remove the "mobile-open" class to hide the dropdown menu.
+
+Line 444: toggle.setAttribute("aria-expanded", "false");
+Mark the toggle button as closed for accessibility.
+
+Line 447: }
 The function ends.
 
 startResetButton line number 440

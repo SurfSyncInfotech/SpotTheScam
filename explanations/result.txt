@@ -136,8 +136,8 @@ Show the button.
 Line 60: next.href = result.nextHref;
 Point it at the next page.
 
-Line 61: next.textContent = result.nextLabel;
-Use the saved label, such as "Go to Case 2".
+Line 60: next.textContent = result.nextLabel;
+Use the saved label, such as "Continue to Case 2" or "Continue to Case 3".
 
 Line 63: next.hidden = true;
 If there is no next address, hide the button.

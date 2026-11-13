@@ -2,15 +2,15 @@ Key Challenges Faced in Spot the Scam
 =======================================
 
 1. Card Squeezing at 90% Zoom on Desktop
-- The issue: On desktop screens and especially at 90% browser zoom, all 4 cards (Case 1, Case 2, Case 3, and Training) tried to squeeze into a single row, making each card narrow and cramped.
-- The fix: Set `.cases-cards-grid` to a strict 3-column grid (`repeat(3, minmax(0, 1fr))`) for the 3 core cases, and styled the Company Training card as a wide banner spanning full width across the bottom (`grid-column: 1 / -1`).
+- The issue: On desktop screens and especially at 90% browser zoom, all 4 cards (Case 1, Case 2, Case 3, and Safety Guide) tried to squeeze into a single row, making each card narrow and cramped.
+- The fix: Set `.cases-cards-grid` to a strict 3-column grid (`repeat(3, minmax(0, 1fr))`) for the 3 core cases, and styled the Safety Guide card as a wide banner spanning full width across the bottom (`grid-column: 1 / -1`).
 
 2. White-on-White Invisible Button Labels
-- The issue: Action buttons (like "Open Training", "Start Case 1", and form buttons) rendered white text (`#ffffff`) on white and cream backgrounds, making the button text completely invisible.
+- The issue: Action buttons (like "Open Guide", "Start Case 1", and form buttons) rendered white text (`#ffffff`) on white and cream backgrounds, making the button text completely invisible.
 - The fix: Explicitly separated button classes: styled `.btn-primary` with a dark `#1e293b` background and white text, and styled `.btn-secondary` with a white background, dark `#0f172a` ink text, and clean border contrast.
 
 3. "Ready" Status Pill Centered in Card Body
-- The issue: On the Company Training card, the "Ready" status tag was sitting awkwardly in the middle of the text block instead of in the corner like the other cards.
+- The issue: On the Safety Guide card, the "Ready" status tag was sitting awkwardly in the middle of the text block instead of in the corner like the other cards.
 - The fix: Added `position: absolute; top: 22px; right: 24px;` to `#training-status` inside `.mission-card-training` so it pins cleanly to the top-right corner.
 
 4. Browser Cache Blocking Updates (Service Worker)
@@ -40,3 +40,7 @@ Key Challenges Faced in Spot the Scam
 10. Shared Classroom Computer Score Overlap
 - The issue: On shared school computers or lab laptops, the previous student's scores, XP, and unlocked badges remained on screen for the next student.
 - The fix: Added a dedicated "Reset browser progress" button on the Dashboard with a confirmation prompt that safely resets localStorage back to `defaultProgress()`.
+
+11. Desktop Nav Wrapping and Mobile Score Squishing
+- The issue: On 100% zoom laptop displays, nav item pills wrapped internal words into two lines ("Case\n1", "Safety\nGuide"). On phones, the "Score: 0" chip squished into a narrow vertical shape ("Score:\n0") and the progress bar got squeezed out.
+- The fix: Added `white-space: nowrap; flex-shrink: 0;` to all navigation pills, added intermediate responsive scaling for desktop viewports, and redesigned the mobile `.session-metrics-bar` into a clean two-row layout (top row: label on left, un-squished score pill on right; bottom row: 100% full-width progress track).
