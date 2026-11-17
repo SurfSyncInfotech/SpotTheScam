@@ -22,7 +22,7 @@
                 </div>
                 <div class="brand-text-wrap">
                     <span class="brand-title">Spot the Scam</span>
-                    <span class="brand-tag">Online Safety Practice</span>
+                    <span class="brand-tag">Interactive Phishing &amp; Scam Practice</span>
                 </div>
             </a>
 
@@ -45,7 +45,7 @@
                 </a>
                 <a href="training.html" class="nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    Training
+                    Safety Guide
                 </a>
             </nav>
 
@@ -59,7 +59,7 @@
         <!-- Advisory Notice if accessed early -->
         <section id="lock-panel" class="lock-advisory-panel panel" hidden>
             <h2>Suggested: Try Case 1 First</h2>
-            <p>Case 1 gives you practice on fake sender addresses and suspicious links first. We recommend trying it first, but you can jump into Case 2 anytime.</p>
+            <p>Case 2 (Everyday Decision Dilemmas) presents real chat messages and suspicious requests where you choose the safest response. We recommend finishing Case 1 first to build email clue detection, but you can jump into Case 2 anytime.</p>
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <button type="button" class="btn btn-primary" id="proceed-anyway-btn">Start Case 2 Anyway</button>
                 <a class="btn btn-secondary" href="index.html">Back to Home</a>
@@ -69,15 +69,15 @@
         <!-- Active Playing Area -->
         <section id="play-panel">
             <div class="case-page-head">
-                <span class="case-kicker-badge">Case 2 · Everyday Situations</span>
-                <h1 class="case-main-title">What Would You Do Next?</h1>
+                <span class="case-kicker-badge">Case 2 · Decision Dilemmas</span>
+                <h1 class="case-main-title">Everyday Decision Dilemmas</h1>
                 <div class="case-sub-instructions">
-                    <span>Read each everyday situation and choose the safest move from the 4 options.</span>
-                    <span class="target-badge">Goal: 15 / 20 to pass</span>
+                    <span>Read each incoming message or dilemma and choose the safest move.</span>
+                    <span class="target-text-label">Goal: 15 / 20 to pass</span>
                 </div>
-                <div class="practice-time-callout">
+                <p class="practice-time-callout">
                     Take your time to think through what could happen before clicking or replying.
-                </div>
+                </p>
             </div>
 
             <!-- Session Metrics Bar -->
@@ -95,21 +95,51 @@
 
             <!-- 2-Column Dilemma Grid -->
             <div class="scenario-layout-grid play-grid">
-                <!-- Left: Situation Narrative -->
+                <!-- Left: Realistic Smartphone Chat Simulator (Item 07) -->
                 <div class="evidence">
-                    <article class="scenario-detail-card email-card">
-                        <div class="scenario-card-header">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            Situation
+                    <div class="phone-mockup-frame">
+                        <!-- Phone Notch & Status Bar -->
+                        <div class="phone-status-bar">
+                            <span class="phone-time">9:41</span>
+                            <div class="phone-speaker-notch"></div>
+                            <div class="phone-icons-group">
+                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
+                            </div>
                         </div>
-                        <div class="scenario-card-body">
-                            <h2 class="scenario-headline" id="scene-title">Scenario Loading...</h2>
-                            <p class="scenario-narrative" id="scene-text"></p>
+
+                        <!-- Chat App Top Header -->
+                        <div class="phone-app-header">
+                            <span class="chat-back-arrow" aria-hidden="true">&larr;</span>
+                            <div class="chat-avatar-wrap">
+                                <div class="chat-avatar-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+                                </div>
+                                <span class="chat-online-dot"></span>
+                            </div>
+                            <div class="chat-contact-meta">
+                                <h2 class="chat-contact-name" id="scene-title">Game Chat</h2>
+                                <span class="chat-presence-status">Online</span>
+                            </div>
                         </div>
-                    </article>
+
+                        <!-- Phone Chat Thread View -->
+                        <div class="phone-chat-body">
+                            <div class="chat-setting-pill" id="chat-setting-context">Incoming Message</div>
+                            <div class="chat-timestamp-line">Today 4:15 PM</div>
+
+                            <!-- Incoming Message Bubble -->
+                            <div class="chat-bubble-container incoming">
+                                <div class="chat-speech-bubble" id="chat-bubble">
+                                    <p class="chat-bubble-text" id="scene-text">Loading situation...</p>
+                                    <span class="chat-bubble-time">4:15 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Right: 4 Shuffled Actions -->
+                <!-- Right: 4 Scannable Actions -->
                 <div class="scenario-decision-panel decisions">
                     <div class="question-block">
                         <h2 class="decision-prompt-title">What would you do?</h2>

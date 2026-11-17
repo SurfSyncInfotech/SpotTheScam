@@ -119,8 +119,32 @@ function showQuestion() {
         "Situation " + (currentQuestion + 1) + " of " + questions.length + " (Set " + cycleNum + " of 5)";
     document.getElementById("score-label").textContent = "Score: " + score;
     document.getElementById("score-bar").style.width = Math.round((currentQuestion / questions.length) * 100) + "%";
-    document.getElementById("scene-title").textContent = question.title;
-    document.getElementById("scene-text").textContent = question.scenario;
+
+    // Item 07: Parse scenario into realistic Phone Chat interface
+    const sceneTextEl = document.getElementById("scene-text");
+    const sceneTitleEl = document.getElementById("scene-title");
+    const settingPillEl = document.getElementById("chat-setting-context");
+
+    const fullScenario = question.scenario || "";
+    const quoteMatch = fullScenario.match(/[:\s]['"“]([^'"”]+)['"”]/);
+
+    if (quoteMatch && quoteMatch[1]) {
+        sceneTextEl.textContent = quoteMatch[1];
+        const contextBefore = fullScenario.substring(0, quoteMatch.index).trim();
+        if (settingPillEl) {
+            settingPillEl.textContent = contextBefore.replace(/^[Aa]\s+/, "") || "Direct Message";
+        }
+    } else {
+        sceneTextEl.textContent = fullScenario;
+        if (settingPillEl) {
+            settingPillEl.textContent = "Everyday Scenario";
+        }
+    }
+
+    if (sceneTitleEl) {
+        const cleanTitle = (question.title || "Game Chat").replace(/\s*\(Scenario\s*\d+\)$/i, "");
+        sceneTitleEl.textContent = cleanTitle;
+    }
 
     const choiceRow = document.getElementById("choice-row");
     choiceRow.innerHTML = "";
@@ -160,10 +184,21 @@ function showQuestion() {
     }
 
     const nextButton = document.getElementById("next-btn");
+    const feedbackEl = document.getElementById("feedback");
+
+    // Item 09: Cut repeated/redundant guidance under choices before answering
     if (step === "choose") {
-        setFeedback("feedback", "Read carefully and pick the safest option from the 4 choices.", "tip");
+        if (feedbackEl) {
+            feedbackEl.textContent = "";
+            feedbackEl.className = "feedback";
+            feedbackEl.style.display = "none";
+        }
         nextButton.hidden = true;
         return;
+    }
+
+    if (feedbackEl) {
+        feedbackEl.style.display = "";
     }
 
     if (selectedAnswer === question.correctAnswer) {

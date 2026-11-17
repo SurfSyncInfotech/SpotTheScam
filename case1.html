@@ -22,7 +22,7 @@
                 </div>
                 <div class="brand-text-wrap">
                     <span class="brand-title">Spot the Scam</span>
-                    <span class="brand-tag">Online Safety Practice</span>
+                    <span class="brand-tag">Interactive Phishing &amp; Scam Practice</span>
                 </div>
             </a>
 
@@ -45,7 +45,7 @@
                 </a>
                 <a href="training.html" class="nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    Training
+                    Safety Guide
                 </a>
             </nav>
 
@@ -62,11 +62,11 @@
             <h1 class="case-main-title">Spotting Phishing Emails</h1>
             <div class="case-sub-instructions">
                 <span>Read through the sample email. Decide if it looks legitimate or suspicious.</span>
-                <span class="target-badge">Goal: 15 / 20 to pass</span>
+                <span class="target-text-label">Goal: 15 / 20 to pass</span>
             </div>
-            <div class="practice-time-callout">
+            <p class="practice-time-callout">
                 No rush — take your time checking sender addresses, weird links, and urgent language.
-            </div>
+            </p>
         </div>
 
         <!-- Session Progress Tracker -->
@@ -84,30 +84,34 @@
 
         <!-- Two Column Investigation Grid -->
         <section class="investigation-grid" id="play-panel">
-            <!-- Left: Simulated Email Client -->
+            <!-- Left: Simulated Opened Webmail Client -->
             <div class="evidence">
                 <div class="mail-viewer-window email-card" id="email-inspect-card">
-                    <div class="mail-window-header">
-                        <div class="window-dots">
-                            <span class="window-dot"></span>
-                            <span class="window-dot"></span>
-                            <span class="window-dot"></span>
+                    <!-- Opened Gmail / Webmail Header Layout -->
+                    <div class="gmail-message-header">
+                        <div class="mail-subject-row inspectable-row" id="row-subject" data-line-id="subject">
+                            <h2 class="mail-subject-title inspectable-text" id="email-subject">loading...</h2>
+                            <span class="gmail-inbox-tag">Inbox</span>
                         </div>
-                        <span class="window-subject-preview">Sample Email</span>
-                        <span id="inspect-hint" class="inspect-cue-chip" hidden>👉 Click the suspicious line in the email</span>
+
+                        <div class="gmail-sender-row inspectable-row" id="row-from" data-line-id="sender">
+                            <div class="sender-avatar-circle" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div class="sender-meta-col">
+                                <div class="sender-from-line">
+                                    <span class="sender-from-address inspectable-text" id="email-from">loading...</span>
+                                </div>
+                                <div class="sender-to-line">to me</div>
+                            </div>
+                            <div class="gmail-date-col">
+                                <span class="gmail-date-stamp">Today, 10:24 AM</span>
+                                <span id="inspect-hint" class="inspect-cue-chip" hidden>👉 Click suspicious line</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mail-metadata-table">
-                        <div class="mail-field-row inspectable-row" id="row-from" data-line-id="sender">
-                            <span class="field-name-tag email-label">From:</span>
-                            <span class="field-value-text inspectable-text" id="email-from">loading...</span>
-                        </div>
-                        <div class="mail-field-row inspectable-row" id="row-subject" data-line-id="subject">
-                            <span class="field-name-tag email-label">Subject:</span>
-                            <span class="field-value-text inspectable-text" id="email-subject">loading...</span>
-                        </div>
-                    </div>
-
+                    <!-- Email Message Body Content -->
                     <div class="mail-body-content" id="email-body-lines">
                         <!-- Dynamic inspectable lines rendered here -->
                     </div>
@@ -124,13 +128,17 @@
 
                     <div class="binary-choice-pair choice-row pair">
                         <button type="button" id="choose-scam" class="verdict-button choice-btn" data-base-class="verdict-button choice-btn">
-                            <span class="verdict-label choice-label">&ldquo;Scam&rdquo;: this email looks suspicious</span>
-                            <span class="verdict-help choice-help">Fake or risky. Someone may be trying to trick you.</span>
+                            <div class="verdict-btn-content">
+                                <span class="verdict-label choice-label">Scam</span>
+                                <span class="verdict-help choice-help">Suspicious email</span>
+                            </div>
                             <span class="choice-note"></span>
                         </button>
                         <button type="button" id="choose-legit" class="verdict-button choice-btn" data-base-class="verdict-button choice-btn">
-                            <span class="verdict-label choice-label">&ldquo;Safe&rdquo;: this email looks legitimate</span>
-                            <span class="verdict-help choice-help">Real and trusted. This message is authentic.</span>
+                            <div class="verdict-btn-content">
+                                <span class="verdict-label choice-label">Safe</span>
+                                <span class="verdict-help choice-help">Legitimate email</span>
+                            </div>
                             <span class="choice-note"></span>
                         </button>
                     </div>

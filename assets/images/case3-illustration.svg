@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none" width="100%" height="100%">
+    <defs>
+        <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc"/>
+            <stop offset="100%" stop-color="#edf2f7"/>
+        </linearGradient>
+        <linearGradient id="browserTop" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc"/>
+            <stop offset="100%" stop-color="#f1f5f9"/>
+        </linearGradient>
+        <filter id="winShadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.1"/>
+        </filter>
+        <filter id="stepBadgeShadow" x="-15%" y="-15%" width="130%" height="130%" filterUnits="userSpaceOnUse">
+            <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+        </filter>
+    </defs>
+
+    <!-- Canvas Background -->
+    <rect width="400" height="200" fill="url(#bg3)"/>
+
+    <!-- Subtle Grid Background -->
+    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4" opacity="0.6">
+        <line x1="40" y1="0" x2="40" y2="200"/>
+        <line x1="120" y1="0" x2="120" y2="200"/>
+        <line x1="200" y1="0" x2="200" y2="200"/>
+        <line x1="280" y1="0" x2="280" y2="200"/>
+        <line x1="360" y1="0" x2="360" y2="200"/>
+        <line x1="0" y1="50" x2="400" y2="50"/>
+        <line x1="0" y1="100" x2="400" y2="100"/>
+        <line x1="0" y1="150" x2="400" y2="150"/>
+    </g>
+
+    <!-- Browser Investigation Window -->
+    <g transform="translate(60, 20)" filter="url(#winShadow)">
+        <rect x="0" y="0" width="280" height="155" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+        <!-- Browser Header Bar -->
+        <rect x="0" y="0" width="280" height="34" rx="10" fill="url(#browserTop)"/>
+        <path d="M0 26 H280 V34 H0 Z" fill="#f1f5f9"/>
+        <line x1="0" y1="34" x2="280" y2="34" stroke="#e2e8f0" stroke-width="1.5"/>
+
+        <!-- Browser Dots -->
+        <circle cx="16" cy="17" r="3.5" fill="#cbd5e1"/>
+        <circle cx="27" cy="17" r="3.5" fill="#cbd5e1"/>
+        <circle cx="38" cy="17" r="3.5" fill="#cbd5e1"/>
+
+        <!-- URL Search Bar with Warning Icon -->
+        <rect x="52" y="7" width="216" height="20" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Warning Triangle inside URL -->
+        <path d="M63 21 L68 12 L73 21 Z" fill="#ef4444"/>
+        <circle cx="68" cy="19.5" r="0.75" fill="#ffffff"/>
+        <!-- URL text line -->
+        <rect x="78" y="14" width="70" height="4.5" rx="2" fill="#ef4444"/>
+        <rect x="152" y="14" width="45" height="4.5" rx="2" fill="#94a3b8"/>
+
+        <!-- Window Inner Content: 3-Step Forensic Investigation Pills -->
+        <g transform="translate(18, 48)">
+            <!-- Step 1 Pill -->
+            <g filter="url(#stepBadgeShadow)">
+                <rect x="0" y="0" width="244" height="26" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+                <circle cx="14" cy="13" r="8" fill="#1e293b"/>
+                <text x="14" y="16.5" font-size="9" font-family="-apple-system, sans-serif" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+                <text x="32" y="16.5" font-size="10" font-family="-apple-system, sans-serif" font-weight="700" fill="#0f172a">Classify Message</text>
+                <!-- Checked badge -->
+                <circle cx="230" cy="13" r="6" fill="#dcfce7"/>
+                <path d="M228 13 L229.5 14.5 L232.5 11.5" stroke="#16a34a" stroke-width="1.2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Step 2 Pill -->
+            <g transform="translate(0, 32)" filter="url(#stepBadgeShadow)">
+                <rect x="0" y="0" width="244" height="26" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+                <circle cx="14" cy="13" r="8" fill="#1e293b"/>
+                <text x="14" y="16.5" font-size="9" font-family="-apple-system, sans-serif" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+                <text x="32" y="16.5" font-size="10" font-family="-apple-system, sans-serif" font-weight="700" fill="#0f172a">Spot the Red Flag</text>
+                <circle cx="230" cy="13" r="6" fill="#fee2e2"/>
+                <path d="M228 11 L232 15 M232 11 L228 15" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Step 3 Pill -->
+            <g transform="translate(0, 64)" filter="url(#stepBadgeShadow)">
+                <rect x="0" y="0" width="244" height="26" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+                <circle cx="14" cy="13" r="8" fill="#15803d"/>
+                <text x="14" y="16.5" font-size="9" font-family="-apple-system, sans-serif" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+                <text x="32" y="16.5" font-size="10" font-family="-apple-system, sans-serif" font-weight="700" fill="#14532d">Safest Next Step</text>
+                <!-- Target action icon -->
+                <circle cx="230" cy="13" r="6" fill="#22c55e"/>
+                <path d="M227.5 13 L229.5 15 L233 11" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+        </g>
+    </g>
+</svg>

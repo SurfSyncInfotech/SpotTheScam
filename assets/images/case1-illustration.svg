@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none" width="100%" height="100%">
+    <defs>
+        <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc"/>
+            <stop offset="100%" stop-color="#edf2f7"/>
+        </linearGradient>
+        <linearGradient id="envelopeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f1f5f9"/>
+        </linearGradient>
+        <linearGradient id="accentGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.2"/>
+        </linearGradient>
+        <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+        </filter>
+        <filter id="magShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.15"/>
+        </filter>
+    </defs>
+
+    <!-- Canvas Background -->
+    <rect width="400" height="200" fill="url(#bg1)"/>
+
+    <!-- Subtle Background Grid Pattern -->
+    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4" opacity="0.6">
+        <line x1="40" y1="0" x2="40" y2="200"/>
+        <line x1="120" y1="0" x2="120" y2="200"/>
+        <line x1="200" y1="0" x2="200" y2="200"/>
+        <line x1="280" y1="0" x2="280" y2="200"/>
+        <line x1="360" y1="0" x2="360" y2="200"/>
+        <line x1="0" y1="50" x2="400" y2="50"/>
+        <line x1="0" y1="100" x2="400" y2="100"/>
+        <line x1="0" y1="150" x2="400" y2="150"/>
+    </g>
+
+    <!-- Center Composition: Email Document & Envelope -->
+    <g transform="translate(110, 22)">
+        <!-- Document Sheet -->
+        <g filter="url(#cardShadow)">
+            <rect x="25" y="8" width="130" height="120" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <!-- Header bar on sheet -->
+            <rect x="35" y="18" width="50" height="6" rx="3" fill="#94a3b8"/>
+            <rect x="90" y="18" width="30" height="6" rx="3" fill="#cbd5e1"/>
+            <line x1="35" y1="32" x2="145" y2="32" stroke="#e2e8f0" stroke-width="1.5"/>
+
+            <!-- Suspicious Link Line highlighted -->
+            <rect x="35" y="42" width="70" height="6" rx="3" fill="#cbd5e1"/>
+            <rect x="35" y="56" width="110" height="7" rx="3" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+            <rect x="40" y="58" width="80" height="3" rx="1.5" fill="#ef4444"/>
+
+            <rect x="35" y="70" width="100" height="5" rx="2.5" fill="#e2e8f0"/>
+            <rect x="35" y="80" width="85" height="5" rx="2.5" fill="#e2e8f0"/>
+            <rect x="35" y="90" width="60" height="5" rx="2.5" fill="#e2e8f0"/>
+        </g>
+
+        <!-- Modern Front Envelope Pocket -->
+        <g filter="url(#cardShadow)">
+            <path d="M10 65 L90 115 L170 65 L170 140 C170 144 167 148 162 148 L18 148 C13 148 10 144 10 140 Z" fill="url(#envelopeGrad)" stroke="#cbd5e1" stroke-width="1.5"/>
+            <path d="M10 148 L75 95" stroke="#e2e8f0" stroke-width="1.5"/>
+            <path d="M170 148 L105 95" stroke="#e2e8f0" stroke-width="1.5"/>
+        </g>
+
+        <!-- Red Flag / Alert Badge -->
+        <g transform="translate(142, 2)">
+            <circle cx="16" cy="16" r="16" fill="#ef4444" filter="url(#cardShadow)"/>
+            <path d="M16 9 V18 M16 22 V23" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+
+        <!-- Magnifying Glass inspecting the link -->
+        <g transform="translate(12, 45)" filter="url(#magShadow)">
+            <circle cx="45" cy="45" r="32" fill="url(#accentGlass)" stroke="#0f172a" stroke-width="3"/>
+            <!-- Lens highlight -->
+            <path d="M26 32 C30 24 40 20 52 22" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Handle -->
+            <line x1="68" y1="68" x2="98" y2="98" stroke="#0f172a" stroke-width="7" stroke-linecap="round"/>
+            <line x1="74" y1="74" x2="92" y2="92" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+            <!-- Magnified phishing hook icon inside lens -->
+            <path d="M38 42 C38 37 42 34 46 34 C50 34 53 37 53 41 C53 47 43 49 43 54" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <circle cx="43" cy="58" r="1.5" fill="#dc2626"/>
+        </g>
+    </g>
+</svg>

@@ -264,7 +264,7 @@ function fillNextStep(data) {
         return;
     }
 
-    const caseNames = ["", "Case 1 · Email Check", "Case 2 · What Would You Do?", "Case 3 · Mixed Scenarios"];
+    const caseNames = ["", "Case 1 · Spotting Phishing Emails", "Case 2 · Everyday Decision Dilemmas", "Case 3 · Full 3-Step Investigations"];
     const caseTotals = [0, 20, 20, 20];
 
     for (let caseNumber = 1; caseNumber <= 3; caseNumber++) {
@@ -545,7 +545,11 @@ function showOrderModal(targetCase, prevCase) {
     const proceedBtn = document.getElementById("modal-proceed-btn");
     const stayBtn = document.getElementById("modal-stay-btn");
 
-    modalText.textContent = "We recommend completing Case " + prevCase + " first to build foundational scam-detection skills. Would you like to proceed to Case " + targetCase + " anyway?";
+    if (targetCase === 2) {
+        modalText.textContent = "Case 2 (Everyday Decision Dilemmas) presents real chat messages and suspicious requests where you choose the safest response. We recommend finishing Case 1 first to build email clue detection. Would you like to proceed to Case 2 anyway?";
+    } else {
+        modalText.textContent = "Case 3 (Full 3-Step Investigations) combines classifying messages, pinpointing red flags, and choosing the safest actions. We recommend finishing Case 2 first. Would you like to proceed to Case 3 anyway?";
+    }
     stayBtn.textContent = "Start Case " + prevCase;
 
     proceedBtn.onclick = function() {

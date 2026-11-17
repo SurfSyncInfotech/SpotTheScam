@@ -45,14 +45,14 @@
     flex-wrap: wrap;
 }
 
-.target-badge {
-    background: var(--surface-card);
-    color: var(--ink-black);
-    border: 1.5px solid var(--border-warm);
-    font-weight: 800;
-    padding: 4px 12px;
-    border-radius: var(--radius-sm);
-    font-size: 0.8125rem;
+.target-badge,
+.target-text-label {
+    background: transparent;
+    color: var(--ink-muted);
+    border: none;
+    font-weight: 700;
+    padding: 0;
+    font-size: 0.9rem;
     white-space: nowrap;
     flex-shrink: 0;
     display: inline-flex;
@@ -60,26 +60,28 @@
 }
 
 .practice-time-callout {
-    background: var(--surface-card);
-    border: 1.5px solid var(--border-warm);
-    border-left: 4px solid var(--tone-case2-chip);
-    border-radius: var(--radius-sm);
-    padding: 10px 16px;
-    font-size: 0.9rem;
-    color: var(--ink-body);
-    margin: 10px 0 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    margin: 6px 0 0;
+    line-height: 1.5;
+    box-shadow: none;
 }
 
+/* Status Tracker Bar - Standard Sans-Serif Typography */
 .session-metrics-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
     background: var(--surface-card);
-    border: 1.5px solid var(--border-warm);
+    border: 1px solid var(--border-warm);
     border-radius: var(--radius-lg);
-    padding: 14px 20px;
-    margin-bottom: 26px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
     box-shadow: var(--shadow-soft);
 }
 
@@ -88,22 +90,24 @@
     align-items: center;
     gap: 16px;
     font-size: 0.92rem;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .metric-pill-num {
     color: var(--ink-black);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
+    font-weight: 700;
 }
 
 .metric-score-display {
-    color: var(--gold-text);
-    background: var(--gold-bg);
-    border: 1.5px solid var(--gold-border);
-    padding: 3px 12px;
+    color: var(--ink-black);
+    background: var(--surface-tint);
+    border: 1px solid var(--border-warm);
+    padding: 2px 10px;
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
-    font-weight: 800;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.86rem;
 }
 
 .tracker-bar-wrap {
@@ -117,6 +121,170 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 28px;
     align-items: start;
+}
+
+/* Realistic Smartphone Chat Simulator (Item 07) */
+.phone-mockup-frame {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 28px;
+    box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.1), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.phone-status-bar {
+    background: #f8fafc;
+    padding: 8px 18px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.phone-time {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.phone-speaker-notch {
+    width: 60px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.phone-icons-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #475569;
+}
+
+.phone-app-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-warm);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-back-arrow {
+    font-size: 1.1rem;
+    color: var(--ink-dark);
+    font-weight: 700;
+}
+
+.chat-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.chat-avatar-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-warm);
+}
+
+.chat-online-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+}
+
+.chat-contact-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-contact-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--ink-black);
+    margin: 0;
+    line-height: 1.25;
+}
+
+.chat-presence-status {
+    font-size: 0.72rem;
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.phone-chat-body {
+    background: #f8fafc;
+    padding: 22px 18px 26px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-setting-pill {
+    align-self: center;
+    background: #ffffff;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--radius-pill);
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+    text-align: center;
+    margin-bottom: 8px;
+    max-width: 90%;
+    overflow-wrap: break-word;
+}
+
+.chat-timestamp-line {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+}
+
+.chat-bubble-container.incoming {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 88%;
+}
+
+.chat-speech-bubble {
+    background: #ffffff;
+    border: 1px solid var(--border-warm);
+    border-radius: 14px 14px 14px 3px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chat-bubble-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ink-black);
+    margin: 0;
+    font-weight: 600;
+}
+
+.chat-bubble-time {
+    align-self: flex-end;
+    font-size: 0.68rem;
+    color: var(--ink-muted);
 }
 
 /* Scenario Evidence Card */
@@ -302,6 +470,21 @@
 }
 
 @media (max-width: 680px) {
+    .phone-mockup-frame {
+        border-radius: 20px;
+        max-width: 100%;
+        margin: 0;
+    }
+    .phone-chat-body {
+        padding: 16px 12px 20px;
+        min-height: 200px;
+    }
+    .chat-bubble-container.incoming {
+        max-width: 96%;
+    }
+    .chat-bubble-text {
+        font-size: 0.92rem;
+    }
     .scenario-detail-card,
     .scenario-decision-panel {
         padding: 18px 16px;
