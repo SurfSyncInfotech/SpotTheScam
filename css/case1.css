@@ -204,7 +204,8 @@
     font-size: 0.92rem;
     font-weight: 700;
     color: var(--ink-black);
-    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .sender-to-line {
@@ -223,6 +224,19 @@
     font-size: 0.8rem;
     color: var(--ink-muted);
     white-space: nowrap;
+}
+
+.inspect-cue-banner {
+    background: #fef3c7;
+    border-bottom: 1.5px solid #fde68a;
+    color: #92400e;
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.45;
 }
 
 .inspect-cue-chip {
@@ -419,6 +433,51 @@
 }
 
 @media (max-width: 680px) {
+    .gmail-message-header {
+        padding: 14px 14px 12px;
+    }
+    .mail-subject-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .mail-subject-title {
+        font-size: 1.15rem;
+        flex: 1;
+        min-width: 160px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+    .gmail-sender-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 4px;
+    }
+    .sender-meta-col {
+        flex: 1;
+        min-width: 140px;
+    }
+    .sender-from-address {
+        font-size: 0.88rem;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        line-height: 1.4;
+    }
+    .gmail-date-col {
+        width: 100%;
+        margin-left: 46px;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .gmail-date-stamp {
+        font-size: 0.74rem;
+    }
+    .inspect-cue-banner {
+        padding: 8px 14px;
+        font-size: 0.78rem;
+    }
     .mail-metadata-table {
         padding: 14px 14px;
         gap: 8px;
@@ -467,15 +526,13 @@
         margin-top: 18px;
         padding-top: 14px;
     }
-}
-
-@media (max-width: 680px) {
     .case-sub-instructions {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    .target-badge {
+    .target-badge,
+    .target-text-label {
         align-self: flex-start;
         display: inline-flex;
     }

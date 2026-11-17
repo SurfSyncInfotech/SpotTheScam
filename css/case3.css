@@ -163,13 +163,17 @@
 .from-value {
     font-weight: 700;
     color: var(--ink-black);
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .message-body-text {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1.05rem;
+    line-height: 1.65;
     color: var(--ink-black);
     margin: 0;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 /* Decision Multi-step Console */
@@ -260,6 +264,9 @@
     font-weight: 700;
     color: var(--ink-black);
     flex: 1;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
 }
 
 .choice-btn.is-correct .choice-label,

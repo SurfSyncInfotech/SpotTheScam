@@ -87,6 +87,11 @@
             <!-- Left: Simulated Opened Webmail Client -->
             <div class="evidence">
                 <div class="mail-viewer-window email-card" id="email-inspect-card">
+                    <!-- Active Inspection Cue Banner (Reveals in Step 2) -->
+                    <div id="inspect-hint" class="inspect-cue-banner" hidden>
+                        👉 Click the suspicious line in the email (Sender, Subject, or body text)
+                    </div>
+
                     <!-- Opened Gmail / Webmail Header Layout -->
                     <div class="gmail-message-header">
                         <div class="mail-subject-row inspectable-row" id="row-subject" data-line-id="subject">
@@ -106,7 +111,6 @@
                             </div>
                             <div class="gmail-date-col">
                                 <span class="gmail-date-stamp">Today, 10:24 AM</span>
-                                <span id="inspect-hint" class="inspect-cue-chip" hidden>👉 Click suspicious line</span>
                             </div>
                         </div>
                     </div>
